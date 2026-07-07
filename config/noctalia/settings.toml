@@ -1,5 +1,18 @@
 [bar.default]
-background_opacity = 0.8
+background_opacity = 0.80000000000000004
+capsule_radius = 8
+end = [
+    "media",
+    "tray",
+    "notifications",
+    "clipboard",
+    "network",
+    "bluetooth",
+    "volume",
+    "brightness",
+    "battery",
+    "session"
+]
 margin_edge = 8
 margin_ends = 8
 
@@ -63,3 +76,12 @@ path = "/home/metsker/Pictures/Wallpapers/images/my-neighbor-totoro-sunflowers.p
 
 [wallpaper.monitors.Virtual-1]
 path = "/home/metsker/Pictures/Wallpapers/images/my-neighbor-totoro-sunflowers.png"
+
+[widget.media]
+hide_when_no_media = true
+
+[widget.network]
+show_label = false
+
+[widget.workspaces]
+display = "none"

@@ -41,6 +41,16 @@ in
     };
   };
 
+  programs.zoxide = {
+    enable = true;
+    options = [ "--cmd cd" ];
+  };
+
+  programs.yazi = {
+    enable = true;
+    enableFishIntegration = true;
+  };
+
   home.file.".claude/settings.json".source =
     create_symlink "${dotfiles}/claude/settings.json";
 
@@ -63,6 +73,7 @@ in
     gcc
     claude-code
     inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
-    yazi
+    github-cli
+    lazygit
   ];
 }
