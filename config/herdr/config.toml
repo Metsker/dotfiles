@@ -1,0 +1,13 @@
+onboarding = false
+[keys]
+prefix = "ctrl+s"
+
+[ui.sound]
+enabled = false
+
+[ui.toast]
+delivery = "herdr"
+
+[theme]
+name = "kanagawa"
+auto_switch = false

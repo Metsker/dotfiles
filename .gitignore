@@ -1,0 +1,4 @@
+*.sock
+config/herdr/*.log
+config/herdr/session.json
+**/noctalia.*
