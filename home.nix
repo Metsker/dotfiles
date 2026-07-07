@@ -30,6 +30,8 @@ in
       pull.rebase = true;
       push.autoSetupRemote = true;
       core.editor = "nvim";
+      credential."https://github.com".helper = "!${pkgs.github-cli}/bin/gh auth git-credential";
+      credential."https://gist.github.com".helper = "!${pkgs.github-cli}/bin/gh auth git-credential";
     };
   };
   home.stateVersion = "26.05";
