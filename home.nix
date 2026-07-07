@@ -37,7 +37,7 @@ in
   programs.fish = {
     enable = true;
     shellAliases = {
-      rebuild = "sudo nixos-rebuild switch --flake ~/dotfiles/#lev";
+      rebuild = "sudo nixos-rebuild switch --flake ~/dotfiles/#pc";
     };
   };
 
@@ -55,7 +55,6 @@ in
     configs;
 
   home.packages = with pkgs; [
-    neovim
     ripgrep
     nil
     nixpkgs-fmt
