@@ -26,6 +26,7 @@
   users.users.metsker = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    shell = pkgs.fish;
     packages = with pkgs; [
       tree
     ];
@@ -33,6 +34,7 @@
 
   hardware.graphics.enable = true;
   programs.niri.enable = true;
+  programs.fish.enable = true;
 
   programs.firefox.enable = true;
 
@@ -42,6 +44,13 @@
     alacritty
     git
   ];
+
+  # Override NixOS's `EDITOR = mkDefault "nano"`; applies session-wide so
+  # graphical apps (e.g. yazi's editor opener) inherit it too.
+  environment.sessionVariables = {
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+  };
 
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono

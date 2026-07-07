@@ -21,14 +21,31 @@ in
 
   home.username = "metsker";
   home.homeDirectory = "/home/metsker";
-  programs.git.enable = true;
+  programs.git = {
+    enable = true;
+    settings = {
+      user.name = "metsker";
+      user.email = "lev.shchinoff@gmail.com";
+      init.defaultBranch = "main";
+      pull.rebase = true;
+      push.autoSetupRemote = true;
+      core.editor = "nvim";
+    };
+  };
   home.stateVersion = "26.05";
-  programs.bash = {
+
+  programs.fish = {
     enable = true;
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake ~/dotfiles/#lev";
     };
   };
+
+  home.file.".claude/settings.json".source =
+    create_symlink "${dotfiles}/claude/settings.json";
+
+  home.file.".local/state/noctalia/settings.toml".source =
+    create_symlink "${dotfiles}/noctalia/settings.toml";
 
   xdg.configFile = builtins.mapAttrs
     (name: subpath: {
@@ -46,7 +63,7 @@ in
     nodejs
     gcc
     claude-code
-    inputs.herdr.packages.${pkgs.system}.default
+    inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
     yazi
   ];
 }
