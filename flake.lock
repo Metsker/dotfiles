@@ -1,23 +1,39 @@
 {
   "nodes": {
-    "herdr": {
+    "flake-utils": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "systems": "systems"
       },
       "locked": {
-        "lastModified": 1782308245,
-        "narHash": "sha256-/WnsUO1DuSmBfVo8LCFaDJEZvSrYnJZPyRNqASbPzV8=",
-        "owner": "ogulcancelik",
-        "repo": "herdr",
-        "rev": "dbc45f6306bda3eee681d73a14b48ffbb39f3fcc",
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
         "type": "github"
       },
       "original": {
-        "owner": "ogulcancelik",
-        "ref": "v0.7.1",
-        "repo": "herdr",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "herdr": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1783468205,
+        "narHash": "sha256-0sJa/alkQqmeaDpWlHjsMyKl6C3faSRNgJkbvugrLQU=",
+        "owner": "kevinpita",
+        "repo": "herdr-nix",
+        "rev": "a6818ddd1b3325ac6526a7498e9838b5b777b2df",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kevinpita",
+        "repo": "herdr-nix",
         "type": "github"
       }
     },
@@ -43,6 +59,22 @@
       }
     },
     "nixpkgs": {
+      "locked": {
+        "lastModified": 1783279667,
+        "narHash": "sha256-/NAkDSsve+GNM0Bt6tleJdCGfsTlK89nPjkVOzZMo0s=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f205b5574fd0cb7da5b702a2da51507b7f4fdd1b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
       "locked": {
         "lastModified": 1783148766,
         "narHash": "sha256-H9+N+GFtsbVC8ZniHliChM7ndizxtqVZs6bnGOLM3WQ=",
@@ -80,8 +112,23 @@
       "inputs": {
         "herdr": "herdr",
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": "nixpkgs_2",
         "noctalia": "noctalia"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
       }
     }
   },

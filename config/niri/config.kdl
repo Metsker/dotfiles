@@ -92,6 +92,7 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     Mod+Return hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
+    Mod+Alt+Return hotkey-overlay-title="Open a Multiplexer: herdr" { spawn-sh "alacritty -e herdr"; }
 		Mod+Space repeat=false hotkey-overlay-title="Application Launcher: noctalia" { spawn-sh "noctalia msg panel-toggle launcher"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 

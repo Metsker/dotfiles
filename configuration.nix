@@ -25,7 +25,10 @@
   hardware.graphics.enable = true;
 
   programs.niri.enable = true;
-  programs.fish.enable = true;
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = "set -g fish_greeting";
+  };
   programs.firefox.enable = true;
 
   environment.systemPackages = with pkgs; [
@@ -48,9 +51,13 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  nix.settings.extra-substituters = [ "https://noctalia.cachix.org" ];
+  nix.settings.extra-substituters = [
+    "https://noctalia.cachix.org"
+    "https://kevinpita.cachix.org"
+  ];
   nix.settings.extra-trusted-public-keys = [
     "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+    "kevinpita.cachix.org-1:Cu9UtCDSfDq3/WDnI7N1N/LzAh90SPS+1R+nWao/hz0="
   ];
 
   system.stateVersion = "26.05";

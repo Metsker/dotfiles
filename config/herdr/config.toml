@@ -9,5 +9,5 @@ enabled = false
 delivery = "herdr"
 
 [theme]
-name = "kanagawa"
+name = "terminal"
 auto_switch = false

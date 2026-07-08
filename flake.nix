@@ -6,10 +6,7 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    herdr = {
-      url = "github:ogulcancelik/herdr/v0.7.1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    herdr.url = "github:kevinpita/herdr-nix";
     noctalia = {
       url = "github:noctalia-dev/noctalia";
       inputs.nixpkgs.follows = "nixpkgs";
