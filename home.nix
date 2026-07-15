@@ -54,6 +54,19 @@ in
     enableFishIntegration = true;
   };
 
+  gtk = {
+    enable = true;
+    iconTheme = {
+      name = "Adwaita";
+      package = pkgs.adwaita-icon-theme;
+    };
+  };
+
+  # Nautilus (GTK4/GNOME) reads its icon theme from this gsettings key.
+  dconf.settings = {
+    "org/gnome/desktop/interface".icon-theme = "Adwaita";
+  };
+
   home.file.".claude/settings.json".source =
     create_symlink "${dotfiles}/claude/settings.json";
 
@@ -78,5 +91,6 @@ in
     inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
     github-cli
     lazygit
+    nautilus
   ];
 }

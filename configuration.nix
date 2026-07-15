@@ -28,6 +28,11 @@
 
   programs.niri.enable = true;
 
+  # Nautilus needs these to work standalone (no GNOME desktop):
+  # gvfs for trash/mounting/network, dconf so it can persist settings.
+  services.gvfs.enable = true;
+  programs.dconf.enable = true;
+
   # Login screen: greetd + Noctalia greeter. `--session niri` is only the
   # default selection; the greeter shows a picker listing every WM/compositor
   # you enable, so future WMs appear automatically with no greeter changes.

@@ -1,5 +1,5 @@
 [bar.default]
-background_opacity = 0.8
+background_opacity = 0.80000000000000004
 capsule_radius = 8
 end = [
     "media",
@@ -19,6 +19,9 @@ margin_ends = 8
 [dock]
 auto_hide = true
 reserve_space = false
+
+[hooks]
+colors_changed = "nautilus -q"
 
 [lockscreen_widgets]
 enabled = false
@@ -51,7 +54,7 @@ widget_order = [ "lockscreen-login-box@Virtual-1" ]
         show_password_hint = true
 
 [shell]
-corner_radius_scale = 0.2
+corner_radius_scale = 0.20000000000000001
 font_family = "JetBrainsMono Nerd Font"
 
     [shell.greeter_sync]
