@@ -1,6 +1,8 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
+  imports = [ inputs.noctalia-greeter.nixosModules.default ];
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -25,6 +27,15 @@
   hardware.graphics.enable = true;
 
   programs.niri.enable = true;
+
+  # Login screen: greetd + Noctalia greeter. `--session niri` is only the
+  # default selection; the greeter shows a picker listing every WM/compositor
+  # you enable, so future WMs appear automatically with no greeter changes.
+  programs.noctalia-greeter = {
+    enable = true;
+    greeter-args = "--session niri";
+  };
+
   programs.fish = {
     enable = true;
     interactiveShellInit = "set -g fish_greeting";
@@ -53,11 +64,11 @@
 
   nix.settings.extra-substituters = [
     "https://noctalia.cachix.org"
-    "https://kevinpita.cachix.org"
+    "https://herdr-nix.cachix.org"
   ];
   nix.settings.extra-trusted-public-keys = [
     "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
-    "kevinpita.cachix.org-1:Cu9UtCDSfDq3/WDnI7N1N/LzAh90SPS+1R+nWao/hz0="
+    "herdr-nix.cachix.org-1:+AT7TY8E6j/Pe9lB8Vjmp15Y4RPb8YtOnOwr/fboDS8="
   ];
 
   system.stateVersion = "26.05";
