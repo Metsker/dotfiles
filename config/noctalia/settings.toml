@@ -1,5 +1,5 @@
 [bar.default]
-background_opacity = 0.80000000000000004
+background_opacity = 0.8
 capsule_radius = 8
 end = [
     "media",
@@ -51,8 +51,11 @@ widget_order = [ "lockscreen-login-box@Virtual-1" ]
         show_password_hint = true
 
 [shell]
-corner_radius_scale = 0.20000000298023224
+corner_radius_scale = 0.2
 font_family = "JetBrainsMono Nerd Font"
+
+    [shell.greeter_sync]
+    privilege_command = "foot -e pkexec"
 
     [shell.launcher]
     categories = false
@@ -65,7 +68,7 @@ source = "wallpaper"
 wallpaper_scheme = "m3-fruit-salad"
 
     [theme.templates]
-    builtin_ids = [ "alacritty", "gtk3", "gtk4", "niri" ]
+    builtin_ids = [ "foot", "gtk3", "gtk4", "niri" ]
     community_ids = [ "neovim", "yazi" ]
 
 [wallpaper.default]

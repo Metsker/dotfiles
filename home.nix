@@ -6,7 +6,7 @@ let
   configs = {
     nvim = "nvim";
     herdr = "herdr";
-    alacritty = "alacritty";
+    foot = "foot";
     niri = "niri";
   };
 in
@@ -40,6 +40,7 @@ in
     enable = true;
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake ~/dotfiles/#pc";
+      lg = "lazygit";
     };
   };
 
