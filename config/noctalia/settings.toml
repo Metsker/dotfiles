@@ -61,14 +61,13 @@ font_family = "JetBrainsMono Nerd Font"
     categories = false
 
 [theme]
-builtin = "Catppuccin"
+builtin = "Gruvbox"
 community_palette = "Gruvbox Material"
-mode = "dark"
 source = "wallpaper"
 
     [theme.templates]
     builtin_ids = [ "foot", "gtk3", "gtk4", "niri" ]
-    community_ids = [ "neovim", "yazi" ]
+    community_ids = [ "zen-browser", "neovim", "yazi" ]
 
 [wallpaper.default]
 path = "/home/metsker/Pictures/Wallpapers/images/my-neighbor-totoro-sunflowers.png"

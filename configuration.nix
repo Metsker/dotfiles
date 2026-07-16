@@ -40,7 +40,6 @@
     enable = true;
     interactiveShellInit = "set -g fish_greeting";
   };
-  programs.firefox.enable = true;
 
   environment.systemPackages = with pkgs; [
     neovim

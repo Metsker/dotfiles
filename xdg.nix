@@ -20,6 +20,12 @@
       "application/xml" = "nvim.desktop";
       "text/x-shellscript" = "nvim.desktop";
       "text/x-python" = "nvim.desktop";
+      "text/html" = "zen-beta.desktop";
+      "application/xhtml+xml" = "zen-beta.desktop";
+      "x-scheme-handler/http" = "zen-beta.desktop";
+      "x-scheme-handler/https" = "zen-beta.desktop";
+      "x-scheme-handler/about" = "zen-beta.desktop";
+      "x-scheme-handler/unknown" = "zen-beta.desktop";
       "image/png" = "imv.desktop";
       "image/jpeg" = "imv.desktop";
       "image/gif" = "imv.desktop";

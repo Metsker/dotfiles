@@ -16,8 +16,17 @@ in
 {
   imports = [
     inputs.noctalia.homeModules.default
+    inputs.zen-browser.homeModules.default
     ./xdg.nix
   ];
+
+  programs.zen-browser = {
+    enable = true;
+    policies.Preferences."toolkit.legacyUserProfileCustomizations.stylesheets" = {
+      Value = true;
+      Status = "locked";
+    };
+  };
 
   programs.noctalia = {
     enable = true;
