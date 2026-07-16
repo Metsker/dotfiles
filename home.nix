@@ -14,7 +14,10 @@ let
 in
 
 {
-  imports = [ inputs.noctalia.homeModules.default ];
+  imports = [
+    inputs.noctalia.homeModules.default
+    ./xdg.nix
+  ];
 
   programs.noctalia = {
     enable = true;
@@ -70,18 +73,23 @@ in
     configs;
 
   home.packages = with pkgs; [
+    nil
+    nixpkgs-fmt
+    stylua
+    gcc
     ripgrep
     fzf
     fd
-    nil
-    nixpkgs-fmt
+    imv
+    mpv
+    ffmpeg
     tree-sitter
     nodejs
-    gcc
-    claude-code
     inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
     github-cli
     lazygit
+
+    claude-code
     telegram-desktop
     discord
   ];
