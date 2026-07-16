@@ -28,11 +28,6 @@
 
   programs.niri.enable = true;
 
-  # Nautilus needs these to work standalone (no GNOME desktop):
-  # gvfs for trash/mounting/network, dconf so it can persist settings.
-  services.gvfs.enable = true;
-  programs.dconf.enable = true;
-
   # Login screen: greetd + Noctalia greeter. `--session niri` is only the
   # default selection; the greeter shows a picker listing every WM/compositor
   # you enable, so future WMs appear automatically with no greeter changes.
@@ -75,6 +70,18 @@
     "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
     "herdr-nix.cachix.org-1:+AT7TY8E6j/Pe9lB8Vjmp15Y4RPb8YtOnOwr/fboDS8="
   ];
+
+  # This machine only has ~3.8 GiB RAM. When a flake input (e.g. an uncached
+  # noctalia bump) has to compile from source, parallel C++ builds exhaust
+  # memory and the OOM killer takes down whatever runs in the session cgroup
+  # (i.e. the terminal). Compressed RAM swap plus capped build parallelism
+  # keep from-source rebuilds within budget.
+  zramSwap = {
+    enable = true;
+    memoryPercent = 100;
+  };
+  nix.settings.max-jobs = 1;
+  nix.settings.cores = 2;
 
   system.stateVersion = "26.05";
 }

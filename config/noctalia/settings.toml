@@ -20,9 +20,6 @@ margin_ends = 8
 auto_hide = true
 reserve_space = false
 
-[hooks]
-colors_changed = "nautilus -q"
-
 [lockscreen_widgets]
 enabled = false
 schema_version = 2
@@ -64,11 +61,10 @@ font_family = "JetBrainsMono Nerd Font"
     categories = false
 
 [theme]
-builtin = "Eldritch"
-community_palette = "Everforest"
+builtin = "Catppuccin"
+community_palette = "Gruvbox Material"
 mode = "dark"
 source = "wallpaper"
-wallpaper_scheme = "m3-fruit-salad"
 
     [theme.templates]
     builtin_ids = [ "foot", "gtk3", "gtk4", "niri" ]

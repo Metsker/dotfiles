@@ -8,6 +8,7 @@ let
     herdr = "herdr";
     foot = "foot";
     niri = "niri";
+    yazi = "yazi";
   };
 in
 
@@ -54,19 +55,6 @@ in
     enableFishIntegration = true;
   };
 
-  gtk = {
-    enable = true;
-    iconTheme = {
-      name = "Adwaita";
-      package = pkgs.adwaita-icon-theme;
-    };
-  };
-
-  # Nautilus (GTK4/GNOME) reads its icon theme from this gsettings key.
-  dconf.settings = {
-    "org/gnome/desktop/interface".icon-theme = "Adwaita";
-  };
-
   home.file.".claude/settings.json".source =
     create_symlink "${dotfiles}/claude/settings.json";
 
@@ -82,6 +70,8 @@ in
 
   home.packages = with pkgs; [
     ripgrep
+    fzf
+    fd
     nil
     nixpkgs-fmt
     tree-sitter
@@ -91,6 +81,7 @@ in
     inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
     github-cli
     lazygit
-    nautilus
+    telegram-desktop
+    discord
   ];
 }
