@@ -9,6 +9,7 @@ let
     foot = "foot";
     niri = "niri";
     yazi = "yazi";
+    lazygit = "lazygit";
   };
 in
 
