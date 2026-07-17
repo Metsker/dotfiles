@@ -1,11 +1,11 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 let
   dotfiles = "${config.home.homeDirectory}/dotfiles/config";
   create_symlink = path: config.lib.file.mkOutOfStoreSymlink path;
   configs = {
     nvim = "nvim";
-    herdr = "herdr";
+    herdr = "herdr/config.toml";
     foot = "foot";
     niri = "niri";
     yazi = "yazi";
@@ -74,6 +74,7 @@ in
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake ~/dotfiles/#pc";
       lg = "lazygit";
+      c = "claude";
     };
   };
 
@@ -95,17 +96,14 @@ in
   home.file.".local/state/noctalia/settings.toml".source =
     create_symlink "${dotfiles}/noctalia/settings.toml";
 
-  xdg.configFile = builtins.mapAttrs
-    (name: subpath: {
+  xdg.configFile = lib.mapAttrs'
+    (name: subpath: lib.nameValuePair subpath {
       source = create_symlink "${dotfiles}/${subpath}";
       recursive = true;
     })
     configs;
 
   home.packages = with pkgs; [
-    nil
-    nixpkgs-fmt
-    stylua
     gcc
     ripgrep
     fzf
@@ -119,6 +117,10 @@ in
     inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
     github-cli
     lazygit
+
+    nil
+    nixpkgs-fmt
+    stylua
 
     claude-code
     telegram-desktop
