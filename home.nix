@@ -20,6 +20,10 @@ in
     ./xdg.nix
   ];
 
+  home.username = "metsker";
+  home.homeDirectory = "/home/metsker";
+  home.stateVersion = "26.05";
+
   programs.zen-browser = {
     enable = true;
     policies.Preferences."toolkit.legacyUserProfileCustomizations.stylesheets" = {
@@ -33,8 +37,24 @@ in
     systemd.enable = true;
   };
 
-  home.username = "metsker";
-  home.homeDirectory = "/home/metsker";
+  gtk = {
+    enable = true;
+    theme = {
+      name = "adw-gtk3-dark";
+      package = pkgs.adw-gtk3;
+    };
+  };
+
+  qt = {
+    enable = true;
+    platformTheme.name = "qtct";
+    qt6ctSettings.Appearance = {
+      custom_palette = true;
+      style = "Fusion";
+      color_scheme_path = "${config.home.homeDirectory}/.config/qt6ct/colors/noctalia.conf";
+    };
+  };
+
   programs.git = {
     enable = true;
     settings = {
@@ -48,7 +68,6 @@ in
       credential."https://gist.github.com".helper = "!${pkgs.github-cli}/bin/gh auth git-credential";
     };
   };
-  home.stateVersion = "26.05";
 
   programs.fish = {
     enable = true;
@@ -67,6 +86,8 @@ in
     enable = true;
     enableFishIntegration = true;
   };
+
+  # programs.steam.enable = true;
 
   home.file.".claude/settings.json".source =
     create_symlink "${dotfiles}/claude/settings.json";

@@ -26,6 +26,15 @@
 
   hardware.graphics.enable = true;
 
+  hardware.logitech.wireless = {
+    enable = true;
+    enableGraphical = true;
+  };
+
+  services.hardware.openrgb.enable = true;
+
+  qt.enable = true;
+
   programs.niri.enable = true;
 
   # Login screen: greetd + Noctalia greeter. `--session niri` is only the
