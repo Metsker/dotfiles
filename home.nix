@@ -110,6 +110,7 @@ in
     ripgrep
     fzf
     fd
+    jq
     imv
     mpv
     ffmpeg
