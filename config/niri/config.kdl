@@ -6,7 +6,8 @@ input {
 		focus-follows-mouse max-scroll-amount="0%"
     keyboard {
         xkb {
-            options "caps:escape"
+            layout "us,ru"
+            options "caps:escape,grp:ctrl_space_toggle"
         }
     }
 

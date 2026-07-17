@@ -53,6 +53,7 @@ widget_order = [ "lockscreen-login-box@Virtual-1" ]
 [shell]
 corner_radius_scale = 0.20000000000000001
 font_family = "JetBrainsMono Nerd Font"
+polkit_agent = true
 
     [shell.greeter_sync]
     privilege_command = "foot -e pkexec"
