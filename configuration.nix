@@ -1,7 +1,10 @@
 { config, lib, pkgs, inputs, ... }:
 
 {
-  imports = [ inputs.noctalia-greeter.nixosModules.default ];
+  imports = [
+    inputs.noctalia-greeter.nixosModules.default
+    inputs.mango.nixosModules.mango
+  ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -51,6 +54,9 @@
 
   programs.niri.enable = true;
 
+  programs.mango.enable = true;
+  programs.mango.package = inputs.mango.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
   programs.noctalia-greeter = {
     enable = true;
     greeter-args = "--session niri";
@@ -71,6 +77,9 @@
   environment.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
+    # VM-ONLY (remove for metal): forces software cursors; works around virtio-gpu's
+    # flipped hardware cursor plane. Real GPUs render the HW cursor correctly.
+    WLR_NO_HARDWARE_CURSORS = "1";
   };
 
   fonts.packages = with pkgs; [
@@ -103,7 +112,7 @@
   nix.gc = {
     automatic = true;
     dates = "daily";
-    options = "--delete-older-than 10d";
+    options = "--delete-older-than 7d";
   };
 
   nix.settings.auto-optimise-store = true;

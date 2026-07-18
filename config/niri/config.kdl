@@ -30,8 +30,16 @@ output "Virtual-1" {
 }
 
 cursor {
+	xcursor-theme "Adwaita"
+	xcursor-size 24
 	hide-when-typing
 	hide-after-inactive-ms 5000
+}
+
+// VM-ONLY (remove for metal): forces software cursor; works around virtio-gpu's
+// flipped hardware cursor plane. Real GPUs render the HW cursor correctly.
+debug {
+	disable-cursor-plane
 }
 
 layout {

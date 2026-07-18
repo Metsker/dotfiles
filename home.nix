@@ -8,11 +8,11 @@ let
     herdr = "herdr/config.toml";
     foot = "foot";
     niri = "niri";
+    mango = "mango";
     yazi = "yazi";
     lazygit = "lazygit";
   };
 in
-
 {
   imports = [
     inputs.noctalia.homeModules.default
@@ -35,6 +35,14 @@ in
   programs.noctalia = {
     enable = true;
     systemd.enable = true;
+  };
+
+  home.pointerCursor = {
+    name = "Adwaita";
+    package = pkgs.adwaita-icon-theme;
+    size = 24;
+    gtk.enable = true;
+    x11.enable = true;
   };
 
   gtk = {
@@ -104,6 +112,9 @@ in
     configs;
 
   home.packages = with pkgs; [
+    # xwayland for X11 apps; mango + mmsg come from the system module (configuration.nix) so versions match.
+    xwayland
+
     gcc
     ripgrep
     fzf
