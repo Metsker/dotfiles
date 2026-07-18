@@ -7,7 +7,6 @@ let
     nvim = "nvim";
     herdr = "herdr/config.toml";
     foot = "foot";
-    niri = "niri";
     mango = "mango";
     yazi = "yazi";
     lazygit = "lazygit";

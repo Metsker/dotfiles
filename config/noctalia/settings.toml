@@ -87,7 +87,7 @@ community_palette = "Gruvbox Material"
 source = "wallpaper"
 
     [theme.templates]
-    builtin_ids = [ "foot", "gtk3", "gtk4", "mango", "niri", "qt" ]
+    builtin_ids = [ "foot", "gtk3", "gtk4", "mango", "qt" ]
     community_ids = [ "zen-browser", "neovim", "yazi" ]
 
 [wallpaper.default]

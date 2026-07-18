@@ -52,14 +52,11 @@
 
   qt.enable = true;
 
-  programs.niri.enable = true;
-
   programs.mango.enable = true;
   programs.mango.package = inputs.mango.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
   programs.noctalia-greeter = {
     enable = true;
-    greeter-args = "--session niri";
   };
 
   programs.fish = {
