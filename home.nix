@@ -112,7 +112,6 @@ in
     configs;
 
   home.packages = with pkgs; [
-    # xwayland for X11 apps; mango + mmsg come from the system module (configuration.nix) so versions match.
     xwayland
 
     gcc

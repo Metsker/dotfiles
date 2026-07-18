@@ -11,11 +11,12 @@ end = [
     "volume",
     "brightness",
     "battery",
-    "keyboard_layout",
-    "session"
+    "keyboard_layout"
 ]
 margin_edge = 8
 margin_ends = 8
+radius = 16
+start = [ "workspaces", "layout" ]
 
 [dock]
 auto_hide = true
@@ -51,6 +52,24 @@ widget_order = [ "lockscreen-login-box@Virtual-1" ]
         show_login_button = true
         show_password_hint = true
 
+[plugins]
+enabled = [ "metsker/mango-layout" ]
+
+    [[plugins.source]]
+    kind = "git"
+    location = "https://github.com/noctalia-dev/official-plugins"
+    name = "official"
+
+    [[plugins.source]]
+    kind = "git"
+    location = "https://github.com/noctalia-dev/community-plugins"
+    name = "community"
+
+    [[plugins.source]]
+    kind = "path"
+    location = "/home/metsker/dotfiles/config/noctalia/plugins"
+    name = "local"
+
 [shell]
 corner_radius_scale = 0.20000000000000001
 font_family = "JetBrainsMono Nerd Font"
@@ -80,11 +99,22 @@ path = "/home/metsker/Pictures/Wallpapers/images/my-neighbor-totoro-sunflowers.p
 [wallpaper.monitors.Virtual-1]
 path = "/home/metsker/Pictures/Wallpapers/images/my-neighbor-totoro-sunflowers.png"
 
+[widget.layout]
+type = "metsker/mango-layout:layout"
+
 [widget.media]
 hide_when_no_media = true
+
+[widget."metsker/mango-layout:layout"]
+enabled = true
 
 [widget.network]
 show_label = false
 
+[widget.spacer_2]
+enabled = true
+type = "spacer"
+
 [widget.workspaces]
 display = "none"
+enabled = true

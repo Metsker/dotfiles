@@ -1,0 +1,15 @@
+id = "metsker/mango-layout"
+name = "Mango Layout"
+version = "1.0.0"
+min_noctalia = "5.0.0"
+plugin_api = 3
+author = "metsker"
+license = "MIT"
+dependencies = ["mmsg"]
+icon = "layout-columns"
+description = "Shows the current MangoWC tiling layout on the bar."
+tags = ["bar", "mangowc"]
+
+[[widget]]
+id = "layout"
+entry = "mango-layout.luau"
