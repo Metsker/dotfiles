@@ -94,4 +94,17 @@
   ];
 
   system.stateVersion = "26.05";
+
+  system.autoUpgrade = {
+    enable = false; # Toggle on real machine
+    dates = "weekly";
+  };
+
+  nix.gc = {
+    automatic = true;
+    dates = "daily";
+    options = "--delete-older-than 10d";
+  };
+
+  nix.settings.auto-optimise-store = true;
 }

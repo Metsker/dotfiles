@@ -99,6 +99,9 @@ binds {
     Mod+Return hotkey-overlay-title="Open a Terminal: foot" { spawn "foot"; }
     Mod+Alt+Return hotkey-overlay-title="Open a Multiplexer: herdr" { spawn-sh "foot -e herdr"; }
 		Mod+Space repeat=false hotkey-overlay-title="Application Launcher: noctalia" { spawn-sh "noctalia msg panel-toggle launcher"; }
+    Mod+Shift+Return hotkey-overlay-title="Open a Browser: zen" { spawn "zen-beta"; }
+    Mod+Shift+F hotkey-overlay-title="Open a File Manager: yazi" { spawn-sh "foot -e yazi"; }
+
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
     Super+Alt+S allow-when-locked=true hotkey-overlay-title=null { spawn-sh "pkill orca || exec orca"; }
@@ -222,7 +225,7 @@ binds {
     Mod+Ctrl+R { reset-window-height; }
 
     Mod+F { maximize-column; }
-    Mod+Shift+F { fullscreen-window; }
+    Mod+Shift+M { fullscreen-window; }
 
     Mod+M { maximize-window-to-edges; }
 
@@ -247,7 +250,7 @@ binds {
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
 
-    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+    Mod+Escape hotkey-overlay-title="Power Options: noctalia" { spawn-sh "noctalia msg panel-toggle session"; }
 
     Mod+Shift+E { quit; }
     Ctrl+Alt+Delete { quit; }
