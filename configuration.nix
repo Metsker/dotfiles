@@ -55,6 +55,9 @@
   programs.mango.enable = true;
   programs.mango.package = inputs.mango.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
+  # setcap wrapper on gsr-kms-server for promptless GPU-accelerated KMS capture.
+  programs.gpu-screen-recorder.enable = true;
+
   programs.noctalia-greeter = {
     enable = true;
   };

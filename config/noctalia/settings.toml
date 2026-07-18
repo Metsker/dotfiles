@@ -1,6 +1,7 @@
 [bar.default]
 background_opacity = 0.80000000000000004
 capsule_radius = 8
+center = [ "clock", "recorder" ]
 end = [
     "media",
     "tray",
@@ -53,7 +54,7 @@ widget_order = [ "lockscreen-login-box@Virtual-1" ]
         show_password_hint = true
 
 [plugins]
-enabled = [ "metsker/mango-layout" ]
+enabled = [ "metsker/mango-layout", "noctalia/screen_recorder" ]
 
     [[plugins.source]]
     kind = "git"
@@ -110,6 +111,10 @@ enabled = true
 
 [widget.network]
 show_label = false
+
+[widget.recorder]
+enabled = true
+type = "noctalia/screen_recorder:recorder"
 
 [widget.spacer_2]
 enabled = true

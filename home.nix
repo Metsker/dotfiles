@@ -121,6 +121,7 @@ in
     imv
     mpv
     ffmpeg
+    wl-clipboard
     tree-sitter
     nodejs
     inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
