@@ -22,6 +22,16 @@ let
     runtimeInputs = with pkgs; [ wayfreeze hyprpicker ];
     text = builtins.readFile ./scripts/colorpicker.sh;
   };
+  # Super+C/V copy/paste: mmsg (mango) reads the focused appid, wtype injects Ctrl(+Shift)+C/V.
+  clipboard = pkgs.writeShellApplication {
+    name = "clipboard";
+    runtimeInputs = [
+      pkgs.wtype
+      pkgs.jq
+      inputs.mango.packages.${pkgs.stdenv.hostPlatform.system}.default
+    ];
+    text = builtins.readFile ./scripts/clipboard.sh;
+  };
 in
 {
   imports = [
@@ -124,6 +134,7 @@ in
   home.packages = with pkgs; [
     screenshot
     colorpicker
+    clipboard
 
     hyprpicker
     xwayland
