@@ -11,6 +11,17 @@ let
     yazi = "yazi";
     lazygit = "lazygit";
   };
+  screenshot = pkgs.writeShellApplication {
+    name = "screenshot";
+    runtimeInputs = with pkgs; [ grim slurp satty wayfreeze ];
+    text = builtins.readFile ./scripts/screenshot.sh;
+  };
+  # wayfreeze gives the instant freeze; hyprpicker picks with its zoom lens.
+  colorpicker = pkgs.writeShellApplication {
+    name = "colorpicker";
+    runtimeInputs = with pkgs; [ wayfreeze hyprpicker ];
+    text = builtins.readFile ./scripts/colorpicker.sh;
+  };
 in
 {
   imports = [
@@ -111,6 +122,10 @@ in
     configs;
 
   home.packages = with pkgs; [
+    screenshot
+    colorpicker
+
+    hyprpicker
     xwayland
 
     gcc

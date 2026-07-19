@@ -52,6 +52,11 @@
 
   qt.enable = true;
 
+  # Registers the dconf D-Bus service so Home Manager can apply GTK/cursor
+  # settings (org/gnome/desktop/interface); without it activation fails with
+  # "GDBus ... ServiceUnknown: The name is not activatable".
+  programs.dconf.enable = true;
+
   programs.mango.enable = true;
   programs.mango.package = inputs.mango.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
