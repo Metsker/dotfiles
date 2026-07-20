@@ -10,7 +10,6 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.extraModulePackages = with config.boot.kernelPackages; [ amneziawg ];
 
-  # Use latest kernel.
   # boot.kernelPackages = pkgs.linuxPackages_latest;
 
   boot.initrd.luks.devices."luks-da92cd42-5072-4b32-9bdb-cd6ab64ff710".device = "/dev/disk/by-uuid/da92cd42-5072-4b32-9bdb-cd6ab64ff710";
@@ -41,7 +40,7 @@
 
   hardware.graphics.enable = true;
 
-  # Redistributable firmware blobs for real BT/Wi-Fi/GPU hardware (no-op in VM).
+  # Redistributable firmware blobs for BT/Wi-Fi/GPU hardware.
   hardware.enableRedistributableFirmware = true;
 
   # Bluetooth stack; Noctalia's panel drives BlueZ directly, so no blueman needed.
@@ -83,15 +82,6 @@
     enable = true;
   };
 
-  # greetd doesn't inherit environment.sessionVariables, so the greeter
-  # compositor runs without the VM cursor workaround below. Forward it (and
-  # enable the greeter's file logging) here. The log is appended across boots
-  # to diagnose the 2x greeter restart-at-boot race; remove once resolved.
-  systemd.services.greetd.environment = {
-    WLR_NO_HARDWARE_CURSORS = "1";
-    NOCTALIA_GREETER_LOG = "/var/lib/noctalia-greeter/greeter.log";
-  };
-
   programs.fish = {
     enable = true;
     interactiveShellInit = "set -g fish_greeting";
@@ -108,9 +98,6 @@
   environment.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
-    # VM-ONLY (remove for metal): forces software cursors; works around virtio-gpu's
-    # flipped hardware cursor plane. Real GPUs render the HW cursor correctly.
-    WLR_NO_HARDWARE_CURSORS = "1";
   };
 
   fonts.packages = with pkgs; [
