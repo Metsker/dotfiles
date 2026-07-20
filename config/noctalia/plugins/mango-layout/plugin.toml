@@ -1,7 +1,7 @@
 id = "metsker/mango-layout"
 name = "Mango Layout"
 version = "1.0.0"
-min_noctalia = "5.0.0"
+plugin_api = 3
 author = "metsker"
 license = "MIT"
 dependencies = ["mmsg"]

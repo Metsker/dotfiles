@@ -8,12 +8,30 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.extraModulePackages = with config.boot.kernelPackages; [ amneziawg ];
+
+  # Use latest kernel.
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  boot.initrd.luks.devices."luks-da92cd42-5072-4b32-9bdb-cd6ab64ff710".device = "/dev/disk/by-uuid/da92cd42-5072-4b32-9bdb-cd6ab64ff710";
 
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Amsterdam";
 
   i18n.defaultLocale = "en_US.UTF-8";
+
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "ru_RU.UTF-8";
+    LC_IDENTIFICATION = "ru_RU.UTF-8";
+    LC_MEASUREMENT = "ru_RU.UTF-8";
+    LC_MONETARY = "ru_RU.UTF-8";
+    LC_NAME = "ru_RU.UTF-8";
+    LC_NUMERIC = "ru_RU.UTF-8";
+    LC_PAPER = "ru_RU.UTF-8";
+    LC_TELEPHONE = "ru_RU.UTF-8";
+    LC_TIME = "ru_RU.UTF-8";
+  };
 
   users.users.metsker = {
     isNormalUser = true;
@@ -30,7 +48,7 @@
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
-    settings.General.Experimental = true; # battery reporting + better BLE
+    # settings.General.Experimental = true; # battery reporting + better BLE
   };
 
   hardware.logitech.wireless = {
@@ -52,19 +70,26 @@
 
   qt.enable = true;
 
-  # Registers the dconf D-Bus service so Home Manager can apply GTK/cursor
-  # settings (org/gnome/desktop/interface); without it activation fails with
-  # "GDBus ... ServiceUnknown: The name is not activatable".
   programs.dconf.enable = true;
 
   programs.mango.enable = true;
   programs.mango.package = inputs.mango.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
-  # setcap wrapper on gsr-kms-server for promptless GPU-accelerated KMS capture.
   programs.gpu-screen-recorder.enable = true;
+
+  programs.amnezia-vpn.enable = true;
 
   programs.noctalia-greeter = {
     enable = true;
+  };
+
+  # greetd doesn't inherit environment.sessionVariables, so the greeter
+  # compositor runs without the VM cursor workaround below. Forward it (and
+  # enable the greeter's file logging) here. The log is appended across boots
+  # to diagnose the 2x greeter restart-at-boot race; remove once resolved.
+  systemd.services.greetd.environment = {
+    WLR_NO_HARDWARE_CURSORS = "1";
+    NOCTALIA_GREETER_LOG = "/var/lib/noctalia-greeter/greeter.log";
   };
 
   programs.fish = {
@@ -77,6 +102,7 @@
     wget
     foot
     git
+    amneziawg-tools
   ];
 
   environment.sessionVariables = {

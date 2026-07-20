@@ -160,6 +160,6 @@ in
 
     claude-code
     telegram-desktop
-    discord
+    # discord
   ];
 }
