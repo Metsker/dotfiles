@@ -117,6 +117,21 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  # ponytail: pin solaar 1.1.20 until nixpkgs 26.05 ships it; drop this overlay once it does
+  nixpkgs.overlays = [
+    (final: prev: {
+      solaar = prev.solaar.overrideAttrs (old: rec {
+        version = "1.1.20";
+        src = prev.fetchFromGitHub {
+          owner = "pwr-Solaar";
+          repo = "Solaar";
+          tag = version;
+          hash = "sha256-h/uiy0TtMicKch2cdXHur5DkvQun2sAw2HpFI7Qstqg=";
+        };
+      });
+    })
+  ];
+
   nix.settings.extra-substituters = [
     "https://noctalia.cachix.org"
     "https://herdr-nix.cachix.org"
