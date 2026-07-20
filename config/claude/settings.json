@@ -5,13 +5,28 @@
   "permissions": {
     "defaultMode": "auto"
   },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"/home/metsker/.claude/hooks/context-mode-cache-heal.mjs\""
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "bash ~/dotfiles/config/claude/statusline.sh"
   },
   "enabledPlugins": {
     "mattpocock-skills@mattpocock": true,
-    "ponytail@ponytail": true
+    "ponytail@ponytail": true,
+    "context7@claude-plugins-official": true,
+    "context-mode@context-mode": true,
+    "playwright@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "mattpocock": {
@@ -24,6 +39,12 @@
       "source": {
         "source": "github",
         "repo": "DietrichGebert/ponytail"
+      }
+    },
+    "context-mode": {
+      "source": {
+        "source": "github",
+        "repo": "mksglu/context-mode"
       }
     }
   },
