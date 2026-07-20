@@ -55,6 +55,12 @@
     enableGraphical = true;
   };
 
+  environment.etc."libinput/local-overrides.quirks".text = ''
+    [Logitech MX Anywhere 3S]
+    MatchName=Logitech MX Anywhere 3S
+    AttrEventCode=-REL_WHEEL_HI_RES;-REL_HWHEEL_HI_RES;
+  '';
+
   services.hardware.openrgb.enable = true;
 
   # PipeWire (ALSA + Pulse compat + Bluetooth A2DP); rtkit grants realtime priority.
