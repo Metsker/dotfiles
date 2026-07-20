@@ -1,16 +1,27 @@
 {
-  "theme": "auto",
-  "effortLevel": "xhigh",
-	"spinnerTipsEnabled": false,
-	"awaySummaryEnabled": false,
-	"permissions": {
+  "env": {
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
+  },
+  "permissions": {
     "defaultMode": "auto"
   },
-	"env": {
-		"CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
-	},
-	"statusLine": {
-		"type": "command",
-		"command": "bash ~/dotfiles/config/claude/statusline.sh"
-	}
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/dotfiles/config/claude/statusline.sh"
+  },
+  "extraKnownMarketplaces": {
+    "mattpocock": {
+      "source": {
+        "source": "github",
+        "repo": "mattpocock/skills"
+      }
+    }
+  },
+  "spinnerTipsEnabled": false,
+  "effortLevel": "xhigh",
+  "awaySummaryEnabled": false,
+  "theme": "auto",
+  "enabledPlugins": {
+    "mattpocock-skills@mattpocock": true
+  }
 }
