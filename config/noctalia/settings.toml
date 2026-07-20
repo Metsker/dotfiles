@@ -4,10 +4,9 @@ config_version = 2
 background_opacity = 0.80000000000000004
 capsule_radius = 8
 center = [ "clock", "recorder" ]
-contact_shadow = false
 end = [
-    "media",
     "audio_visualizer",
+    "media",
     "spacer_1",
     "tray",
     "notifications",
@@ -142,9 +141,6 @@ path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
 [wallpaper.monitors.HDMI-A-2]
 path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
-
-[widget.audio_visualizer]
-centered = false
 
 [widget.layout]
 enabled = true
