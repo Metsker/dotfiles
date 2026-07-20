@@ -9,19 +9,26 @@
     "type": "command",
     "command": "bash ~/dotfiles/config/claude/statusline.sh"
   },
+  "enabledPlugins": {
+    "mattpocock-skills@mattpocock": true,
+    "ponytail@ponytail": true
+  },
   "extraKnownMarketplaces": {
     "mattpocock": {
       "source": {
         "source": "github",
         "repo": "mattpocock/skills"
       }
+    },
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
     }
   },
   "spinnerTipsEnabled": false,
   "effortLevel": "xhigh",
   "awaySummaryEnabled": false,
-  "theme": "auto",
-  "enabledPlugins": {
-    "mattpocock-skills@mattpocock": true
-  }
+  "theme": "auto"
 }
