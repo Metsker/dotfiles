@@ -17,3 +17,9 @@ desc = "Archive selected files"
 on   = [ "c", "a", "p" ]
 run  = "plugin compress -p"
 desc = "Archive selected files (password)"
+
+[[mgr.prepend_keymap]]
+on   = "!"
+for  = "unix"
+run  = 'shell "$SHELL" --block'
+desc = "Open $SHELL here"
