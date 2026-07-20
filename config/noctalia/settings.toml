@@ -1,7 +1,7 @@
 config_version = 2
 
 [bar.default]
-background_opacity = 0.80000000000000004
+background_opacity = 0.97999997809529305
 capsule_radius = 8
 center = [ "clock", "recorder" ]
 end = [
@@ -20,16 +20,39 @@ end = [
 margin_edge = 8
 margin_ends = 8
 radius = 16
-shadow = false
 start = [ "wallhaven", "workspaces", "layout" ]
 
-[control_center.calendar]
-show_events_card = false
+[control_center]
+hidden_tabs = [ "power" ]
+
+    [control_center.calendar]
+    show_events_card = false
+
+    [[control_center.shortcuts]]
+    type = "wifi"
+
+    [[control_center.shortcuts]]
+    type = "bluetooth"
+
+    [[control_center.shortcuts]]
+    type = "caffeine"
+
+    [[control_center.shortcuts]]
+    type = "nightlight"
+
+    [[control_center.shortcuts]]
+    type = "notification"
+
+    [[control_center.shortcuts]]
+    type = "noctalia/screen_recorder:toggle"
 
 [dock]
 auto_hide = true
 reserve_space = false
-shadow = false
+
+[keybinds]
+down = [ "down", "ctrl+n", "ctrl+j" ]
+up = [ "up", "ctrl+p", "ctrl+k" ]
 
 [location]
 address = "Zelenogradsk, Russia"
@@ -95,6 +118,7 @@ media = false
 
 [plugin_settings."noctalia/screen_recorder"]
 hide_inactive = true
+video_source = "focused"
 
 [plugins]
 enabled = [ "noctalia/screen_recorder", "noctalia/example", "metsker/mango-layout", "noctalia/wallhaven" ]
@@ -115,7 +139,7 @@ enabled = [ "noctalia/screen_recorder", "noctalia/example", "metsker/mango-layou
     name = "local"
 
 [shell]
-corner_radius_scale = 0.20000000000000001
+corner_radius_scale = 2.0
 font_family = "JetBrainsMono Nerd Font"
 polkit_agent = true
 
@@ -125,9 +149,6 @@ polkit_agent = true
 
     [shell.launcher]
     categories = false
-
-    [shell.panel]
-    shadow = false
 
 [theme]
 builtin = "Catppuccin"
