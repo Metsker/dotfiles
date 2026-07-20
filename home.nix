@@ -160,6 +160,10 @@ in
     wl-clipboard
     tree-sitter
     nodejs
+    bun
+    typescript
+    python3
+    rustc
     inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
     github-cli
     lazygit
@@ -170,6 +174,6 @@ in
 
     claude-code
     telegram-desktop
-    # discord
+    discord
   ];
 }
