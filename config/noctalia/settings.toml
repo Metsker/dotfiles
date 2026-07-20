@@ -118,10 +118,10 @@ media = false
 
 [plugin_settings."noctalia/screen_recorder"]
 hide_inactive = true
-video_source = "focused"
+video_source = "portal"
 
 [plugins]
-enabled = [ "noctalia/screen_recorder", "noctalia/example", "metsker/mango-layout", "noctalia/wallhaven" ]
+enabled = [ "noctalia/screen_recorder", "metsker/mango-layout", "noctalia/wallhaven" ]
 
     [[plugins.source]]
     kind = "git"

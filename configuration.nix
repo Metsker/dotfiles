@@ -82,6 +82,11 @@
 
   programs.gpu-screen-recorder.enable = true;
 
+  xdg.portal.wlr.settings.screencast = {
+    chooser_type = "simple";
+    chooser_cmd = "${pkgs.slurp}/bin/slurp -f 'Monitor: %o' -or";
+  };
+
   programs.amnezia-vpn.enable = true;
 
   programs.noctalia-greeter = {
@@ -144,7 +149,7 @@
   system.stateVersion = "26.05";
 
   system.autoUpgrade = {
-    enable = false; # Toggle on real machine
+    enable = true;
     dates = "weekly";
   };
 

@@ -123,11 +123,6 @@ in
     run ln -sf "${dotfiles}/claude/settings.json" "$HOME/.claude/settings.json"
   '';
 
-  # CLAUDE.md and skills/ are authored by you, not rewritten by Claude at runtime,
-  # so a normal out-of-store symlink is fine — edit them in the repo and changes
-  # are live. (Only settings.json needs the activation symlink above, because
-  # Claude atomically rewrites it and a home.file symlink resolves into the
-  # read-only store.) State and secrets stay in the real ~/.claude, never the repo.
   home.file.".claude/CLAUDE.md".source = create_symlink "${dotfiles}/claude/CLAUDE.md";
   home.file.".claude/skills".source = create_symlink "${dotfiles}/claude/skills";
 
@@ -148,6 +143,7 @@ in
 
     hyprpicker
     xwayland
+    slurp
 
     gcc
     ripgrep
