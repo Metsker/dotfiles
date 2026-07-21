@@ -38,7 +38,24 @@ in
     inputs.noctalia.homeModules.default
     inputs.zen-browser.homeModules.default
     ./xdg.nix
+    ./webapps.nix
   ];
+
+  programs.webapps = {
+    enable = true;
+    browser = lib.getExe pkgs.ungoogled-chromium;
+    apps = {
+      brain = {
+        url = "https://brain.metsker.dev";
+        name = "SilverBullet";
+        iconUrl = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/silverbullet.png";
+      };
+      tldraw = {
+        url = "https://tldraw.com";
+        name = "tldraw";
+      };
+    };
+  };
 
   home.username = "metsker";
   home.homeDirectory = "/home/metsker";
@@ -85,6 +102,26 @@ in
       style = "Fusion";
       color_scheme_path = "${config.home.homeDirectory}/.config/qt6ct/colors/noctalia.conf";
     };
+  };
+
+  # Hide the Qt5/Qt6 Settings tools from the noctalia launcher (still runnable via `qt5ct`/`qt6ct`).
+  xdg.desktopEntries.qt5ct = {
+    name = "Qt5 Settings";
+    exec = "qt5ct";
+    noDisplay = true;
+  };
+  xdg.desktopEntries.qt6ct = {
+    name = "Qt6 Settings";
+    exec = "qt6ct";
+    noDisplay = true;
+  };
+
+  # The timer plugin has no launcher entry, so surface it as a desktop entry
+  # that toggles its panel over IPC.
+  xdg.desktopEntries.noctalia-timer = {
+    name = "Timer";
+    exec = "noctalia msg panel-toggle noctalia/timer:panel";
+    icon = "clock";
   };
 
   programs.git = {
@@ -154,6 +191,9 @@ in
     fzf
     fd
     jq
+    libqalculate
+    openmw
+    tealdeer
     imv
     mpv
     ffmpeg
