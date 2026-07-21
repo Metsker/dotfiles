@@ -46,9 +46,13 @@ in
 
   programs.zen-browser = {
     enable = true;
-    policies.Preferences."toolkit.legacyUserProfileCustomizations.stylesheets" = {
-      Value = true;
-      Status = "locked";
+    profiles.default.settings = {
+      "toolkit.legacyUserProfileCustomizations.stylesheets" = false;
+      "zen.theme.content-element-separation" = 0;
+      "zen.view.experimental-no-window-controls" = true;
+      "zen.widget.linux.transparency" = true;
+      "browser.tabs.allow_transparent_browser" = true;
+      "browser.tabs.hoverPreview.enabled" = true;
     };
   };
 
