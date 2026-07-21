@@ -100,14 +100,6 @@ in
     noDisplay = true;
   };
 
-  # The timer plugin has no launcher entry, so surface it as a desktop entry
-  # that toggles its panel over IPC.
-  xdg.desktopEntries.noctalia-timer = {
-    name = "Timer";
-    exec = "noctalia msg panel-toggle noctalia/timer:panel";
-    icon = "clock";
-  };
-
   programs.git = {
     enable = true;
     settings = {

@@ -10,6 +10,7 @@ end = [
     "media",
     "spacer_1",
     "tray",
+    "bar",
     "volume",
     "network",
     "bluetooth",
@@ -44,6 +45,9 @@ hidden_tabs = [ "power" ]
 
     [[control_center.shortcuts]]
     type = "notification"
+
+    [[control_center.shortcuts]]
+    type = "wallpaper"
 
 [desktop_widgets]
 schema_version = 2
@@ -218,6 +222,10 @@ palette_source = "wallpaper"
 path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 theme_mode = "dark"
 wallpaper_scheme = "m3-content"
+
+[widget.bar]
+show_idle_on_horizontal = false
+type = "noctalia/timer:bar"
 
 [widget.clock]
 format = "{:%A %H:%M}"
