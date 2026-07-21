@@ -1,62 +1,72 @@
 {
+  "awaySummaryEnabled": false,
+  "effortLevel": "xhigh",
+  "enabledPlugins": {
+    "context-mode@context-mode": true,
+    "context7@claude-plugins-official": true,
+    "mattpocock-skills@mattpocock": true,
+    "pixijs-skills@pixijs-skills": true,
+    "playwright@claude-plugins-official": true,
+    "ponytail@ponytail": true
+  },
   "env": {
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
   },
-  "permissions": {
-    "defaultMode": "auto"
+  "extraKnownMarketplaces": {
+    "context-mode": {
+      "source": {
+        "repo": "mksglu/context-mode",
+        "source": "github"
+      }
+    },
+    "mattpocock": {
+      "source": {
+        "repo": "mattpocock/skills",
+        "source": "github"
+      }
+    },
+    "pixijs-skills": {
+      "source": {
+        "repo": "pixijs/pixijs-skills",
+        "source": "github"
+      }
+    },
+    "ponytail": {
+      "source": {
+        "repo": "DietrichGebert/ponytail",
+        "source": "github"
+      }
+    }
   },
   "hooks": {
     "SessionStart": [
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "\"/home/metsker/.claude/hooks/context-mode-cache-heal.mjs\""
+            "command": "\"/home/metsker/.claude/hooks/context-mode-cache-heal.mjs\"",
+            "type": "command"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "command": "bash '/home/metsker/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
       }
     ]
   },
-  "statusLine": {
-    "type": "command",
-    "command": "bash ~/dotfiles/config/claude/statusline.sh"
-  },
-  "enabledPlugins": {
-    "mattpocock-skills@mattpocock": true,
-    "ponytail@ponytail": true,
-    "context7@claude-plugins-official": true,
-    "context-mode@context-mode": true,
-    "playwright@claude-plugins-official": true,
-    "pixijs-skills@pixijs-skills": true
-  },
-  "extraKnownMarketplaces": {
-    "mattpocock": {
-      "source": {
-        "source": "github",
-        "repo": "mattpocock/skills"
-      }
-    },
-    "ponytail": {
-      "source": {
-        "source": "github",
-        "repo": "DietrichGebert/ponytail"
-      }
-    },
-    "context-mode": {
-      "source": {
-        "source": "github",
-        "repo": "mksglu/context-mode"
-      }
-    },
-    "pixijs-skills": {
-      "source": {
-        "source": "github",
-        "repo": "pixijs/pixijs-skills"
-      }
-    }
+  "permissions": {
+    "defaultMode": "auto"
   },
   "spinnerTipsEnabled": false,
-  "effortLevel": "xhigh",
-  "awaySummaryEnabled": false,
+  "statusLine": {
+    "command": "bash ~/dotfiles/config/claude/statusline.sh",
+    "type": "command"
+  },
   "theme": "auto"
 }
