@@ -53,6 +53,24 @@ auto_hide = true
 reserve_space = false
 shadow = false
 
+[idle]
+behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]
+
+    [idle.behavior.lock]
+    action = "lock"
+    enabled = true
+    timeout = 600.0
+
+    [idle.behavior.lock-and-suspend]
+    action = "lock_and_suspend"
+    enabled = false
+    timeout = 900.0
+
+    [idle.behavior.screen-off]
+    action = "screen_off"
+    enabled = true
+    timeout = 660.0
+
 [keybinds]
 down = [ "down", "ctrl+n", "ctrl+j" ]
 up = [ "up", "ctrl+p", "ctrl+k" ]
@@ -158,6 +176,7 @@ polkit_agent = true
 
     [shell.panel]
     control_center_placement = "floating"
+    session_placement = "floating"
     shadow = false
     transparency_mode = "soft"
     wallpaper_placement = "floating"
@@ -182,6 +201,12 @@ path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
 [wallpaper.monitors.HDMI-A-2]
 path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+
+[[wallpaper.favorite]]
+palette_source = "wallpaper"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+theme_mode = "dark"
+wallpaper_scheme = "m3-content"
 
 [widget.clock]
 format = "{:%d.%m %H:%M}"
@@ -214,6 +239,7 @@ enabled = true
 type = "spacer"
 
 [widget.tray]
+detached_panel = true
 drawer = true
 
 [widget.wallhaven]
