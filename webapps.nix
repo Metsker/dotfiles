@@ -3,7 +3,6 @@
 # Declarative browser web apps: each becomes a standalone --app window with a
 # stable app-id (--class / StartupWMClass) so mango can window-rule it.
 let
-  browser = lib.getExe pkgs.ungoogled-chromium;
   iconDir = "${config.xdg.dataHome}/icons/webapps";
 
   # Web apps keyed by app-id (used for --class and window rules).
@@ -20,6 +19,10 @@ let
       url = "https://tldraw.com";
       name = "tldraw";
     };
+    youtube-music = {
+      url = "https://music.youtube.com/";
+      name = "YouTube Music";
+    };
   };
 
   # Icon source per app: explicit iconUrl wins, else best-effort favicon.
@@ -30,7 +33,7 @@ in
 {
   xdg.desktopEntries = lib.mapAttrs (id: app: {
     name = app.name or id;
-    exec = "${browser} --app=${app.url} --class=${id} --ozone-platform-hint=auto";
+    exec = "webapp ${id} ${app.url}";
     icon = app.icon or "${iconDir}/${id}.png";
     settings.StartupWMClass = id;
   }) apps;

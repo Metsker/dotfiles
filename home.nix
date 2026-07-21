@@ -32,6 +32,12 @@ let
     ];
     text = builtins.readFile ./scripts/clipboard.sh;
   };
+  # Launches URLs as standalone chromium --app windows; keeps chromium off the global PATH.
+  webapp = pkgs.writeShellApplication {
+    name = "webapp";
+    runtimeInputs = [ pkgs.ungoogled-chromium ];
+    text = builtins.readFile ./scripts/webapp.sh;
+  };
 in
 {
   imports = [
@@ -157,6 +163,7 @@ in
     screenshot
     colorpicker
     clipboard
+    webapp
 
     hyprpicker
     xwayland
