@@ -45,8 +45,16 @@ hidden_tabs = [ "power" ]
     [[control_center.shortcuts]]
     type = "notification"
 
-    [[control_center.shortcuts]]
-    type = "noctalia/screen_recorder:toggle"
+[desktop_widgets]
+schema_version = 2
+widget_order = []
+
+    [desktop_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
+
+    [desktop_widgets.widget]
 
 [dock]
 auto_hide = true
@@ -141,11 +149,14 @@ media = false
 hide_inactive = true
 video_source = "portal"
 
+[plugin_settings."noctalia/timer"]
+panel_placement = "floating"
+
 [plugin_settings."noctalia/wallhaven"]
 browser_placement = "floating"
 
 [plugins]
-enabled = [ "noctalia/screen_recorder", "metsker/mango-layout", "noctalia/wallhaven" ]
+enabled = [ "noctalia/screen_recorder", "metsker/mango-layout", "noctalia/wallhaven", "noctalia/timer" ]
 
     [[plugins.source]]
     kind = "git"
@@ -209,7 +220,7 @@ theme_mode = "dark"
 wallpaper_scheme = "m3-content"
 
 [widget.clock]
-format = "{:%d.%m %H:%M}"
+format = "{:%A %H:%M}"
 
 [widget.layout]
 enabled = true
