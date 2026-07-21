@@ -41,22 +41,6 @@ in
     ./webapps.nix
   ];
 
-  programs.webapps = {
-    enable = true;
-    browser = lib.getExe pkgs.ungoogled-chromium;
-    apps = {
-      brain = {
-        url = "https://brain.metsker.dev";
-        name = "SilverBullet";
-        iconUrl = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/silverbullet.png";
-      };
-      tldraw = {
-        url = "https://tldraw.com";
-        name = "tldraw";
-      };
-    };
-  };
-
   home.username = "metsker";
   home.homeDirectory = "/home/metsker";
   home.stateVersion = "26.05";
