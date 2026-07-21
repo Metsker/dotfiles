@@ -127,7 +127,8 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  # ponytail: pin solaar 1.1.20 until nixpkgs 26.05 ships it; drop this overlay once it does
+  # ponytail: pin solaar 1.1.20; nixos-26.05 and unstable both still ship 1.1.19.
+  # Drop this overlay once your channel ships >= 1.1.20 - track https://github.com/NixOS/nixpkgs/pull/536409
   nixpkgs.overlays = [
     (final: prev: {
       solaar = prev.solaar.overrideAttrs (old: rec {
