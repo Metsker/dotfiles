@@ -159,6 +159,7 @@ in
     clipboard
     webapp
     term
+    ghostty.terminfo # monstar sets TERM=xterm-ghostty; supplies that terminfo entry
 
     hyprpicker
     xwayland
