@@ -150,7 +150,7 @@ media = false
 
 [plugin_settings."noctalia/screen_recorder"]
 hide_inactive = true
-video_source = "portal"
+video_source = "focused"
 
 [plugin_settings."noctalia/timer"]
 panel_placement = "floating"
@@ -195,9 +195,9 @@ polkit_agent = true
     wallpaper_placement = "floating"
 
 [theme]
-builtin = "Catppuccin"
-community_palette = "Gruvbox Material"
-source = "wallpaper"
+builtin = "Tokyo-Night"
+community_palette = "Atuel"
+source = "community"
 
     [theme.templates]
     builtin_ids = [ "foot", "gtk3", "gtk4", "mango", "qt" ]
