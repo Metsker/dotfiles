@@ -140,10 +140,8 @@ in
 
   programs.yazi = {
     enable = true;
-    enableFishIntegration = true;
+    # enableFishIntegration = true;
   };
-
-  # programs.steam.enable = true;
 
   home.file.".local/state/noctalia/settings.toml".source =
     create_symlink "${dotfiles}/noctalia/settings.toml";
@@ -179,6 +177,7 @@ in
     ffmpeg
     imagemagick
     wl-clipboard
+    libnotify
     tree-sitter
     nodejs
     bun
