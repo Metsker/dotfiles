@@ -34,10 +34,8 @@
   },
   "enabledPlugins": {
     "context-mode@context-mode": true,
-    "context7@claude-plugins-official": true,
     "mattpocock-skills@mattpocock": true,
     "pixijs-skills@pixijs-skills": true,
-    "playwright@claude-plugins-official": false,
     "ponytail@ponytail": true
   },
   "extraKnownMarketplaces": {
