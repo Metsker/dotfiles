@@ -150,7 +150,7 @@ media = false
 
 [plugin_settings."noctalia/screen_recorder"]
 hide_inactive = true
-video_source = "focused"
+video_source = "portal"
 
 [plugin_settings."noctalia/timer"]
 panel_placement = "floating"

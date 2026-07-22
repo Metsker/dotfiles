@@ -14,6 +14,9 @@
 
   boot.initrd.luks.devices."luks-da92cd42-5072-4b32-9bdb-cd6ab64ff710".device = "/dev/disk/by-uuid/da92cd42-5072-4b32-9bdb-cd6ab64ff710";
 
+  # Discord ignores SIGTERM on shutdown; cap the wait so reboots aren't stuck 90s.
+  systemd.settings.Manager.DefaultTimeoutStopSec = "10s";
+
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Amsterdam";
@@ -139,6 +142,13 @@
           tag = version;
           hash = "sha256-h/uiy0TtMicKch2cdXHur5DkvQun2sAw2HpFI7Qstqg=";
         };
+      });
+    })
+    # xdpw offers only 24-bit BG24 shm on NVIDIA GLES2; Chromium needs 32-bit - breaks Discord screenshare.
+    # Patch = upstream PR 386 + XBGR/ABGR fallbacks. Drop when https://github.com/emersion/xdg-desktop-portal-wlr/issues/385 is fixed.
+    (final: prev: {
+      xdg-desktop-portal-wlr = prev.xdg-desktop-portal-wlr.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ./patches/xdpw-shm-fallback-formats.diff ];
       });
     })
   ];
