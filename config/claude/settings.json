@@ -1,72 +1,73 @@
 {
-  "awaySummaryEnabled": false,
-  "effortLevel": "xhigh",
-  "enabledPlugins": {
-    "context-mode@context-mode": true,
-    "context7@claude-plugins-official": true,
-    "mattpocock-skills@mattpocock": true,
-    "pixijs-skills@pixijs-skills": true,
-    "playwright@claude-plugins-official": true,
-    "ponytail@ponytail": true
-  },
   "env": {
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
   },
-  "extraKnownMarketplaces": {
-    "context-mode": {
-      "source": {
-        "repo": "mksglu/context-mode",
-        "source": "github"
-      }
-    },
-    "mattpocock": {
-      "source": {
-        "repo": "mattpocock/skills",
-        "source": "github"
-      }
-    },
-    "pixijs-skills": {
-      "source": {
-        "repo": "pixijs/pixijs-skills",
-        "source": "github"
-      }
-    },
-    "ponytail": {
-      "source": {
-        "repo": "DietrichGebert/ponytail",
-        "source": "github"
-      }
-    }
+  "permissions": {
+    "defaultMode": "auto"
   },
+  "model": "opus[1m]",
   "hooks": {
     "SessionStart": [
       {
         "hooks": [
           {
-            "command": "\"/home/metsker/.claude/hooks/context-mode-cache-heal.mjs\"",
-            "type": "command"
+            "type": "command",
+            "command": "\"/home/metsker/.claude/hooks/context-mode-cache-heal.mjs\""
           }
         ]
       },
       {
+        "matcher": "*",
         "hooks": [
           {
+            "type": "command",
             "command": "bash '/home/metsker/.claude/hooks/herdr-agent-state.sh' session",
-            "timeout": 10,
-            "type": "command"
+            "timeout": 10
           }
-        ],
-        "matcher": "*"
+        ]
       }
     ]
   },
-  "permissions": {
-    "defaultMode": "auto"
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/dotfiles/config/claude/statusline.sh"
+  },
+  "enabledPlugins": {
+    "context-mode@context-mode": true,
+    "context7@claude-plugins-official": true,
+    "mattpocock-skills@mattpocock": true,
+    "pixijs-skills@pixijs-skills": true,
+    "playwright@claude-plugins-official": false,
+    "ponytail@ponytail": true
+  },
+  "extraKnownMarketplaces": {
+    "context-mode": {
+      "source": {
+        "source": "github",
+        "repo": "mksglu/context-mode"
+      }
+    },
+    "mattpocock": {
+      "source": {
+        "source": "github",
+        "repo": "mattpocock/skills"
+      }
+    },
+    "pixijs-skills": {
+      "source": {
+        "source": "github",
+        "repo": "pixijs/pixijs-skills"
+      }
+    },
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    }
   },
   "spinnerTipsEnabled": false,
-  "statusLine": {
-    "command": "bash ~/dotfiles/config/claude/statusline.sh",
-    "type": "command"
-  },
+  "effortLevel": "xhigh",
+  "awaySummaryEnabled": false,
   "theme": "auto"
 }
