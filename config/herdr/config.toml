@@ -12,3 +12,6 @@ delivery = "system"
 [theme]
 name = "terminal"
 auto_switch = false
+
+[experimental]
+kitty_graphics = true

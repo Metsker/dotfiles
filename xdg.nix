@@ -3,7 +3,7 @@
   xdg.desktopEntries.nvim = {
     name = "Neovim";
     genericName = "Text Editor";
-    exec = "foot nvim %F";
+    exec = "term -e nvim %F";
     terminal = false;
     type = "Application";
     icon = "nvim";

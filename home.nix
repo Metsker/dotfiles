@@ -10,6 +10,7 @@ let
     mango = "mango";
     yazi = "yazi";
     lazygit = "lazygit";
+    monstar = "monstar";
   };
   screenshot = pkgs.writeShellApplication {
     name = "screenshot";
@@ -38,6 +39,8 @@ let
     runtimeInputs = [ pkgs.ungoogled-chromium ];
     text = builtins.readFile ./scripts/webapp.sh;
   };
+  # Terminal indirection (absolute path: ~/.local/bin isn't on mango's session PATH).
+  term = pkgs.writeShellScriptBin "term" ''exec ${config.home.homeDirectory}/.local/bin/monstar "$@"'';
 in
 {
   imports = [
@@ -157,6 +160,7 @@ in
     colorpicker
     clipboard
     webapp
+    term
 
     hyprpicker
     xwayland

@@ -182,7 +182,6 @@ font_family = "JetBrainsMono Nerd Font"
 polkit_agent = true
 
     [shell.greeter_sync]
-    auto_sync = true
     privilege_command = "foot -e pkexec"
 
     [shell.launcher]
@@ -204,17 +203,22 @@ source = "wallpaper"
     builtin_ids = [ "foot", "gtk3", "gtk4", "mango", "qt" ]
     community_ids = [ "zen-browser", "neovim", "yazi" ]
 
+        [theme.templates.user.monstar]
+        input_path = "/home/metsker/dotfiles/config/noctalia/templates/monstar"
+        output_path = "~/.config/monstar/themes/noctalia"
+        post_hook = "pkill -USR1 monstar 2>/dev/null || true"
+
 [wallpaper.default]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.last]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.monitors.DP-1]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.monitors.HDMI-A-2]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [[wallpaper.favorite]]
 palette_source = "wallpaper"
@@ -227,7 +231,7 @@ show_idle_on_horizontal = false
 type = "noctalia/timer:bar"
 
 [widget.clock]
-format = "{:%A %H:%M}"
+format = "{:%a %H:%M}"
 
 [widget.layout]
 enabled = true
