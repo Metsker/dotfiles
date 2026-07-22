@@ -1,11 +1,11 @@
 { config, lib, pkgs, ... }:
 
-# Declarative browser web apps: each becomes a standalone --app window with a
-# stable app-id (--class / StartupWMClass) so mango can window-rule it.
+# Declarative browser web apps: each becomes a standalone chromium --app window.
+# mango window-rules them by their chrome-<host>__-Default app-id (see rules.conf).
 let
   iconDir = "${config.xdg.dataHome}/icons/webapps";
 
-  # Web apps keyed by app-id (used for --class and window rules).
+  # Web apps keyed by id (desktop entry name, icon filename).
   #   icon    = local path or theme name; set = no download.
   #   iconUrl = source to fetch; needed for self-hosted/auth-gated domains a
   #             favicon service can't reach (see https://dashboardicons.com).
@@ -33,9 +33,8 @@ in
 {
   xdg.desktopEntries = lib.mapAttrs (id: app: {
     name = app.name or id;
-    exec = "webapp ${id} ${app.url}";
+    exec = "webapp ${app.url}";
     icon = app.icon or "${iconDir}/${id}.png";
-    settings.StartupWMClass = id;
   }) apps;
 
   # Icons can't be fetched in pure Nix (fetchers need a pinned hash), so grab
