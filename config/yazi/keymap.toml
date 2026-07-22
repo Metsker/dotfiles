@@ -23,3 +23,8 @@ on   = "!"
 for  = "unix"
 run  = 'shell "$SHELL" --block'
 desc = "Open $SHELL here"
+
+[[mgr.prepend_keymap]]
+on   = [ "g", "l" ]
+run  = 'shell "lazygit" --block'
+desc = "Open lazygit here"
