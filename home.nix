@@ -45,6 +45,7 @@ in
     inputs.zen-browser.homeModules.default
     ./xdg.nix
     ./webapps.nix
+    ./claude.nix
   ];
 
   home.username = "metsker";
@@ -57,7 +58,7 @@ in
       "toolkit.legacyUserProfileCustomizations.stylesheets" = false;
       "zen.theme.content-element-separation" = 0;
       "zen.view.experimental-no-window-controls" = true;
-      "zen.widget.linux.transparency" = true;
+      "zen.widget.linux.transparency" = false;
       "browser.tabs.allow_transparent_browser" = true;
       "browser.tabs.hoverPreview.enabled" = true;
     };
@@ -141,14 +142,6 @@ in
 
   # programs.steam.enable = true;
 
-  home.activation.claudeSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    run mkdir -p "$HOME/.claude"
-    run ln -sf "${dotfiles}/claude/settings.json" "$HOME/.claude/settings.json"
-  '';
-
-  home.file.".claude/CLAUDE.md".source = create_symlink "${dotfiles}/claude/CLAUDE.md";
-  home.file.".claude/skills".source = create_symlink "${dotfiles}/claude/skills";
-
   home.file.".local/state/noctalia/settings.toml".source =
     create_symlink "${dotfiles}/noctalia/settings.toml";
 
@@ -195,7 +188,6 @@ in
     nixpkgs-fmt
     stylua
 
-    claude-code
     telegram-desktop
     discord
   ];
