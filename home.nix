@@ -177,6 +177,7 @@ in
     imv
     mpv
     ffmpeg
+    imagemagick
     wl-clipboard
     tree-sitter
     nodejs
