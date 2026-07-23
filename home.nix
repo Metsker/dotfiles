@@ -38,7 +38,7 @@ let
   # Launches URLs as standalone chromium --app windows; keeps chromium off the global PATH.
   webapp = pkgs.writeShellApplication {
     name = "webapp";
-    runtimeInputs = [ pkgs.ungoogled-chromium ];
+    runtimeInputs = [ pkgs.chromium ];
     text = builtins.readFile ./scripts/webapp.sh;
   };
   # Terminal indirection (absolute path: ~/.local/bin isn't on mango's session PATH).

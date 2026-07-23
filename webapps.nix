@@ -31,6 +31,17 @@ let
     else "https://www.google.com/s2/favicons?domain=${app.url}&sz=128";
 in
 {
+  # uBlock Origin Lite (MV3) for the chromium webapp profile. package = null keeps
+  # chromium off PATH (the webapp launcher provides it); Chromium auto-installs and
+  # updates it from the Web Store. Classic uBlock Origin is MV2 - dead on Chromium 150.
+  programs.chromium = {
+    enable = true;
+    package = null;
+    extensions = [
+      "ddkjiahejlhfcafbddmgiahcphecmpfh" # uBlock Origin Lite
+    ];
+  };
+
   xdg.desktopEntries = lib.mapAttrs (id: app: {
     name = app.name or id;
     exec = "webapp ${app.url}";
