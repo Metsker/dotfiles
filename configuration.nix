@@ -159,11 +159,9 @@
 
   nix.settings.extra-substituters = [
     "https://noctalia.cachix.org"
-    "https://herdr-nix.cachix.org"
   ];
   nix.settings.extra-trusted-public-keys = [
     "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
-    "herdr-nix.cachix.org-1:+AT7TY8E6j/Pe9lB8Vjmp15Y4RPb8YtOnOwr/fboDS8="
   ];
 
   system.stateVersion = "26.05";
