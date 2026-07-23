@@ -81,7 +81,6 @@
   programs.dconf.enable = true;
 
   programs.mango.enable = true;
-  programs.mango.package = inputs.mango.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
   programs.gpu-screen-recorder.enable = true;
 
@@ -146,9 +145,14 @@
     })
     # xdpw offers only 24-bit BG24 shm on NVIDIA GLES2; Chromium needs 32-bit - breaks Discord screenshare.
     # Patch = upstream PR 386 + XBGR/ABGR fallbacks. Drop when https://github.com/emersion/xdg-desktop-portal-wlr/issues/385 is fixed.
+    # Second patch reverts 0.8.3 driver mode (PW_STREAM_FLAG_DRIVER): Chromium holds both pool buffers,
+    # capture loop never re-arms - frozen after first frame. Drop when xdpw issue #395 / PR #397 lands.
     (final: prev: {
       xdg-desktop-portal-wlr = prev.xdg-desktop-portal-wlr.overrideAttrs (old: {
-        patches = (old.patches or [ ]) ++ [ ./patches/xdpw-shm-fallback-formats.diff ];
+        patches = (old.patches or [ ]) ++ [
+          ./patches/xdpw-shm-fallback-formats.diff
+          ./patches/xdpw-revert-driver-mode.diff
+        ];
       });
     })
   ];
