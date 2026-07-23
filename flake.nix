@@ -1,9 +1,9 @@
 {
   description = "NixOS flake";
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-26.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager/release-26.05";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     herdr = {
@@ -11,11 +11,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     noctalia = {
-      url = "github:noctalia-dev/noctalia/v5.0.0-beta.3";
+      url = "github:noctalia-dev/noctalia";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mango = {
-      url = "github:DreamMaoMao/mango";
+      url = "github:mangowm/mango";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     noctalia-greeter = {
