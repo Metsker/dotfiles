@@ -1,0 +1,15 @@
+diff --git a/src/layout/algorithm/tiled/scrolling/ScrollTapeController.cpp b/src/layout/algorithm/tiled/scrolling/ScrollTapeController.cpp
+index 722b9bd..bb5076a 100644
+--- a/src/layout/algorithm/tiled/scrolling/ScrollTapeController.cpp
++++ b/src/layout/algorithm/tiled/scrolling/ScrollTapeController.cpp
+@@ -229,6 +229,10 @@ double CScrollTapeController::calculateCameraOffset(const CBox& usableArea, bool
+     if (maxExtent > usablePrimary && m_offset < 0.0 && *PFITMETHOD != 0)
+         m_offset = 0.0;
+ 
++    // never leave empty space at the far end when content overfills the viewport
++    if (maxExtent >= usablePrimary && *PFITMETHOD != 0)
++        m_offset = std::clamp(m_offset, 0.0, maxExtent - usablePrimary);
++
+     return m_offset;
+ }
+ 

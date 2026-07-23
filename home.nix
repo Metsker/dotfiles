@@ -8,6 +8,8 @@ let
     herdr = "herdr/config.toml";
     foot = "foot";
     mango = "mango";
+    hypr = "hypr";
+    uwsm = "uwsm";
     yazi = "yazi";
     lazygit = "lazygit";
     monstar = "monstar";
@@ -73,6 +75,7 @@ in
   };
 
   home.pointerCursor = {
+    enable = true;
     name = "Adwaita";
     package = pkgs.adwaita-icon-theme;
     size = 24;
