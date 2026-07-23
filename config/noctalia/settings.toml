@@ -179,6 +179,7 @@ enabled = [ "noctalia/screen_recorder", "metsker/mango-layout", "noctalia/wallha
 [shell]
 corner_radius_scale = 0.0
 font_family = "JetBrainsMono Nerd Font"
+launch_apps_as_systemd_services = true
 polkit_agent = true
 
     [shell.launcher]
@@ -186,6 +187,7 @@ polkit_agent = true
 
     [shell.panel]
     control_center_placement = "floating"
+    open_near_click_control_center = true
     session_placement = "floating"
     shadow = false
     transparency_mode = "soft"

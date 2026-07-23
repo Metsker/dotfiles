@@ -7,15 +7,20 @@
   ];
 
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 5;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.plymouth = {
+    enable = true;
+    theme = "omarchy";
+    themePackages = [ (pkgs.callPackage ./plymouth/omarchy { }) ];
+  };
+  boot.initrd.systemd.enable = true;
+  boot.kernelParams = [ "quiet" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ amneziawg ];
 
   # boot.kernelPackages = pkgs.linuxPackages_latest;
 
   boot.initrd.luks.devices."luks-da92cd42-5072-4b32-9bdb-cd6ab64ff710".device = "/dev/disk/by-uuid/da92cd42-5072-4b32-9bdb-cd6ab64ff710";
-
-  # Discord ignores SIGTERM on shutdown; cap the wait so reboots aren't stuck 90s.
-  systemd.settings.Manager.DefaultTimeoutStopSec = "10s";
 
   networking.networkmanager.enable = true;
 
@@ -78,9 +83,23 @@
 
   qt.enable = true;
 
+  # dbus-activated services (portals, keyring) run as systemd user units instead of dbus-daemon children.
+  services.dbus.implementation = "broker";
+
   programs.dconf.enable = true;
 
   programs.mango.enable = true;
+  programs.mango.addLoginEntry = false; # uwsm-managed session entry only
+
+  # Runs mango under systemd user units: app scopes tear down cleanly, graphical-session.target works.
+  programs.uwsm = {
+    enable = true;
+    waylandCompositors.mango = {
+      prettyName = "Mango";
+      comment = "Mango managed by uwsm";
+      binPath = "/run/current-system/sw/bin/mango";
+    };
+  };
 
   programs.gpu-screen-recorder.enable = true;
 
@@ -96,8 +115,21 @@
 
   programs.amnezia-vpn.enable = true;
 
+  # Amnezia's "launch at startup" entry must exist (it gates launch-minimized), but mango's
+  # autostart already launches the client gated on nm-online; mask the duplicate XDG unit.
+  systemd.user.units."app-AmneziaVPN@autostart.service".enable = false;
+
   programs.noctalia-greeter = {
     enable = true;
+  };
+
+  # Electron apps (Discord) ignore SIGTERM and stall logout for 90s; SIGKILL them after 10s instead.
+  systemd.user.settings.Manager.DefaultTimeoutStopSec = "10s";
+
+  # Auto-login into mango at boot (LUKS passphrase already gates access); greeter only shows after logout.
+  services.greetd.settings.initial_session = {
+    command = "uwsm start -F -- /run/current-system/sw/bin/mango";
+    user = "metsker";
   };
 
   programs.fish = {
