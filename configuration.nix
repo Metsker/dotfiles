@@ -148,6 +148,7 @@
   environment.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
+    PROTON_ENABLE_WAYLAND = "1";
   };
 
   fonts.packages = with pkgs; [
