@@ -173,7 +173,6 @@ in
     fzf
     fd
     jq
-    libqalculate
     openmw
     tealdeer
     imv
@@ -188,7 +187,7 @@ in
     typescript
     python3
     rustc
-    inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
+    herdr
     github-cli
     lazygit
 
