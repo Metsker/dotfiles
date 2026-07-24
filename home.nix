@@ -16,7 +16,7 @@ let
   };
   screenshot = pkgs.writeShellApplication {
     name = "screenshot";
-    runtimeInputs = with pkgs; [ grim slurp satty wayfreeze ];
+    runtimeInputs = with pkgs; [ grim slurp satty wayfreeze libnotify ];
     text = builtins.readFile ./scripts/screenshot.sh;
   };
   # wayfreeze gives the instant freeze; hyprpicker picks with its zoom lens.

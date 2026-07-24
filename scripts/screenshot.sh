@@ -20,9 +20,16 @@ wayfreeze --hide-cursor --after-freeze-cmd \
 
 [ -s "$tmp" ] || exit 0
 
-satty \
+wl-copy --type image/png < "$tmp"
+
+# noctalia advertises the "actions" capability, so notify-send blocks and prints
+# the action key when the Edit button is clicked; only then do we open satty.
+action="$(notify-send -a screenshot -i "$tmp" -t 10000 \
+  "Screenshot copied to clipboard" "Click Edit to annotate / save" -A "edit=Edit")"
+
+# Capture lives only in $tmp; satty writes $outfile solely via its save / save-as.
+[ "$action" = "edit" ] && satty \
   --filename "$tmp" \
   --output-filename "$outfile" \
   --early-exit \
-  --copy-command 'wl-copy --type image/png' \
-  --save-after-copy
+  --copy-command 'wl-copy --type image/png'
