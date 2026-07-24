@@ -83,13 +83,12 @@
 
   qt.enable = true;
 
-  # dbus-activated services (portals, keyring) run as systemd user units instead of dbus-daemon children.
-  services.dbus.implementation = "broker";
-
   programs.dconf.enable = true;
 
-  programs.mango.enable = true;
-  programs.mango.addLoginEntry = false; # uwsm-managed session entry only
+  programs.mango = {
+    enable = true;
+    addLoginEntry = false; # uwsm-managed session entry only
+  };
 
   # Runs mango under systemd user units: app scopes tear down cleanly, graphical-session.target works.
   programs.uwsm = {
