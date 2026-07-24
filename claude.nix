@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 # All Claude Code config in one place: config symlink, declarative MCP servers
 # (a read-only --mcp-config file), stale-state pruning, and the packages.
@@ -6,20 +6,8 @@ let
   dotfiles = "${config.home.homeDirectory}/dotfiles/config";
   create_symlink = config.lib.file.mkOutOfStoreSymlink;
 
-  # No nixpkgs package; drop in the prebuilt static musl binary. Static -> no autoPatchelf.
-  fff-mcp = pkgs.stdenvNoCC.mkDerivation rec {
-    pname = "fff-mcp";
-    version = "0.10.1";
-    src = pkgs.fetchurl {
-      url = "https://github.com/dmtrKovalenko/fff/releases/download/v${version}/fff-mcp-x86_64-unknown-linux-musl";
-      hash = "sha256-wXY3wzOvu73qSwPPPhVzJAxBR64SF1bjY6r6PJ0O+1g=";
-    };
-    dontUnpack = true;
-    dontConfigure = true;
-    dontBuild = true;
-    installPhase = "install -Dm755 $src $out/bin/fff-mcp";
-    meta.description = "Fast file-search MCP server (fff)";
-  };
+  # Built from source by the upstream flake; tracks whatever the fff input pins.
+  fff-mcp = inputs.fff.packages.${pkgs.stdenv.hostPlatform.system}.fff-mcp;
 
   # Single declarative source of truth for MCP servers, loaded via --mcp-config.
   mcpConfig = pkgs.writeText "claude-mcp.json" (builtins.toJSON {
