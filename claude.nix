@@ -54,6 +54,7 @@ in
   '';
 
   home.file.".claude/CLAUDE.md".source = create_symlink "${dotfiles}/claude/CLAUDE.md";
+  home.file.".claude/keybindings.json".source = create_symlink "${dotfiles}/claude/keybindings.json";
   home.file.".claude/skills".source = create_symlink "${dotfiles}/claude/skills";
 
   home.packages = [
