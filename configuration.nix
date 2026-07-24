@@ -107,6 +107,11 @@
     extraCompatPackages = with pkgs; [ proton-ge-bin ];
   };
 
+  programs.nh = {
+    enable = true;
+    flake = "/home/metsker/dotfiles";
+  };
+
   xdg.portal.wlr.settings.screencast = {
     chooser_type = "simple";
     chooser_cmd = "${pkgs.slurp}/bin/slurp -f 'Monitor: %o' -or";
@@ -198,16 +203,10 @@
 
   system.stateVersion = "26.05";
 
-  system.autoUpgrade = {
-    enable = true;
-    dates = "weekly";
-  };
-
-  nix.gc = {
-    automatic = true;
-    dates = "daily";
-    options = "--delete-older-than 7d";
-  };
+  # system.autoUpgrade = {
+  #   enable = true;
+  #   dates = "weekly";
+  # };
 
   nix.settings.auto-optimise-store = true;
 }
