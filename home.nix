@@ -25,6 +25,12 @@ let
     runtimeInputs = with pkgs; [ wayfreeze hyprpicker ];
     text = builtins.readFile ./scripts/colorpicker.sh;
   };
+  # Freeze, slurp a region, OCR it with tesseract, copy the text to the clipboard.
+  textpicker = pkgs.writeShellApplication {
+    name = "textpicker";
+    runtimeInputs = with pkgs; [ wayfreeze slurp grim tesseract wl-clipboard libnotify ];
+    text = builtins.readFile ./scripts/textpicker.sh;
+  };
   # Super+C/V copy/paste: mmsg (mango) reads the focused appid, wtype injects Ctrl(+Shift)+C/V.
   clipboard = pkgs.writeShellApplication {
     name = "clipboard";
@@ -159,6 +165,7 @@ in
   home.packages = with pkgs; [
     screenshot
     colorpicker
+    textpicker
     clipboard
     webapp
     term

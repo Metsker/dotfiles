@@ -21,6 +21,7 @@ hl.bind(mod .. " + SHIFT + C", hl.dsp.exec_cmd("noctalia msg panel-toggle clipbo
 -- Screenshots
 hl.bind("Print",                 hl.dsp.exec_cmd("screenshot"))
 hl.bind(mod .. " + Print",       hl.dsp.exec_cmd("colorpicker"))
+hl.bind(mod .. " + CTRL + Print", hl.dsp.exec_cmd("textpicker"))
 hl.bind(mod .. " + ALT + Print", hl.dsp.exec_cmd("noctalia msg plugin noctalia/screen_recorder:service all toggle"))
 
 -- Focus: left/right scroll between columns (centers, wraps); up/down within a column.
