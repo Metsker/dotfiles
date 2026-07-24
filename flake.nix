@@ -26,6 +26,10 @@
       url = "github:dmtrKovalenko/fff";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    monstar = {
+      url = "github:Metsker/monstar-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs@{ self, nixpkgs, home-manager, ... }:
     let

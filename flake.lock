@@ -176,6 +176,43 @@
         "type": "github"
       }
     },
+    "monstar": {
+      "inputs": {
+        "monstar-src": "monstar-src",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1784893767,
+        "narHash": "sha256-NMaBVMJCDP43pF1sRbMYPmjCvZh7nCe7vTR6HZb5Ttw=",
+        "owner": "Metsker",
+        "repo": "monstar-nix",
+        "rev": "b1e25d580c3e8260a8679401bcb12d26f4577517",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Metsker",
+        "repo": "monstar-nix",
+        "type": "github"
+      }
+    },
+    "monstar-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784822624,
+        "narHash": "sha256-0TjK/SXRAYYOmSbfXCj/v85zY6L1LDUKcxN7PGE6Cd0=",
+        "owner": "rockorager",
+        "repo": "monstar",
+        "rev": "a9d2a253720eb9daa0f323259db96674aa8e16f6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rockorager",
+        "repo": "monstar",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1784497964,
@@ -252,6 +289,7 @@
         "fff": "fff",
         "home-manager": "home-manager",
         "mango": "mango",
+        "monstar": "monstar",
         "nixpkgs": "nixpkgs",
         "noctalia": "noctalia",
         "noctalia-greeter": "noctalia-greeter",
