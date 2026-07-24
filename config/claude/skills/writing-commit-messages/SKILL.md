@@ -14,3 +14,4 @@ Use Linux kernel-style commits:
 - Explain the problem being solved and why the change is needed.
 - Describe what changed, not implementation trivia.
 - Keep the body wrapped to about 75 columns.
+- Never add a `Co-Authored-By:` trailer or any other attribution footer.
