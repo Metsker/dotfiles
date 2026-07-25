@@ -196,9 +196,13 @@
 
   nix.settings.extra-substituters = [
     "https://noctalia.cachix.org"
+    "https://monstar.cachix.org"
+    "https://claude-code.cachix.org"
   ];
   nix.settings.extra-trusted-public-keys = [
     "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+    "monstar.cachix.org-1:75M9ke+wZlmUcNsXpDae9793qhdRgtlNUEu/mW7u20c="
+    "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
   ];
 
   system.stateVersion = "26.05";

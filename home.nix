@@ -179,6 +179,7 @@ in
     slurp
 
     gcc
+		gnumake
     ripgrep
     fzf
     fd
@@ -197,6 +198,9 @@ in
     typescript
     python3
     rustc
+    cargo
+    rustfmt
+    rust-analyzer
     herdr
     github-cli
     lazygit

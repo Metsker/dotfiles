@@ -8,7 +8,7 @@
     };
     noctalia = {
       url = "github:noctalia-dev/noctalia";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
     mango = {
       url = "github:mangowm/mango";
@@ -26,10 +26,10 @@
       url = "github:dmtrKovalenko/fff";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    monstar = {
-      url = "github:Metsker/monstar-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # No nixpkgs.follows: match monstar-nix's pinned nixpkgs so the cache hits.
+    monstar.url = "github:Metsker/monstar-nix";
+    # No nixpkgs.follows: keep the flake's pin so the claude-code.cachix.org cache hits.
+    claude-code.url = "github:sadjow/claude-code-nix";
   };
   outputs = inputs@{ self, nixpkgs, home-manager, ... }:
     let

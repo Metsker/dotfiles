@@ -9,6 +9,9 @@ let
   # Built from source by the upstream flake; tracks whatever the fff input pins.
   fff-mcp = inputs.fff.packages.${pkgs.stdenv.hostPlatform.system}.fff-mcp;
 
+  # sadjow/claude-code-nix: hourly-updated build, cached at claude-code.cachix.org.
+  claude-code = inputs.claude-code.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
   # Single declarative source of truth for MCP servers, loaded via --mcp-config.
   mcpConfig = pkgs.writeText "claude-mcp.json" (builtins.toJSON {
     mcpServers = {
@@ -22,7 +25,7 @@ let
   # Wrap claude so every launch loads the Nix-managed servers; merges with project .mcp.json.
   # =form is required: --mcp-config is variadic and the space form swallows the subcommand.
   claude = pkgs.writeShellScriptBin "claude" ''
-    exec ${pkgs.claude-code}/bin/claude --mcp-config=${mcpConfig} "$@"
+    exec ${claude-code}/bin/claude --mcp-config=${mcpConfig} "$@"
   '';
 in
 {
