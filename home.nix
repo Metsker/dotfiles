@@ -138,7 +138,6 @@ in
   programs.fish = {
     enable = true;
     shellAliases = {
-      rebuild = "sudo nixos-rebuild switch --flake ~/dotfiles/#pc";
       lg = "lazygit";
       c = "claude";
     };
