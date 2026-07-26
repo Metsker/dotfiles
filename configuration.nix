@@ -14,6 +14,12 @@
     theme = "omarchy";
     themePackages = [ (pkgs.callPackage ./plymouth/omarchy { }) ];
   };
+  # Leave the last splash frame in the scanout buffer instead of restoring the text console,
+  # so nothing repaints between plymouth quitting and mango's modeset.
+  systemd.services.plymouth-quit.serviceConfig.ExecStart = [
+    ""
+    "${config.boot.plymouth.package}/bin/plymouth quit --retain-splash"
+  ];
   boot.initrd.systemd.enable = true;
   boot.kernelParams = [ "quiet" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ amneziawg ];
