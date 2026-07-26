@@ -16,7 +16,7 @@ let
   };
   screenshot = pkgs.writeShellApplication {
     name = "screenshot";
-    runtimeInputs = with pkgs; [ grim slurp satty wayfreeze libnotify ];
+    runtimeInputs = with pkgs; [ grim slurp satty wayfreeze wlrctl libnotify ];
     text = builtins.readFile ./scripts/screenshot.sh;
   };
   # wayfreeze gives the instant freeze; hyprpicker picks with its zoom lens.
@@ -28,7 +28,7 @@ let
   # Freeze, slurp a region, OCR it with tesseract, copy the text to the clipboard.
   textpicker = pkgs.writeShellApplication {
     name = "textpicker";
-    runtimeInputs = with pkgs; [ wayfreeze slurp grim tesseract wl-clipboard libnotify ];
+    runtimeInputs = with pkgs; [ wayfreeze slurp grim wlrctl tesseract wl-clipboard libnotify ];
     text = builtins.readFile ./scripts/textpicker.sh;
   };
   # Super+C/V copy/paste: mmsg (mango) reads the focused appid, wtype injects Ctrl(+Shift)+C/V.

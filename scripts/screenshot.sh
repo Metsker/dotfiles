@@ -15,8 +15,24 @@ mmsg get all-clients 2>/dev/null \
            | select(.is_visible and (.is_minimized | not))
            | "\(.x),\(.y) \(.width)x\(.height) \(.appid)"' 2>/dev/null > "$boxes" || true
 
-wayfreeze --hide-cursor --after-freeze-cmd \
-  "geometry=\$(slurp -o < '$boxes') && grim -g \"\$geometry\" '$tmp'; kill \$PPID" || true
+# Workaround: wlroots falls back to a software cursor on the NVIDIA blob and bakes it
+# into the framebuffer, and screencopy's overlay_cursor can only add a cursor, never
+# remove one - so grim -c and wayfreeze --hide-cursor are both no-ops here. Park the
+# pointer bottom-right instead, where the arrow renders off-screen. Two captures need
+# it: wayfreeze's still frame, and grim's shot of the live pointer over that frame.
+# Proper fix would be a compositor-side screenshot rendered from the scene graph.
+pos="$(mmsg get cursorpos | jq -r '"\(.x|floor) \(.y|floor)"' 2>/dev/null || true)"
+park='wlrctl pointer move 20000 20000'
+unpark="wlrctl pointer move -20000 -20000; wlrctl pointer move $pos"
+
+# wayfreeze runs --before-freeze-cmd after it has grabbed the frame, so park out here
+# and let that hook put the pointer back before the frozen overlay is shown.
+eval "$park"
+sleep 0.1
+
+wayfreeze --hide-cursor --before-freeze-cmd "$unpark" --after-freeze-cmd \
+  "geometry=\$(slurp -o < '$boxes') && $park && sleep 0.1 \
+   && grim -g \"\$geometry\" '$tmp'; $unpark; kill \$PPID" || true
 
 [ -s "$tmp" ] || exit 0
 

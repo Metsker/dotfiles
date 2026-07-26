@@ -5,9 +5,19 @@ cleanup() {
 }
 trap cleanup EXIT
 
+# Same software-cursor workaround as screenshot.sh: park the pointer out of the shot so
+# the arrow does not sit on top of the text tesseract has to read.
+pos="$(mmsg get cursorpos | jq -r '"\(.x|floor) \(.y|floor)"' 2>/dev/null || true)"
+park='wlrctl pointer move 20000 20000'
+unpark="wlrctl pointer move -20000 -20000; wlrctl pointer move $pos"
+
+eval "$park"
+sleep 0.1
+
 # Freeze first so the OCR captures a still frame, not content shifting under the selection.
-wayfreeze --hide-cursor --after-freeze-cmd \
-  "geometry=\$(slurp) && grim -g \"\$geometry\" '$tmp'; kill \$PPID" || true
+wayfreeze --hide-cursor --before-freeze-cmd "$unpark" --after-freeze-cmd \
+  "geometry=\$(slurp) && $park && sleep 0.1 \
+   && grim -g \"\$geometry\" '$tmp'; $unpark; kill \$PPID" || true
 
 [ -s "$tmp" ] || exit 0
 
