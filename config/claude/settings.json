@@ -35,7 +35,8 @@
   "enabledPlugins": {
     "context-mode@context-mode": true,
     "mattpocock-skills@mattpocock": true,
-    "ponytail@ponytail": true
+    "ponytail@ponytail": true,
+    "pixijs-skills@pixijs-skills": false
   },
   "extraKnownMarketplaces": {
     "context-mode": {
