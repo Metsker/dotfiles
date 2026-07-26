@@ -108,10 +108,9 @@
 
   programs.gpu-screen-recorder.enable = true;
 
-  programs.steam = {
-    enable = true;
-    extraCompatPackages = with pkgs; [ proton-ge-bin ];
-  };
+  # GE-Proton is linked into ~/.local/share/Steam/compatibilitytools.d in home.nix,
+  # which both steam and lutris scan, so no extraCompatPackages needed here.
+  programs.steam.enable = true;
 
   programs.nh = {
     enable = true;

@@ -157,6 +157,10 @@ in
   home.file.".local/state/noctalia/settings.toml".source =
     create_symlink "${dotfiles}/noctalia/settings.toml";
 
+  # Both steam and lutris scan compatibilitytools.d, so one link serves both.
+  home.file.".local/share/Steam/compatibilitytools.d/${pkgs.proton-ge-bin.version}".source =
+    pkgs.proton-ge-bin.steamcompattool;
+
   xdg.configFile = lib.mapAttrs'
     (name: subpath: lib.nameValuePair subpath {
       source = create_symlink "${dotfiles}/${subpath}";
@@ -185,6 +189,8 @@ in
     fd
     jq
     openmw
+    lutris
+    umu-launcher # lutris runs proton through umu; without it no proton versions show up
     tealdeer
     imv
     mpv
