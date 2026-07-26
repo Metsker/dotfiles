@@ -244,16 +244,16 @@ source = "wallpaper"
         post_hook = "pkill -USR1 monstar 2>/dev/null || true"
 
 [wallpaper.default]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.last]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.monitors.DP-1]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.monitors.HDMI-A-2]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [[wallpaper.favorite]]
 palette_source = "wallpaper"
