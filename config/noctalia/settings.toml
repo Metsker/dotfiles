@@ -1,4 +1,4 @@
-config_version = 2
+config_version = 7
 
 [bar.default]
 background_opacity = 0.74999998323619366
@@ -273,6 +273,11 @@ type = "metsker/mango-layout:layout"
 
 [widget.media]
 hide_when_no_media = true
+title_scroll = "on_hover"
+
+    [widget.media.actions]
+    left = "media toggle"
+    right = "panel-toggle control-center media"
 
 [widget."metsker/mango-layout:layout"]
 enabled = true
