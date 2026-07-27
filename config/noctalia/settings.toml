@@ -68,6 +68,9 @@ auto_hide = true
 reserve_space = false
 shadow = false
 
+[hooks]
+session_unlocked = "mmsg dispatch reload_config"
+
 [idle]
 behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]
 
