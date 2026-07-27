@@ -219,11 +219,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1784909227,
-        "narHash": "sha256-mdrWvN4BaInff+aal3bx8wd7tmukmxbORQA7zRTsJNg=",
+        "lastModified": 1785160743,
+        "narHash": "sha256-1/P8OhmWvjcAJfR0DI6LuA1Ibcn8R18rwv9D4g5/alA=",
         "owner": "Metsker",
         "repo": "monstar-nix",
-        "rev": "7859a525a9ec6f1210978fc7789e928642d3fa9b",
+        "rev": "385f5860bc6acc0a838a96c21dfa3e32885925b5",
         "type": "github"
       },
       "original": {
@@ -235,11 +235,11 @@
     "monstar-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1784908180,
-        "narHash": "sha256-pXqoRZ4Wbn20R3EjFTA8m7g7LGBpfzpySaB0eCvCRKQ=",
+        "lastModified": 1785157401,
+        "narHash": "sha256-Qj7BrIHxHAnZCm6zbo7AYf2mnOhfuqOHa3uq1ibwVMY=",
         "owner": "rockorager",
         "repo": "monstar",
-        "rev": "a1ba12cf327339c1b3ea6d0852da37f60e4b4d52",
+        "rev": "0aa9c5caaa2b90e9a6d639e330cac563c21156d2",
         "type": "github"
       },
       "original": {
