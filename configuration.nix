@@ -18,7 +18,8 @@
   # so nothing repaints between plymouth quitting and mango's modeset.
   systemd.services.plymouth-quit.serviceConfig.ExecStart = [
     ""
-    "${config.boot.plymouth.package}/bin/plymouth quit --retain-splash"
+    # keep upstream's "-": quitting a dead plymouth is not an activation failure
+    "-${config.boot.plymouth.package}/bin/plymouth quit --retain-splash"
   ];
   boot.initrd.systemd.enable = true;
   boot.kernelParams = [ "quiet" ];
