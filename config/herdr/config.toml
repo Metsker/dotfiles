@@ -3,6 +3,9 @@ onboarding = false
 [keys]
 prefix = "ctrl+s"
 
+[terminal]
+new_cwd = "home"
+
 [ui.sound]
 enabled = false
 
