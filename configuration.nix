@@ -109,6 +109,8 @@
 
   programs.gpu-screen-recorder.enable = true;
 
+  programs.ssh.startAgent = true;
+
   # GE-Proton is linked into ~/.local/share/Steam/compatibilitytools.d in home.nix,
   # which both steam and lutris scan, so no extraCompatPackages needed here.
   programs.steam.enable = true;
