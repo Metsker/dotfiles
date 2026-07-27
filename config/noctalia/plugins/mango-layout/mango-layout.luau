@@ -4,12 +4,17 @@
 local GLYPH = "layout-columns"
 local layout = ""
 
--- First active tag's layout symbol (one active tag per monitor; a bar shows one output).
+-- Read at load: stream callbacks run without a widget snapshot, so outputName() is nil in them.
+local output = barWidget.outputName()
+
+-- Layout of this bar's own output; an unknown output falls back to the first monitor.
 local function activeLayout(data)
 	for _, monitor in ipairs(data and data.all_tags or {}) do
-		for _, tag in ipairs(monitor.tags or {}) do
-			if tag.is_active then
-				return tag.layout
+		if not output or monitor.monitor == output then
+			for _, tag in ipairs(monitor.tags or {}) do
+				if tag.is_active then
+					return tag.layout
+				end
 			end
 		end
 	end
