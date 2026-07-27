@@ -1,5 +1,8 @@
 config_version = 7
 
+[audio]
+enable_sounds = true
+
 [bar.default]
 background_opacity = 0.74999998323619366
 capsule_radius = 8
@@ -26,6 +29,7 @@ start = [ "wallhaven", "workspaces", "layout" ]
 
 [control_center]
 hidden_tabs = [ "power" ]
+sidebar_section = "none"
 
     [control_center.calendar]
     show_events_card = false
@@ -90,7 +94,6 @@ up = [ "up", "ctrl+p", "ctrl+k" ]
 address = "Zelenogradsk, Russia"
 
 [lockscreen_widgets]
-enabled = false
 schema_version = 2
 widget_order = [ "lockscreen-login-box@HDMI-A-2", "lockscreen-login-box@DP-1" ]
 
@@ -302,6 +305,10 @@ type = "spacer"
 [widget.tray]
 detached_panel = true
 drawer = true
+
+[widget.volume.actions]
+scroll_down = "volume-down 1"
+scroll_up = "volume-up 1"
 
 [widget.wallhaven]
 type = "noctalia/wallhaven:wallhaven"
