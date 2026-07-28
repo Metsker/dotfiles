@@ -28,3 +28,8 @@ desc = "Open $SHELL here"
 on   = [ "g", "l" ]
 run  = 'shell "lazygit" --block'
 desc = "Open lazygit here"
+
+[[mgr.prepend_keymap]]
+on   = [ "g", "c" ]
+run  = 'shell "claude" --block'
+desc = "Open claude here"
