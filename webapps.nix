@@ -11,8 +11,13 @@ let
   #             favicon service can't reach (see https://dashboardicons.com).
   apps = {
     brain = {
-      url = "https://brain.metsker.dev";
-      name = "SilverBullet";
+      url = "https://notes.metsker.dev/brain";
+      name = "Brain";
+      iconUrl = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/silverbullet.png";
+    };
+    gamedev = {
+      url = "https://notes.metsker.dev/gamedev";
+      name = "Gamedev";
       iconUrl = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/silverbullet.png";
     };
     tldraw = {
