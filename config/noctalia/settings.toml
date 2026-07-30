@@ -240,7 +240,7 @@ polkit_agent = true
     variant = "destructive"
 
 [theme]
-builtin = "Tokyo-Night"
+builtin = "Dracula"
 community_palette = "Atuel"
 source = "wallpaper"
 
@@ -254,16 +254,16 @@ source = "wallpaper"
         post_hook = "pkill -USR1 monstar 2>/dev/null || true"
 
 [wallpaper.default]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 
 [wallpaper.last]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 
 [wallpaper.monitors.DP-1]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 
 [wallpaper.monitors.HDMI-A-2]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 
 [[wallpaper.favorite]]
 palette_source = "wallpaper"
