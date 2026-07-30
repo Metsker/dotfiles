@@ -15,3 +15,10 @@ Use Linux kernel-style commits:
 - Describe what changed, not implementation trivia.
 - Keep the body wrapped to about 75 columns.
 - Never add a `Co-Authored-By:` trailer or any other attribution footer.
+
+## Committing
+
+- Commit on the branch that is already checked out. Never create, switch, or
+  merge branches on your own initiative - "commit this" means commit it here,
+  on the current branch, including when that branch is `master`/`main`. Branch
+  only when explicitly asked to.
