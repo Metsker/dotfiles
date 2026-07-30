@@ -107,6 +107,11 @@
     };
   };
 
+  # Also owns org.freedesktop.FileManager1, so "show in folder" reveals the file instead of
+  # falling back to xdg-open on its parent. gvfs gives it trash and removable-device mounts.
+  programs.thunar.enable = true;
+  services.gvfs.enable = true;
+
   programs.gpu-screen-recorder.enable = true;
 
   programs.ssh.startAgent = true;
