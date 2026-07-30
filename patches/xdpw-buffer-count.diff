@@ -1,0 +1,22 @@
+A 2-buffer pool starves the capture loop: Chromium/Electron consumers hold both
+buffers while encoding, so xdpw hits "out of buffers", drops the frame and falls
+back to the retry timer, collapsing a 30fps screencast to ~1-18fps. Raise the
+floor so the consumer can hold two and the compositor still has one to write.
+
+Upstream https://github.com/emersion/xdg-desktop-portal-wlr/pull/396
+
+diff --git a/include/pipewire_screencast.h b/include/pipewire_screencast.h
+index 1111111..2222222 100644
+--- a/include/pipewire_screencast.h
++++ b/include/pipewire_screencast.h
+@@ -3,8 +3,8 @@
+
+ #include "screencast_common.h"
+
+-#define XDPW_PWR_BUFFERS 2
+-#define XDPW_PWR_BUFFERS_MIN 2
++#define XDPW_PWR_BUFFERS 8
++#define XDPW_PWR_BUFFERS_MIN 4
+ #define XDPW_PWR_ALIGN 16
+
+ void xdpw_pwr_enqueue_buffer(struct xdpw_screencast_instance *cast);

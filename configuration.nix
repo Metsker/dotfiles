@@ -196,6 +196,7 @@
     # xdpw offers only 24-bit BG24 shm on NVIDIA GLES2; Chromium needs 32-bit - breaks Discord screenshare.
     # Patch = upstream PR 386 + XBGR/ABGR fallbacks. Drop when https://github.com/emersion/xdg-desktop-portal-wlr/issues/385 is fixed.
     # 0.8.4 fixes the driver-mode buffer starvation freeze (PR 397); drop the version pin once nixpkgs ships it.
+    # The 2-buffer pool still starves the capture loop with Electron consumers; drop the buffer-count patch when PR 396 lands.
     (final: prev: {
       xdg-desktop-portal-wlr = prev.xdg-desktop-portal-wlr.overrideAttrs (old: rec {
         version = "0.8.4";
@@ -207,6 +208,7 @@
         };
         patches = (old.patches or [ ]) ++ [
           ./patches/xdpw-shm-fallback-formats.diff
+          ./patches/xdpw-buffer-count.diff
         ];
       });
     })
