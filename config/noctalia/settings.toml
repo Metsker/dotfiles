@@ -246,7 +246,7 @@ source = "wallpaper"
 
     [theme.templates]
     builtin_ids = [ "foot", "gtk3", "gtk4", "hyprland", "mango", "qt" ]
-    community_ids = [ "zen-browser", "neovim", "yazi" ]
+    community_ids = [ "zen-browser", "neovim", "papirus-icons", "lazygit", "yazi" ]
 
         [theme.templates.user.monstar]
         input_path = "/home/metsker/dotfiles/config/noctalia/templates/monstar"
