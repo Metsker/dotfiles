@@ -197,14 +197,16 @@ in
     slurp
 
     gcc
-		gnumake
+    gnumake
     ripgrep
     fzf
     fd
     jq
     openmw
+    modrinth-app
     lutris
     umu-launcher # lutris runs proton through umu; without it no proton versions show up
+    vintagestory
     tealdeer
     imv
     mpv
