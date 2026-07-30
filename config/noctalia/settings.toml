@@ -276,7 +276,7 @@ show_idle_on_horizontal = false
 type = "noctalia/timer:bar"
 
 [widget.clock]
-format = "{:%b %d, %H:%M}"
+format = "{:%b %d - %H:%M}"
 
 [widget.layout]
 type = "metsker/mango-layout:layout"
