@@ -1,0 +1,12 @@
+{
+	"panel": {
+		"title": "Layout",
+		"close": "Close"
+	},
+	"settings": {
+		"corner_roundness": {
+			"label": "Corner roundness",
+			"description": "Rounding of the layout cards, matching Interface > corner roundness. 0 is square, 1 the default, 2 extra rounded."
+		}
+	}
+}

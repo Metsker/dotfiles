@@ -1,7 +1,7 @@
 id = "metsker/mango-layout"
 name = "Mango Layout"
-version = "1.0.0"
-plugin_api = 3
+version = "1.1.0"
+plugin_api = 13
 author = "metsker"
 license = "MIT"
 dependencies = ["mmsg"]
@@ -12,3 +12,23 @@ tags = ["bar", "mangowc"]
 [[widget]]
 id = "layout"
 entry = "mango-layout.luau"
+
+[[panel]]
+id = "picker"
+entry = "picker.luau"
+width = 570
+height = 827
+placement = "attached"
+open_near_click = true
+keyboard_focus = "exclusive"
+capture_keys = ["h", "j", "k", "l", "left", "down", "up", "right", "enter", "space"]
+
+  [[panel.setting]]
+  key             = "corner_roundness"
+  type            = "double"
+  label_key       = "settings.corner_roundness.label"
+  description_key = "settings.corner_roundness.description"
+  default         = 1.0
+  min             = 0.0
+  max             = 2.0
+  step            = 0.1

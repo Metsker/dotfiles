@@ -45,5 +45,9 @@ function update()
 end
 
 function onClick()
+	noctalia.togglePanel("metsker/mango-layout:picker")
+end
+
+function onRightClick()
 	noctalia.runAsync("mmsg dispatch switch_layout")
 end
