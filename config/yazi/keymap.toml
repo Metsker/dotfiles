@@ -25,11 +25,11 @@ run  = 'shell "$SHELL" --block'
 desc = "Open $SHELL here"
 
 [[mgr.prepend_keymap]]
-on   = [ "g", "l" ]
+on   = [ "L" ]
 run  = 'shell "lazygit" --block'
 desc = "Open lazygit here"
 
 [[mgr.prepend_keymap]]
-on   = [ "g", "c" ]
+on   = [ "C" ]
 run  = 'shell "claude" --block'
 desc = "Open claude here"
