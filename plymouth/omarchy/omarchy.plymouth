@@ -1,9 +1,0 @@
-[Plymouth Theme]
-Name=Omarchy
-Description=Omarchy splash with the Nix logo
-ModuleName=script
-
-[script]
-ImageDir=@themeDir@
-ScriptFile=@themeDir@/omarchy.script
-ConsoleLogBackgroundColor=0x1a1b26
