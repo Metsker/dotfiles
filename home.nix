@@ -252,6 +252,7 @@ in
     herdr
     github-cli
     lazygit
+    godot
 
     nil
     nixpkgs-fmt
