@@ -37,7 +37,7 @@ let
     runtimeInputs = [
       pkgs.wtype
       pkgs.jq
-      inputs.mango.packages.${pkgs.stdenv.hostPlatform.system}.default
+      pkgs.mangowm
     ];
     text = builtins.readFile ./scripts/clipboard.sh;
   };
