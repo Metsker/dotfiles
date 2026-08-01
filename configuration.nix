@@ -105,6 +105,7 @@
   # falling back to xdg-open on its parent. gvfs gives it trash and removable-device mounts.
   programs.thunar.enable = true;
   services.gvfs.enable = true;
+  services.tumbler.enable = true;
 
   programs.gpu-screen-recorder.enable = true;
 
