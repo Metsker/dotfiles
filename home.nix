@@ -221,6 +221,7 @@ in
     hyprpicker
     xwayland
     slurp
+    nautilus
 
     gcc
     gnumake

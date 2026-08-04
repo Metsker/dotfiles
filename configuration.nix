@@ -99,11 +99,8 @@
     };
   };
 
-  # Also owns org.freedesktop.FileManager1, so "show in folder" reveals the file instead of
-  # falling back to xdg-open on its parent. gvfs gives it trash and removable-device mounts.
-  programs.thunar.enable = true;
+  # gvfs gives nautilus trash and removable-device mounts.
   services.gvfs.enable = true;
-  services.tumbler.enable = true;
 
   programs.gpu-screen-recorder.enable = true;
 
