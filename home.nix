@@ -74,6 +74,8 @@ in
       "zen.widget.linux.transparency" = false;
       "browser.tabs.allow_transparent_browser" = true;
       "browser.tabs.hoverPreview.enabled" = true;
+      # Default 2 (auto) only picks the portal when sandboxed; 1 forces it, so uploads get the GTK picker.
+      "widget.use-xdg-desktop-portal.file-picker" = 1;
     };
   };
 
@@ -132,6 +134,8 @@ in
       custom_palette = true;
       style = "Fusion";
       color_scheme_path = "${config.home.homeDirectory}/.config/qt6ct/colors/noctalia.conf";
+      # Qt has no icon theme of its own; without this Qt apps fall back to hicolor and show blanks.
+      icon_theme = "Papirus-Dark";
     };
   };
 
