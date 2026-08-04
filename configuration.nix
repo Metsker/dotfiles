@@ -150,6 +150,9 @@
     foot
     git
     amneziawg-tools
+    unzip
+    zip
+    p7zip
   ];
 
   environment.sessionVariables = {
