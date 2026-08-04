@@ -170,6 +170,8 @@ in
     shellAliases = {
       lg = "lazygit";
       c = "claude";
+      # prime sudo up front so the build does not stall on a password prompt at the end
+      rebuild = "sudo -v; and nh os switch";
     };
   };
 
@@ -182,6 +184,9 @@ in
     enable = true;
     # enableFishIntegration = true;
   };
+
+  home.file.".local/share/fonts/JetBrainsMono".source =
+    "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono";
 
   home.file.".local/state/noctalia/settings.toml".source =
     create_symlink "${dotfiles}/noctalia/settings.toml";
@@ -265,5 +270,7 @@ in
 
     telegram-desktop
     discord
+
+    tiled
   ];
 }
