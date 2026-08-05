@@ -114,6 +114,13 @@ in
       .standard-view .view:selected:focus {
         color: @accent_fg_color;
       }
+
+      /* thunar_icon_renderer_color_selected multiplies the icon by a background-color it reads from
+         :selected while focused and :active once not, so an undefined :active multiplies to black. */
+      .standard-view .view:selected,
+      .standard-view .view:active {
+        background-color: @accent_bg_color;
+      }
     '';
   };
 
