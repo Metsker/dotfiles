@@ -179,6 +179,7 @@ in
       c = "claude";
       # prime sudo up front so the build does not stall on a password prompt at the end
       rebuild = "sudo -v; and nh os switch";
+      restart = "systemctl --user restart";
     };
   };
 
