@@ -99,7 +99,7 @@
     };
   };
 
-  # gvfs gives nautilus trash and removable-device mounts.
+  # gvfs gives the file manager trash and removable-device mounts.
   services.gvfs.enable = true;
 
   programs.gpu-screen-recorder.enable = true;

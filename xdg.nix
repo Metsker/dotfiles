@@ -14,7 +14,7 @@
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
-      "inode/directory" = "org.gnome.Nautilus.desktop";
+      "inode/directory" = "nemo.desktop";
       "text/plain" = "nvim.desktop";
       "text/markdown" = "nvim.desktop";
       "application/json" = "nvim.desktop";

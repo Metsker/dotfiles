@@ -51,13 +51,6 @@ let
   monstarPkg = inputs.monstar.packages.${pkgs.stdenv.hostPlatform.system}.default;
   # Terminal indirection (absolute store path: ~/.local/bin isn't on mango's session PATH).
   term = pkgs.writeShellScriptBin "term" ''exec ${monstarPkg}/bin/monstar "$@"'';
-  # NAUTILUS_4_EXTENSION_DIR replaces the extension dir rather than adding to it, so nautilus's
-  # own two have to ride along with the python bridge or the Properties tabs they draw vanish.
-  nautilusExtensions = pkgs.buildEnv {
-    name = "nautilus-extensions";
-    paths = [ pkgs.nautilus pkgs.nautilus-python ];
-    pathsToLink = [ "/lib/nautilus/extensions-4" ];
-  };
 in
 {
   imports = [
@@ -200,14 +193,13 @@ in
   home.file.".local/share/fonts/JetBrainsMono".source =
     "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono";
 
-  # Nautilus ships no "Open in Terminal"; its built-in one only speaks D-Bus to gnome-console.
-  systemd.user.sessionVariables.NAUTILUS_4_EXTENSION_DIR = "${nautilusExtensions}/lib/nautilus/extensions-4";
+  # Nemo's built-in "Open in Terminal" spawns this; absolute store path because the session PATH
+  # is not guaranteed for a file manager launched over D-Bus.
+  dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "${term}/bin/term";
 
-  # monstar is not in the extension's terminal list, so drive it through the custom command.
-  dconf.settings."com/github/stunkymonkey/nautilus-open-any-terminal" = {
-    terminal = "custom";
-    custom-local-command = "${term}/bin/term";
-  };
+  # Nemo enumerates every visible subfolder just to print its item count, and hidden files are
+  # shown, so opening home walks all of ~/.cache before the view fills in.
+  dconf.settings."org/nemo/preferences".show-directory-item-counts = "never";
 
   home.file.".local/state/noctalia/settings.toml".source =
     create_symlink "${dotfiles}/noctalia/settings.toml";
@@ -251,9 +243,7 @@ in
     hyprpicker
     xwayland
     slurp
-    nautilus
-    nautilus-python
-    nautilus-open-any-terminal
+    nemo
     xarchiver
 
     gcc
