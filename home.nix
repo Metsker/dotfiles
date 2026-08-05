@@ -123,12 +123,16 @@ in
       run rm -rf "$icons/Papirus" "$icons/Papirus-Dark"
       run cp -a "$src/Papirus" "$src/Papirus-Dark" "$icons/"
       run chmod -R u+w "$icons/Papirus" "$icons/Papirus-Dark"
-      run rm -f "$icons"/Papirus*/icon-theme.cache # built against the store path; stale it wins
       # The only sizes papirus-folders recolors that Papirus-Dark keeps its own copy of; the
       # content is byte-identical to Papirus's, so linking them lets one recolor cover both.
       for s in 22x22 24x24; do
         run rm -rf "$icons/Papirus-Dark/$s/places"
         run ln -s "../../Papirus/$s/places" "$icons/Papirus-Dark/$s/places"
+      done
+      # Rebuilt last, against the final layout: the copied cache pointed at the store and without
+      # any cache GTK stats its way through every theme dir on each app start.
+      for t in Papirus Papirus-Dark; do
+        run ${pkgs.gtk4}/bin/gtk4-update-icon-cache -q -t -f "$icons/$t"
       done
       echo "$src" > "$icons/.papirus-source"
     fi
