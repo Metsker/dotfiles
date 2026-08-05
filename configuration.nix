@@ -102,6 +102,12 @@
   # gvfs gives the file manager trash and removable-device mounts.
   services.gvfs.enable = true;
 
+  # The module also pulls in xfconf, which is where thunar keeps its settings.
+  programs.thunar.enable = true;
+
+  # Thunar draws no thumbnails on its own; tumbler is the D-Bus thumbnailer it asks.
+  services.tumbler.enable = true;
+
   programs.gpu-screen-recorder.enable = true;
 
   programs.ssh.startAgent = true;

@@ -193,14 +193,6 @@ in
   home.file.".local/share/fonts/JetBrainsMono".source =
     "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono";
 
-  # Nemo's built-in "Open in Terminal" spawns this; absolute store path because the session PATH
-  # is not guaranteed for a file manager launched over D-Bus.
-  dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "${term}/bin/term";
-
-  # Nemo enumerates every visible subfolder just to print its item count, and hidden files are
-  # shown, so opening home walks all of ~/.cache before the view fills in.
-  dconf.settings."org/nemo/preferences".show-directory-item-counts = "never";
-
   home.file.".local/state/noctalia/settings.toml".source =
     create_symlink "${dotfiles}/noctalia/settings.toml";
 
@@ -243,7 +235,6 @@ in
     hyprpicker
     xwayland
     slurp
-    nemo
     xarchiver
 
     gcc
