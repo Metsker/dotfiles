@@ -103,6 +103,18 @@ in
       name = "Papirus-Dark";
       package = pkgs.papirus-icon-theme;
     };
+    # adw-gtk3 pairs a 25%-alpha selection tint with a light label, but thunar blanks that fill
+    # (its own CSS sets .standard-view .view:selected transparent) and paints the accent solid,
+    # leaving light text on light green. Repeat the import noctalia's apply.sh looks for: seeing
+    # it there, the script leaves this read-only store symlink alone instead of rewriting it.
+    gtk3.extraCss = ''
+      @import url("noctalia.css");
+
+      .standard-view .view:selected,
+      .standard-view .view:selected:focus {
+        color: @accent_fg_color;
+      }
+    '';
   };
 
   # noctalia's papirus-icons template recolors folders in place, so the theme has to be writable:
