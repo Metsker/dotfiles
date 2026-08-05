@@ -308,5 +308,6 @@ in
     discord
 
     tiled
+    krita
   ];
 }
