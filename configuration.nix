@@ -103,7 +103,12 @@
   services.gvfs.enable = true;
 
   # The module also pulls in xfconf, which is where thunar keeps its settings.
-  programs.thunar.enable = true;
+  programs.thunar = {
+    enable = true;
+    # Thunar has no archive handling of its own; this is what puts Extract Here and Compress in
+    # the context menu. It drives engrampa through a wrapper script.
+    plugins = [ pkgs.thunar-archive-plugin ];
+  };
 
   # Thunar draws no thumbnails on its own; tumbler is the D-Bus thumbnailer it asks.
   services.tumbler.enable = true;
@@ -158,7 +163,7 @@
     amneziawg-tools
     unzip
     zip
-    p7zip
+    unar # engrampa shells out to lsar/unar for rar
   ];
 
   environment.sessionVariables = {

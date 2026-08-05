@@ -247,7 +247,7 @@ in
     hyprpicker
     xwayland
     slurp
-    xarchiver
+    engrampa
 
     gcc
     gnumake
