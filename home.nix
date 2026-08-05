@@ -174,6 +174,18 @@ in
     noDisplay = true;
   };
 
+  # Same for thunar's two side tools; both are reachable from inside thunar itself.
+  xdg.desktopEntries.thunar-settings = {
+    name = "Thunar Preferences";
+    exec = "thunar-settings";
+    noDisplay = true;
+  };
+  xdg.desktopEntries.thunar-bulk-rename = {
+    name = "Bulk Rename";
+    exec = "thunar --bulk-rename %F";
+    noDisplay = true;
+  };
+
   programs.git = {
     enable = true;
     settings = {
