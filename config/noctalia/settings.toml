@@ -1,4 +1,4 @@
-config_version = 7
+config_version = 12
 
 [audio]
 enable_sounds = true
@@ -25,7 +25,7 @@ margin_edge = 8
 margin_ends = 8
 radius = 16
 shadow = false
-start = [ "session", "workspaces", "layout" ]
+start = [ "session", "workspaces", "window", "layout" ]
 
 [control_center]
 hidden_tabs = [ "power" ]
@@ -127,7 +127,6 @@ widget_order = [ "lockscreen-login-box@HDMI-A-3", "lockscreen-login-box@HDMI-A-2
         show_keyboard_layout = true
         show_login_button = true
         show_media = true
-        show_password_hint = true
         show_session_buttons = true
         show_weather = true
 
@@ -152,7 +151,6 @@ widget_order = [ "lockscreen-login-box@HDMI-A-3", "lockscreen-login-box@HDMI-A-2
         show_keyboard_layout = true
         show_login_button = true
         show_media = true
-        show_password_hint = true
         show_session_buttons = true
         show_weather = true
 
@@ -177,7 +175,6 @@ widget_order = [ "lockscreen-login-box@HDMI-A-3", "lockscreen-login-box@HDMI-A-2
         show_keyboard_layout = true
         show_login_button = true
         show_media = true
-        show_password_hint = true
         show_session_buttons = true
         show_weather = true
 
@@ -205,7 +202,7 @@ panel_placement = "floating"
 browser_placement = "floating"
 
 [plugins]
-enabled = [ "noctalia/screen_recorder", "noctalia/wallhaven", "noctalia/timer", "metsker/mango-layout" ]
+enabled = [ "noctalia/screen_recorder", "noctalia/wallhaven", "noctalia/timer", "metsker/mango-layout", "metsker/window-info" ]
 
     [[plugins.source]]
     kind = "git"
@@ -356,7 +353,10 @@ drawer = true
 scroll_down = "volume-down 1"
 scroll_up = "volume-up 1"
 
+[widget.window]
+type = "metsker/window-info:window"
+
 [widget.workspaces]
-display = "none"
 enabled = true
 focused_output_only = true
+show_labels = false

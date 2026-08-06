@@ -1,0 +1,14 @@
+id = "metsker/window-info"
+name = "Window Info"
+version = "1.0.0"
+plugin_api = 13
+author = "metsker"
+license = "MIT"
+dependencies = ["mmsg"]
+icon = "app-window"
+description = "Shows the focused window's title or app id, toggled on click."
+tags = ["bar", "mangowc"]
+
+[[widget]]
+id = "window"
+entry = "window-info.luau"
