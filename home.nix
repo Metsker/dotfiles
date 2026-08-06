@@ -301,6 +301,7 @@ in
 
     nil
     nixpkgs-fmt
+    lua-language-server
     stylua
 
     telegram-desktop
