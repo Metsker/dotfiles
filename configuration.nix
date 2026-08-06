@@ -183,33 +183,12 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  # ponytail: pin solaar 1.1.20; nixos-26.05 and unstable both still ship 1.1.19.
-  # Drop this overlay once your channel ships >= 1.1.20 - track https://github.com/NixOS/nixpkgs/pull/536409
   nixpkgs.overlays = [
-    (final: prev: {
-      solaar = prev.solaar.overrideAttrs (old: rec {
-        version = "1.1.20";
-        src = prev.fetchFromGitHub {
-          owner = "pwr-Solaar";
-          repo = "Solaar";
-          tag = version;
-          hash = "sha256-h/uiy0TtMicKch2cdXHur5DkvQun2sAw2HpFI7Qstqg=";
-        };
-      });
-    })
     # xdpw offers only 24-bit BG24 shm on NVIDIA GLES2; Chromium needs 32-bit - breaks Discord screenshare.
     # Patch = upstream PR 386 + XBGR/ABGR fallbacks. Drop when https://github.com/emersion/xdg-desktop-portal-wlr/issues/385 is fixed.
-    # 0.8.4 fixes the driver-mode buffer starvation freeze (PR 397); drop the version pin once nixpkgs ships it.
     # The 2-buffer pool still starves the capture loop with Electron consumers; drop the buffer-count patch when PR 396 lands.
     (final: prev: {
-      xdg-desktop-portal-wlr = prev.xdg-desktop-portal-wlr.overrideAttrs (old: rec {
-        version = "0.8.4";
-        src = prev.fetchFromGitHub {
-          owner = "emersion";
-          repo = "xdg-desktop-portal-wlr";
-          rev = "v${version}";
-          hash = "sha256-8Ohgkz13FcG8ddjjgreXkvFD2Q+zUDZnAM4Oh+C9P/s=";
-        };
+      xdg-desktop-portal-wlr = prev.xdg-desktop-portal-wlr.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [
           ./patches/xdpw-shm-fallback-formats.diff
           ./patches/xdpw-buffer-count.diff
