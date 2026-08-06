@@ -45,17 +45,17 @@ index 1195896c..72ca8100 100644
 +		config.touchscreen_map_to_mon = NULL;
 +	}
 +
- 	// 释放 circle_layout
- 	free_circle_layout(&config);
- 
+ 	if (config.jump_labels) {
+ 		free(config.jump_labels);
+ 		config.jump_labels = NULL;
 @@ -4021,6 +4039,7 @@ bool parse_config(void) {
  	config.jumplabeldata.font_desc = NULL;
  	config.groupbardata.font_desc = NULL;
  	config.tablet_map_to_mon = NULL;
 +	config.touchscreen_map_to_mon = NULL;
+ 	config.jump_labels = NULL;
  	strcpy(config.keymode, "default");
  
- 	create_config_keymap();
 diff --git a/src/dispatch/bind_declare.h b/src/dispatch/bind_declare.h
 index 5f8c5483..ccdd2ac9 100644
 --- a/src/dispatch/bind_declare.h
