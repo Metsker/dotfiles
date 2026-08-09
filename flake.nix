@@ -2,6 +2,11 @@
   description = "NixOS flake";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+    import-tree.url = "github:denful/import-tree";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -31,31 +36,7 @@
     # No nixpkgs.follows: keep the flake's pin so the claude-code.cachix.org cache hits.
     claude-code.url = "github:sadjow/claude-code-nix";
   };
-  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
-    let
-      mkHost = hostname: nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./hosts/${hostname}
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.metsker = import ./home.nix;
-              backupFileExtension = "backup";
-              extraSpecialArgs = { inherit inputs; };
-            };
-          }
-        ];
-      };
-    in
-    {
-      nixosConfigurations = {
-        pc = mkHost "pc";
-        # laptop = mkHost "laptop";
-      };
-    };
+
+  # Dendritic: every .nix file under modules/ is a flake-parts module, imported automatically.
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 }

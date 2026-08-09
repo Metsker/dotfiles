@@ -1,4 +1,5 @@
-**/noctalia.*
-**/themes/noctalia
+# Rendered by noctalia's theme templates; scoped to config/ so modules/noctalia.nix stays tracked.
+config/**/noctalia.*
+config/**/themes/noctalia
 .playwright-mcp/
 result
