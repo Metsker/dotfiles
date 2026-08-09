@@ -47,6 +47,12 @@ let
     runtimeInputs = [ pkgs.chromium ];
     text = builtins.readFile ./scripts/webapp.sh;
   };
+  # Waits out the OpenRGB SDK server's device detection, then applies the named profile.
+  openrgb-profile = pkgs.writeShellApplication {
+    name = "openrgb-profile";
+    runtimeInputs = [ pkgs.openrgb ];
+    text = builtins.readFile ./scripts/openrgb-profile.sh;
+  };
   # monstar terminal, built by the monstar-flake input.
   monstarPkg = inputs.monstar.packages.${pkgs.stdenv.hostPlatform.system}.default;
   # Terminal indirection (absolute store path: ~/.local/bin isn't on mango's session PATH).
@@ -258,6 +264,7 @@ in
     textpicker
     clipboard
     webapp
+    openrgb-profile
     term
     monstarPkg
     ghostty.terminfo # monstar sets TERM=xterm-ghostty; supplies that terminfo entry
