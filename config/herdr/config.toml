@@ -2,6 +2,8 @@ onboarding = false
 
 [keys]
 prefix = "ctrl+s"
+navigate_workspace_up = "p"
+navigate_workspace_down = "n"
 
 [terminal]
 new_cwd = "home"
