@@ -1,4 +1,14 @@
 {
+  flake.modules.homeManager.metsker = { pkgs, config, ... }: {
+    home.packages = [
+      (pkgs.writeShellApplication {
+        name = "record";
+        runtimeInputs = [ config.programs.noctalia.package pkgs.procps pkgs.gnused ];
+        text = builtins.readFile ../scripts/record.sh;
+      })
+    ];
+  };
+
   flake.modules.nixos.base = { pkgs, ... }: {
     xdg.portal.wlr.settings.screencast = {
       chooser_type = "simple";
