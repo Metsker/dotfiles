@@ -6,4 +6,4 @@ background-opacity-cells = true
 window-padding-x = 14
 window-padding-y = 14
 palette = 8=#404040
-# foreground = #7eb885 # used by workspace highlight
+foreground = #000000 # used by workspace highlight
