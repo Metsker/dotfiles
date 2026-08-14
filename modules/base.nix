@@ -14,8 +14,5 @@
 
   flake.modules.homeManager.metsker = { dotfile, ... }: {
     home.stateVersion = "26.05";
-
-    # Leftover: no hyprland here, but the config is still tracked and linked.
-    xdg.configFile.hypr = { source = dotfile "hypr"; recursive = true; };
   };
 }
