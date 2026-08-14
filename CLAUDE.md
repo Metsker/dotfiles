@@ -47,8 +47,12 @@ outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.imp
 
 Every `.nix` file under `modules/` is therefore a **flake-parts module**, auto-imported. No file
 imports another by path, so files can be renamed and moved freely. Each one owns a single feature
-*across every layer it touches* - `modules/mango.nix` carries the compositor's NixOS options, its
+*across every layer it touches* - `modules/apps/mango.nix` carries the compositor's NixOS options, its
 patch overlay, and its `~/.config/mango` symlink together.
+
+Nesting is cosmetic - import-tree walks the whole tree, so a subfolder groups files without changing
+anything. `modules/apps/` holds the programs; `modules/` root keeps the system plumbing (boot,
+hardware, networking, fonts, the user account).
 
 Modules are stored under three names and assembled in `modules/hosts/pc.nix`:
 
@@ -86,14 +90,14 @@ condition becomes permanent.
   configs at theme-switch time; the rendered outputs are gitignored (`**/noctalia.*`, `**/themes/noctalia`).
   Edit the template (`config/noctalia/templates/`) or the noctalia settings, never the generated file.
   `config/mango/noctalia.conf` and `config/monstar/themes/noctalia` are both generated.
-- **monstar** is the terminal, built from a flake input. `term` in `modules/monstar.nix` is an
+- **monstar** is the terminal, built from a flake input. `term` in `modules/apps/monstar.nix` is an
   absolute-store-path shim because `~/.local/bin` is not on mango's session PATH.
 - `config/hypr/` and `config/niri/` are inactive leftovers - neither compositor is installed, and
   `patches/hyprland-scrolling-clamp-camera.diff` is unused. Do not treat them as live config.
 
 ## Claude Code config
 
-`modules/claude.nix` owns it all. MCP servers are declared in one `writeText` JSON and passed via a `claude`
+`modules/apps/claude.nix` owns it all. MCP servers are declared in one `writeText` JSON and passed via a `claude`
 wrapper (`--mcp-config=...`); do not add servers to `~/.claude.json`. `settings.json` is linked with
 `ln -sf` in an activation script rather than `home.file`, because Claude Code rewrites it at runtime and
 a read-only store symlink would break that. The tracked files live in `config/claude/`.

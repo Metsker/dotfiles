@@ -36,7 +36,7 @@
     nixpkgs.overlays = [
       (final: prev: {
         mangowm = inputs.mango.packages.${prev.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
-          patches = (old.patches or [ ]) ++ [ ../patches/mango-touch-input.diff ];
+          patches = (old.patches or [ ]) ++ [ ../../patches/mango-touch-input.diff ];
         });
       })
     ];

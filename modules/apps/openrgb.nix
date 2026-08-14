@@ -7,7 +7,7 @@
       (pkgs.writeShellApplication {
         name = "openrgb-profile";
         runtimeInputs = [ pkgs.openrgb ];
-        text = builtins.readFile ../scripts/openrgb-profile.sh;
+        text = builtins.readFile ../../scripts/openrgb-profile.sh;
       })
     ];
   };
