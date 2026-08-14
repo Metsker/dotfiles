@@ -1,5 +1,5 @@
 ---
-name: merging-worktrees
+name: merge-worktree
 description: Merge a herdr-created git worktree back into the main checkout and clean it up. Use when asked to merge, land, or finish a worktree branch.
 ---
 
@@ -16,12 +16,16 @@ worktree branch out twice - git forbids that.
    the broken state is isolated.
 3. From the main checkout: `git merge --ff-only <branch>`. It refuses instead of
    producing a surprise merge commit if the rebase was skipped or incomplete.
-4. Stop here. Leave the worktree and its space alone unless cleanup was asked for.
+4. Clean up, below. A merged worktree is done, and leaving the checkout behind is a
+   stale copy of the branch to confuse the next session.
 
 Review before merging with `git diff <target>...<branch>` (three dots - against the
 merge base).
 
-## Cleanup, only when asked
+## Cleanup, unless told to keep it
+
+Runs by default once the merge lands. Skip it only when the user said to - "keep the
+worktree", "leave it open", or plans to keep working on the branch.
 
 Cleanup is all three: the checkout goes, the branch goes, the space closes. Closing
 the space is part of the job, not a follow-up to hand back to the user.
