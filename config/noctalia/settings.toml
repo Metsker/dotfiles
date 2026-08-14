@@ -192,7 +192,7 @@ corner_roundness = 0.0
 picker_placement = "floating"
 
 [plugin_settings."noctalia/screen_recorder"]
-audio_source = "none"
+audio_source = "default_output"
 hide_inactive = true
 video_source = "portal"
 
