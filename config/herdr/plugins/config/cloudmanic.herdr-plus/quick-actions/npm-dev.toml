@@ -1,0 +1,3 @@
+name = "npm run dev"
+description = "Start the dev server in the launch directory"
+command = "npm run dev"

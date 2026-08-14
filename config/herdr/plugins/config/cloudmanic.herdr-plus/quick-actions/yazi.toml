@@ -1,0 +1,3 @@
+name = "Open Working Dir in Yazi"
+description = "Browse the launch directory in yazi"
+command = "yazi"
