@@ -13,9 +13,6 @@
     let
       dotfiles = "${config.home.homeDirectory}/dotfiles/config";
 
-      # Built from source by the upstream flake; tracks whatever the fff input pins.
-      fff-mcp = inputs.fff.packages.${pkgs.stdenv.hostPlatform.system}.fff-mcp;
-
       # sadjow/claude-code-nix: hourly-updated build, cached at claude-code.cachix.org.
       claude-code = inputs.claude-code.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
@@ -23,9 +20,16 @@
       mcpConfig = pkgs.writeText "claude-mcp.json" (builtins.toJSON {
         mcpServers = {
           # --isolated keeps Playwright's profile out of the read-only store.
-          playwright = { command = "${pkgs.playwright-mcp}/bin/playwright-mcp"; args = [ "--headless" "--isolated" ]; };
+          # --viewport-size so a screenshot comes out the same size in every
+          # session rather than at whatever the browser happened to open at - and
+          # so nothing has to resize a tab before it has one, which is its own
+          # small trap. Browsers come from playwright.nix, which points every
+          # playwright on the machine at the set this package already uses.
+          playwright = {
+            command = "${pkgs.playwright-mcp}/bin/playwright-mcp";
+            args = [ "--headless" "--isolated" "--viewport-size" "1440x900" ];
+          };
           context7 = { command = "${pkgs.context7-mcp}/bin/context7-mcp"; args = [ ]; };
-          fff = { command = "${fff-mcp}/bin/fff-mcp"; args = [ ]; };
         };
       });
 
@@ -71,7 +75,6 @@
         claude # wrapped claude-code with --mcp-config
         pkgs.playwright-mcp # bundles its own NixOS chromium
         pkgs.context7-mcp
-        fff-mcp
       ];
 
       programs.fish.shellAliases.c = "claude";
