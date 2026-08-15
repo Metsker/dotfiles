@@ -48,6 +48,23 @@ To keep the files and only close the space, run step 3 alone. Reopen later with
 
 If a worktree directory was deleted by hand, run `git worktree prune`.
 
+## Sweep the leftovers first
+
+Step 1 deletes the directory while the panes are still alive - the space only closes in
+step 3 - so anything still running writes its files back into the path git just removed:
+a dev server recreates `<worktree>/.vite/deps`, Tiled drops a `.tiled-session` on exit.
+The directory reappears owning nothing but cache, and git no longer knows about it.
+
+Nothing can run after step 3, so the sweep goes at the front of the next cleanup. One
+level per branch, and a live worktree always has a `.git` file:
+
+```bash
+find ~/.herdr/worktrees -mindepth 2 -maxdepth 2 -type d -not -name '.*' '!' -exec test -e {}/.git ';' -print
+```
+
+Check the list, then swap `-print` for `-exec rm -rf {} +`. `-not -name '.*'` keeps the
+shared caches `setup-worktrees` links next to the worktrees, like `<repo>/.cache`.
+
 ## In this repo
 
 - A merge that bumps `config/nvim` brings only the gitlink. Run
