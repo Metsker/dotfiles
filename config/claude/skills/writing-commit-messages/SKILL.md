@@ -7,12 +7,14 @@ description: Uses Linux kernel commit message guidelines. Use when writing or ed
 
 Use Linux kernel-style commits:
 
-- Every commit must have a subject and a message
 - Format subjects as `subsystem: imperative summary`, e.g. `ui: add profile overlay toggle`.
 - Keep subjects concise and lowercase after the subsystem unless a proper noun requires capitalization.
 - Use the imperative mood: `add`, `fix`, `remove`, `update`; avoid `added`, `adds`, or gerunds.
-- Explain the problem being solved and why the change is needed.
-- Describe what changed, not implementation trivia.
+- Write a body only when the subject leaves a real question open - why now, what
+  broke, what a reader would otherwise misread. Skip it when the subject already
+  explains the change.
+- One short paragraph is the default for a body; two is the maximum.
+- State the reason, not the diff. Never narrate the symptom in detail.
 - Keep the body wrapped to about 75 columns.
 - Never add a `Co-Authored-By:` trailer or any other attribution footer.
 

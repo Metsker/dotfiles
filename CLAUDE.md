@@ -105,7 +105,8 @@ a read-only store symlink would break that. The tracked files live in `config/cl
 ## Conventions
 
 - Commit messages follow `config/claude/skills/writing-commit-messages/SKILL.md`: kernel style,
-  `subsystem: imperative summary`, body explaining why, and **no `Co-Authored-By` or attribution trailer**
+  `subsystem: imperative summary`, a body only when the subject leaves a question
+  open, and **no `Co-Authored-By` or attribution trailer**
   (this repo's rule overrides the default).
 - Comments explain *why* a non-obvious workaround exists, and stay to one line per block.
 - `ponytail:` prefixes a deliberate shortcut with a known ceiling and its upgrade path.
