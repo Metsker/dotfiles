@@ -29,15 +29,10 @@
     # Electron apps (Discord) ignore SIGTERM and stall logout for 90s; SIGKILL them after 10s instead.
     systemd.user.settings.Manager.DefaultTimeoutStopSec = "10s";
 
-    # mango drops WLR_INPUT_DEVICE_TOUCH on the floor and never advertises WL_SEAT_CAPABILITY_TOUCH,
-    # so a touchscreen does nothing at all. Patch is mango PR 888 (itself a port of dwl's
-    # touch-input patch), with its three dispatchers changed from int32_t to void - the PR branch
-    # carries a dispatcher-return refactor that is not in main. Drop when PR 888 merges.
+    # Exposes the flake input under pkgs so desktop-tools.nix can list it in runtimeInputs.
     nixpkgs.overlays = [
       (final: prev: {
-        mangowm = inputs.mango.packages.${prev.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
-          patches = (old.patches or [ ]) ++ [ ../../patches/mango-touch-input.diff ];
-        });
+        mangowm = inputs.mango.packages.${prev.stdenv.hostPlatform.system}.default;
       })
     ];
   };
