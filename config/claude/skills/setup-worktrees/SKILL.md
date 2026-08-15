@@ -25,6 +25,32 @@ Verify with whatever the worktree is for - `npm run dev`, `npm test`.
 The same holds for any gitignored directory the build needs and git does not carry:
 `.venv`, `vendor/`, a downloaded asset cache. Link the main checkout's.
 
+## Build caches that live outside the worktree
+
+A tracked config can point the cache at a path relative to the repo root, so it lands
+outside the checkout and `git status --ignored` never lists it - it looks linked when
+nothing is. Cargo is the expensive case:
+
+```toml
+# .cargo/config.toml, tracked, so every worktree carries it
+[build]
+target-dir = "../.cache/my-cargo-target"
+```
+
+That resolves per checkout, so the worktree compiles the whole dependency tree again -
+tens of minutes and gigabytes for a Tauri app. Link the resolved directory, not the
+one inside the worktree:
+
+```bash
+rm -rf ../.cache/my-cargo-target
+ln -s "$(git worktree list --porcelain | head -1 | sed 's/^worktree //')/../.cache/my-cargo-target" ../.cache/my-cargo-target
+```
+
+Registry crates are keyed by their own source, so they are reused; local crates stay
+separate units keyed by path and coexist in the one directory. Cargo takes a file lock
+on it, so builds in the main checkout and a worktree now serialize rather than run in
+parallel. Swap it while nothing is compiling.
+
 ## Install for real when the branch changed the deps
 
 The link is one tree for every worktree, so a branch that adds, removes, or bumps a
