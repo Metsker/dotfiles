@@ -27,10 +27,6 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    fff = {
-      url = "github:dmtrKovalenko/fff";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # No nixpkgs.follows: match monstar-nix's pinned nixpkgs so the cache hits.
     monstar.url = "github:Metsker/monstar-nix";
     # No nixpkgs.follows: keep the flake's pin so the claude-code.cachix.org cache hits.
