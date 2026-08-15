@@ -1,9 +1,9 @@
 ---
-name: init-worktree
+name: setup-worktrees
 description: Make a fresh git worktree runnable by linking the main checkout's dependencies instead of installing per worktree. Use when a dev server, test run, or build fails in a worktree with missing modules.
 ---
 
-# Init Worktrees
+# Setup Worktrees
 
 A new worktree is a checkout of tracked files only. `node_modules/` is gitignored, so
 it is simply not there and every `npm run` in a fresh worktree fails on the first
