@@ -1,6 +1,5 @@
 {
   flake.modules.nixos.base = {
-    qt.enable = true;
     programs.dconf.enable = true;
   };
 
@@ -73,14 +72,37 @@
 
     qt = {
       enable = true;
-      platformTheme.name = "qtct";
-      qt6ctSettings.Appearance = {
-        custom_palette = true;
-        style = "Fusion";
-        color_scheme_path = "${config.home.homeDirectory}/.config/qt6ct/colors/noctalia.conf";
-        # Qt has no icon theme of its own; without this Qt apps fall back to hicolor and show blanks.
-        icon_theme = "Papirus-Dark";
+      # qtct carries noctalia's palette but never reports a color scheme: qt6ct inherits
+      # QGenericUnixTheme without overriding appearance(), and the portal listener lives in
+      # QGnomeTheme, so QStyleHints::colorScheme() stays Unknown and QML/WebEngine apps render light.
+      # plasma-integration reads the scheme out of kdeglobals, which is what noctalia writes.
+      platformTheme.name = "kde";
+      # Naming the package pins this to the Qt6 style; the default would add breeze.qt5 and drag the
+      # whole KF5 tree in behind it. Nothing here is Qt5 any more - see the tiled overlay in dev.nix.
+      style = {
+        name = "breeze";
+        package = pkgs.kdePackages.breeze;
       };
+
+      # kwriteconfig6 edits kdeglobals in place and leaves it writable, which the merge needs - a
+      # home.file symlink into the store would make noctalia's apply.py fail on open(). It only
+      # rewrites the keys the color scheme names, so these two sections survive a theme switch.
+      kde.settings.kdeglobals = {
+        General = {
+          font = "Noto Sans,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
+          fixed = "JetBrainsMono Nerd Font,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
+        };
+        # Qt has no icon theme of its own; without this Qt apps fall back to hicolor and show blanks.
+        Icons.Theme = "Papirus-Dark";
+      };
+    };
+
+    # Hide KDE System Settings from the noctalia launcher - platformTheme "kde" pulls it in as a
+    # dependency, and it is useless without a Plasma session (still runnable via `systemsettings`).
+    xdg.desktopEntries.systemsettings = {
+      name = "System Settings";
+      exec = "systemsettings";
+      noDisplay = true;
     };
 
     # Hide the Qt5/Qt6 Settings tools from the noctalia launcher (still runnable via `qt5ct`/`qt6ct`).

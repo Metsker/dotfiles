@@ -1,4 +1,3 @@
 # Sourced by uwsm at session start and exported to the systemd user session,
 # so user services (Noctalia, portals) and uwsm-scoped apps inherit these.
 export NIXOS_OZONE_WL=1
-export QT_QPA_PLATFORMTHEME=qt6ct

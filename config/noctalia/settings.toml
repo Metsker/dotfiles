@@ -279,7 +279,7 @@ community_palette = "Atuel"
 source = "wallpaper"
 
     [theme.templates]
-    builtin_ids = [ "foot", "gtk3", "gtk4", "hyprland", "mango", "qt" ]
+    builtin_ids = [ "foot", "gtk3", "gtk4", "hyprland", "kcolorscheme", "mango" ]
     community_ids = [ "zen-browser", "neovim", "papirus-icons", "yazi" ]
 
         [theme.templates.user.monstar]
