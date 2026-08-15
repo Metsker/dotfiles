@@ -35,9 +35,9 @@
   "enabledPlugins": {
     "context-mode@context-mode": true,
     "mattpocock-skills@mattpocock": true,
-    "ponytail@ponytail": true,
     "pixijs-skills@pixijs-skills": true,
-    "lua-lsp@claude-plugins-official": true
+    "lua-lsp@claude-plugins-official": true,
+    "andrej-karpathy-skills@karpathy-skills": true
   },
   "extraKnownMarketplaces": {
     "context-mode": {
@@ -58,10 +58,10 @@
         "repo": "pixijs/pixijs-skills"
       }
     },
-    "ponytail": {
+    "karpathy-skills": {
       "source": {
         "source": "github",
-        "repo": "DietrichGebert/ponytail"
+        "repo": "multica-ai/andrej-karpathy-skills"
       }
     }
   },
