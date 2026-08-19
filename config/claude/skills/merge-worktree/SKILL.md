@@ -27,43 +27,60 @@ merge base).
 Runs by default once the merge lands. Skip it only when the user said to - "keep the
 worktree", "leave it open", or plans to keep working on the branch.
 
-Cleanup is all three: the checkout goes, the branch goes, the space closes. Closing
-the space is part of the job, not a follow-up to hand back to the user.
+Cleanup is all four: the processes go, the checkout goes, the branch goes, the space
+closes. Closing the space is part of the job, not a follow-up to hand back to the user.
 
-Find the workspace id with `herdr worktree list --json`, then run these from the main
-checkout, in this order. The last one kills the panes this session runs in, so
-everything else must be done and reported before it:
+`herdr worktree list` prints `path`, `branch` and `open_workspace_id` for every worktree
+of the current repo - one call has every id the steps below need. Run them from the main
+checkout, in this order. The last one kills the pane this session runs in, so everything
+else must be done and reported before it:
 
-1. `git worktree remove --force <path>` - drops the checkout and leaves the space
+1. Close every pane of the worktree's space but this one. A process that outlives the
+   checkout writes its files back into the path step 2 removes - see below:
+
+   ```bash
+   self=$(herdr pane current | jq -r .result.pane.pane_id)
+   herdr pane list --workspace <id> |
+     jq -r --arg self "$self" '.result.panes[] | select(.pane_id != $self) | .pane_id' |
+     xargs -r -n1 herdr pane close
+   ```
+
+   Nothing matches `$self` when this session lives in another space, so every pane
+   closes and step 4 has nothing left to do.
+2. `git worktree remove --force <path>` - drops the checkout and leaves the space
    alone, so there is still a shell to run the rest in.
-2. `git branch -d <branch>` - `-d` refuses if unmerged, which is the check you want.
-3. `herdr workspace close <id>` - last, as a call of its own.
+3. `git branch -d <branch>` - `-d` refuses if unmerged, which is the check you want.
+4. `herdr workspace close <id>` - last, as a call of its own.
 
 `herdr worktree remove --workspace <id> --force` does the lot in one command, but it
 kills the panes at once, so the branch never gets deleted. Use it only when the branch
 is meant to survive.
 
-To keep the files and only close the space, run step 3 alone. Reopen later with
+To keep the files and only close the space, run step 4 alone. Reopen later with
 `herdr worktree open --cwd <repo> --branch <branch>`.
 
 If a worktree directory was deleted by hand, run `git worktree prune`.
 
-## Sweep the leftovers first
+## Why the panes go first
 
-Step 1 deletes the directory while the panes are still alive - the space only closes in
-step 3 - so anything still running writes its files back into the path git just removed:
-a dev server recreates `<worktree>/.vite/deps`, Tiled drops a `.tiled-session` on exit.
-The directory reappears owning nothing but cache, and git no longer knows about it.
+Step 2 deletes the directory while the space is still open, so anything still running
+there writes its files back into the path git just removed. Vite is the loud case: it
+resolves its cache dir once per config load, and with the worktree's `package.json` gone
+it falls back from `node_modules/.vite` to `<root>/.vite`, then `mkdir -p`s the whole
+worktree path to hold it. Tiled drops a `.tiled-session` on exit. The directory
+reappears owning nothing but cache, and git no longer knows about it.
 
-Nothing can run after step 3, so the sweep goes at the front of the next cleanup. One
-level per branch, and a live worktree always has a `.git` file:
+Killing the panes first covers every such tool, so this should not happen. To clear
+leftovers from a cleanup that skipped step 1 - one level per branch, and a live worktree
+always has a `.git` file:
 
 ```bash
 find ~/.herdr/worktrees -mindepth 2 -maxdepth 2 -type d -not -name '.*' '!' -exec test -e {}/.git ';' -print
 ```
 
 Check the list, then swap `-print` for `-exec rm -rf {} +`. `-not -name '.*'` keeps the
-shared caches `setup-worktrees` links next to the worktrees, like `<repo>/.cache`.
+shared caches `setup-worktrees` links next to the worktrees, like `<repo>/.cache`. The
+path is outside any project, so auto-mode stops for approval - ask rather than skip it.
 
 ## In this repo
 
