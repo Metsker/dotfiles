@@ -97,6 +97,9 @@
       };
     };
 
+    # Previews in the kde file dialog come from KIO's thumbnail worker, which ships only in kio-extras.
+    home.packages = [ pkgs.kdePackages.kio-extras ];
+
     # Hide KDE System Settings from the noctalia launcher - platformTheme "kde" pulls it in as a
     # dependency, and it is useless without a Plasma session (still runnable via `systemsettings`).
     xdg.desktopEntries.systemsettings = {
