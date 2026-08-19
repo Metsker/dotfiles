@@ -26,5 +26,11 @@
       config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/${path}";
 
     xdg.mimeApps.enable = true;
+
+    # Steam's "Add desktop shortcut" writes to XDG_DESKTOP_DIR; point it where the launcher scans.
+    xdg.userDirs = {
+      enable = true;
+      desktop = "${config.home.homeDirectory}/.local/share/applications";
+    };
   };
 }
