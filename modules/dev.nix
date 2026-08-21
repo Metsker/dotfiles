@@ -74,6 +74,14 @@
 
       herdr
 
+      # Installs a version-matched herdr and neovim on a Debian host over SSH, so
+      # `herdr --remote <host>` has a server to attach to. See the script's header.
+      (writeShellApplication {
+        name = "bootstrap-remote";
+        runtimeInputs = [ openssh ];
+        text = builtins.readFile ../scripts/bootstrap-remote.sh;
+      })
+
       # Tiled ships MIME types for .tmx/.tsx only, so a project file lands on text/plain.
       (writeTextDir "share/mime/packages/tiled-project.xml" ''
         <?xml version="1.0" encoding="UTF-8"?>

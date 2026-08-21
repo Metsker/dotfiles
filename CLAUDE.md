@@ -60,7 +60,7 @@ One file per domain, not per app - a new program joins the file its domain alrea
 | `theming.nix` | GTK/Qt/cursor/icons, fonts |
 | `desktop.nix` | mango, uwsm, greetd, noctalia, screencast, the wayland tool scripts |
 | `shell.nix` | fish, monstar, foot, yazi, neovim, git |
-| `dev.nix` | toolchain, playwright browsers, herdr |
+| `dev.nix` | toolchain, playwright browsers, herdr, remote host bootstrap |
 | `apps.nix` | browser, file manager, media, chat, art, VPN |
 | `claude.nix`, `webapps.nix`, `gaming.nix` | each big enough to stand alone |
 
