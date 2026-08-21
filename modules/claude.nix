@@ -23,7 +23,7 @@
           # --viewport-size so a screenshot comes out the same size in every
           # session rather than at whatever the browser happened to open at - and
           # so nothing has to resize a tab before it has one, which is its own
-          # small trap. Browsers come from playwright.nix, which points every
+          # small trap. Browsers come from dev.nix, which points every
           # playwright on the machine at the set this package already uses.
           playwright = {
             command = "${pkgs.playwright-mcp}/bin/playwright-mcp";
