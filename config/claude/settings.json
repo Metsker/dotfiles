@@ -3,7 +3,11 @@
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
   },
   "permissions": {
-    "defaultMode": "auto"
+    "defaultMode": "auto",
+    "allow": [
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_evaluate"
+    ]
   },
   "model": "opus[1m]",
   "hooks": {
