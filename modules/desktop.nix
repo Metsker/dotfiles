@@ -46,6 +46,10 @@
       chooser_cmd = "${pkgs.slurp}/bin/slurp -f 'Monitor: %o' -or";
     };
 
+    # Qt apps open this dialog natively already, so the portal's picker now matches them.
+    xdg.portal.extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
+    xdg.portal.config.mango."org.freedesktop.impl.portal.FileChooser" = "kde";
+
     programs.gpu-screen-recorder.enable = true;
 
     nixpkgs.overlays = [

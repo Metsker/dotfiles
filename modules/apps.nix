@@ -58,7 +58,7 @@
         "zen.widget.linux.transparency" = false;
         "browser.tabs.allow_transparent_browser" = true;
         "browser.tabs.hoverPreview.enabled" = true;
-        # Default 2 (auto) only picks the portal when sandboxed; 1 forces it, so uploads get the GTK picker.
+        # Default 2 (auto) only picks the portal when sandboxed; 1 forces it, so uploads get the portal picker.
         "widget.use-xdg-desktop-portal.file-picker" = 1;
       };
     };
