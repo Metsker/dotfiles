@@ -3,11 +3,11 @@
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
   },
   "permissions": {
-    "defaultMode": "auto",
     "allow": [
       "mcp__playwright__browser_navigate",
       "mcp__playwright__browser_evaluate"
-    ]
+    ],
+    "defaultMode": "auto"
   },
   "model": "opus[1m]",
   "hooks": {
@@ -29,6 +29,26 @@
             "timeout": 10
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/dotfiles/config/claude/hooks/terse-mode.sh session",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/dotfiles/config/claude/hooks/terse-mode.sh prompt",
+            "timeout": 5
+          }
+        ]
       }
     ]
   },
@@ -38,10 +58,9 @@
   },
   "enabledPlugins": {
     "context-mode@context-mode": true,
-    "mattpocock-skills@mattpocock": true,
     "pixijs-skills@pixijs-skills": true,
     "lua-lsp@claude-plugins-official": true,
-    "andrej-karpathy-skills@karpathy-skills": true
+    "superpowers@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "context-mode": {
@@ -50,22 +69,10 @@
         "repo": "mksglu/context-mode"
       }
     },
-    "mattpocock": {
-      "source": {
-        "source": "github",
-        "repo": "mattpocock/skills"
-      }
-    },
     "pixijs-skills": {
       "source": {
         "source": "github",
         "repo": "pixijs/pixijs-skills"
-      }
-    },
-    "karpathy-skills": {
-      "source": {
-        "source": "github",
-        "repo": "multica-ai/andrej-karpathy-skills"
       }
     }
   },
