@@ -32,3 +32,6 @@ version_check = false
 
 [ui]
 agent_panel_sort = "priority"
+
+[ui.sidebar.agents]
+rows = [["state_icon", "workspace", "tab"], ["state_text"]]
