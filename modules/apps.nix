@@ -30,6 +30,7 @@
     environment.systemPackages = with pkgs; [
       unzip
       zip
+      p7zip # engrampa shells out to 7z for 7z/zip-with-password archives
       unar # engrampa shells out to lsar/unar for rar
       amneziawg-tools
     ];
