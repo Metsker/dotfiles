@@ -13,18 +13,24 @@
  * Pictures that will not fit across that half are laid out in shelves and wrapped
  * onto a second line, at whatever size lets the whole set stand in the pane.
  *
+ * A picture is never squeezed to fit. `c` and `r` together tell the terminal to
+ * scale the image into exactly that box, so the box has to carry the image's own
+ * aspect ratio or the picture comes out stretched. Everything below exists to keep
+ * that box honest: the cell aspect is measured rather than guessed, and a shelf
+ * that would not fit across the pane is made shorter instead of narrower.
+ *
  * PNG only: `f=100` is the one format the protocol takes as a file. Convert
  * anything else first (`magick in.jpg out.png`).
  */
-import { readFileSync } from 'node:fs'
+import { closeSync, constants, mkdirSync, openSync, readFileSync, readSync, writeFileSync, writeSync } from 'node:fs'
+import { dirname } from 'node:path'
 import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 
-/** A terminal cell is about twice as tall as it is wide. Override if yours is not. */
-const CELL = Number(process.env.HERDR_CELL_ASPECT) || 2
 /** The most of the tab the viewer may take. Half, and it is a ceiling not a target. */
 const HALF = 0.5
 const SELF = fileURLToPath(import.meta.url)
+const CACHE = `${process.env.XDG_CACHE_HOME || `${process.env.HOME}/.cache`}/show-screenshot/cell-aspect`
 
 /** Width and height out of the PNG header - the two big-endian u32 at byte 16. */
 function dims(file) {
@@ -35,9 +41,95 @@ function dims(file) {
 
 const herdr = (...args) => execFileSync('herdr', args, { encoding: 'utf8' })
 const json = (...args) => JSON.parse(herdr(...args)).result
+const nap = (ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms)
+
+const drawing = process.argv[2] === '--draw'
+const files = process.argv.slice(drawing ? 3 : 2)
+if (!files.length) {
+  console.error('usage: show.mjs <image.png>...')
+  process.exit(2)
+}
+const imgs = files.map(dims)
+
+/**
+ * Ask the terminal how tall a cell is against how wide, with CSI 16 t.
+ *
+ * The reply is `CSI 6 ; height ; width t` in pixels. It arrives on stdin, so the
+ * tty has to be raw for the duration or the shell's line discipline eats it; the
+ * fd is non-blocking so a terminal that never answers costs a timeout, not a hang.
+ */
+function measureCell() {
+  let fd
+  let saved
+  try {
+    fd = openSync('/dev/tty', constants.O_RDWR | constants.O_NONBLOCK)
+    saved = execFileSync('stty', ['-g'], { stdio: [fd, 'pipe', 'ignore'] }).toString().trim()
+    execFileSync('stty', ['raw', '-echo'], { stdio: [fd, 'ignore', 'ignore'] })
+    writeSync(fd, '\x1b[16t')
+    const buf = Buffer.alloc(64)
+    const deadline = Date.now() + 300
+    let text = ''
+    let hit = null
+    while (!(hit = /\x1b\[6;(\d+);(\d+)t/.exec(text)) && Date.now() < deadline) {
+      try {
+        const n = readSync(fd, buf, 0, buf.length, null)
+        if (n) text += buf.toString('latin1', 0, n)
+      } catch {
+        nap(5)
+      }
+    }
+    return hit ? Number(hit[1]) / Number(hit[2]) : null
+  } catch {
+    return null
+  } finally {
+    if (fd !== undefined) {
+      try {
+        if (saved) execFileSync('stty', [saved], { stdio: [fd, 'ignore', 'ignore'] })
+      } catch {
+        // A terminal that will not take its own settings back is not worth failing over.
+      }
+      closeSync(fd)
+    }
+  }
+}
+
+/**
+ * How many times taller a cell is than it is wide.
+ *
+ * Only the drawing half has a tty to ask, so what it measures is written down for
+ * the outer half to read next time. Until then the outer half guesses 2 and the
+ * picture is still drawn true - it lands in a slightly wrong-sized pane, once.
+ */
+function cellAspect() {
+  if (process.env.HERDR_CELL_ASPECT) return Number(process.env.HERDR_CELL_ASPECT)
+  if (drawing) {
+    const measured = measureCell()
+    if (measured) {
+      try {
+        mkdirSync(dirname(CACHE), { recursive: true })
+        writeFileSync(CACHE, String(measured))
+      } catch {
+        // A cache that cannot be written just means measuring again next time.
+      }
+      return measured
+    }
+  }
+  try {
+    const cached = Number(readFileSync(CACHE, 'utf8'))
+    if (cached > 0) return cached
+  } catch {
+    // Nothing measured yet.
+  }
+  return 2
+}
+
+const CELL = cellAspect()
 
 /** How many columns an image wants when it is drawn `tall` rows tall. */
-const wide = (img, tall) => Math.max(4, Math.round((tall * CELL * img.w) / img.h))
+const wide = (img, tall) => Math.max(1, Math.round((tall * CELL * img.w) / img.h))
+
+/** The tallest an image can be drawn before its own width outgrows `cols`. */
+const capTall = (img, cols) => Math.floor((cols * img.h) / (img.w * CELL))
 
 /**
  * The biggest the set can be drawn and still stand inside `cols` x `rows`.
@@ -47,10 +139,16 @@ const wide = (img, tall) => Math.max(4, Math.round((tall * CELL * img.w) / img.h
  * one whose shelves fit is taken - which is why wrapping is not a fallback but a
  * candidate: three tall shots wrap to two shelves only when two shelves let them
  * be drawn bigger than one squeezed row would.
+ *
+ * The starting height is already bounded by what the pane is wide enough to hold,
+ * so a picture is made shorter rather than narrower. The `Math.min` below is the
+ * degenerate case only - a picture so wide that even one row of it overruns the
+ * pane - where something has to give and a stretched picture beats none.
  */
 function plan(imgs, cols, rows) {
   let last = null
-  for (let tall = rows; tall >= 2; tall--) {
+  const start = Math.max(1, Math.min(rows, ...imgs.map((img) => capTall(img, cols))))
+  for (let tall = start; tall >= 1; tall--) {
     const shelves = []
     let shelf = []
     let used = 0
@@ -73,13 +171,9 @@ function plan(imgs, cols, rows) {
   return last
 }
 
-const drawing = process.argv[2] === '--draw'
-const files = process.argv.slice(drawing ? 3 : 2)
-if (!files.length) {
-  console.error('usage: show.mjs <image.png>...')
-  process.exit(2)
-}
-const imgs = files.map(dims)
+/** The widest shelf in a plan, gaps included - what the pane has to hold. */
+const spread = (shape) =>
+  Math.max(...shape.shelves.map((shelf) => shelf.reduce((n, x) => n + x.c + 1, -1)))
 
 if (drawing) {
   // Inside the viewer pane, on a real tty. Planned against the pane as it really
@@ -114,10 +208,10 @@ if (!mine) {
 const { layout } = json('pane', 'layout', '--pane', mine)
 const rows = Math.max(4, layout.area.height - 2)
 const cap = Math.floor(layout.area.width * HALF)
-// What one shelf of them would like, and then the ceiling. Under it the pane is
-// only as wide as the pictures; over it they wrap inside the half they are given.
-const asked = imgs.reduce((n, i) => n + wide(i, rows), imgs.length - 1) + 1
-const want = Math.max(20, Math.min(asked, cap))
+// Plan against the ceiling first, then ask for only what that plan actually uses:
+// under the ceiling the pane is as wide as the pictures, over it they wrap inside it.
+const shape = plan(imgs, cap - 1, rows)
+const want = Math.max(20, Math.min(spread(shape) + 1, cap))
 // `--ratio` is the share kept by the pane being split, so the viewer gets the rest.
 const ratio = Math.max(0.15, Math.min(0.85, 1 - want / layout.area.width))
 
@@ -131,6 +225,5 @@ herdr('pane', 'rename', pane.pane_id, 'imgview')
 // The pane is a fresh shell; give it a moment to be ready for a line.
 await new Promise((r) => setTimeout(r, 600))
 herdr('pane', 'run', pane.pane_id, 'node', SELF, '--draw', ...files)
-const shape = plan(imgs, want - 1, rows)
 console.log(`${pane.pane_id} · ${want} of ${layout.area.width} columns · ` +
   `${files.length} image(s) in ${shape.shelves.length} row(s), ${shape.tall} tall`)

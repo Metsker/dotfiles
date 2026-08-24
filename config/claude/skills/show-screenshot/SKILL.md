@@ -74,20 +74,33 @@ file card, not pixels.
 
 ## How it sizes the pane
 
-Every picture in a row is drawn the same height, so how wide it wants to be is its
-own aspect ratio and nothing else: `cols = rows * CELL * w/h`, where `CELL` is how
-many times taller a cell is than it is wide (2, near enough - `HERDR_CELL_ASPECT`
-overrides it).
+`c` and `r` together tell the terminal to scale the image into exactly that box,
+aspect ratio be damned, so the box has to be the right shape or the picture comes
+out stretched. Every picture in a row is drawn the same height, which leaves its
+width to its own aspect ratio and nothing else: `cols = rows * CELL * w/h`, where
+`CELL` is how many times taller a cell is than it is wide.
+
+`CELL` is measured, not guessed. The drawing half asks the terminal with `CSI 16 t`
+and gets back `CSI 6 ; height ; width t` in pixels - 27 by 12 here, so 2.25, and a
+hardcoded 2 would squeeze every picture by 11%. Only that half has a tty to ask on,
+so what it measures is cached in `~/.cache/show-screenshot/cell-aspect` for the
+outer half to size the pane by. `HERDR_CELL_ASPECT` overrides both, and 2 is the
+fallback before anything has been measured.
+
+**A picture is never made narrower to fit - it is made shorter.** The starting
+height is whatever the pane is wide enough to hold at the picture's own ratio, so a
+landscape shot in a tall thin pane comes out short and wide, not squeezed into the
+full height.
 
 **The pane never takes more than half the tab.** The conversation is the thing
 being read; a picture is what is being glanced at. Under that ceiling the pane is
-only as wide as the pictures actually want - one phone screenshot takes about 33 of
+only as wide as the pictures actually want - one phone screenshot takes about 35 of
 149 columns and leaves the rest alone.
 
 Over it, they wrap. Heights are tried from the tallest down and the first one whose
 rows fit the pane is taken, so wrapping is a candidate rather than a fallback: with
-six shots in half a tab, two rows of 17 beats one squeezed row of 12. Three shots
-stay on one row at 26.
+six phone shots in half of a 149-column tab, two rows of 16 beats one row of 11.
+Three stay on one row at 22.
 
 `herdr pane split --ratio` is the share kept by the pane being **split**, so the
 viewer gets `1 - ratio`. Getting that backwards gives a 20-column picture and a
