@@ -196,6 +196,13 @@ temperature_night = 4500
 keyboard_layout = false
 media = false
 
+[plugin_settings."blackbartblues/keymap"]
+compositor = "mangowc"
+mangowc_config = "/home/metsker/dotfiles/config/mango/config.conf"
+
+[plugin_settings."ezequiel/mango_layouts"]
+panel_position = "auto"
+
 [plugin_settings."metsker/mango-layout"]
 corner_roundness = 0.0
 picker_placement = "floating"
