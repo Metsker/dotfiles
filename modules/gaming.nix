@@ -5,28 +5,12 @@
     programs.steam.enable = true;
 
     environment.sessionVariables.PROTON_ENABLE_WAYLAND = "1";
-
-    # modrinth-app is a symlinkJoin, so buildCommand skips fixupPhase and $output is never set;
-    # wrapGAppsHook's run-once guard then indexes an assoc array with an empty key and aborts.
-    # Drop when https://github.com/NixOS/nixpkgs/issues/541756 is fixed.
-    # Its webkitgtk view also dies with "Error 71 (Protocol error)" on NVIDIA; drop the second line
-    # once webkitgtk's dmabuf renderer survives an NVIDIA wlroots session.
-    nixpkgs.overlays = [
-      (final: prev: {
-        modrinth-app = prev.modrinth-app.overrideAttrs (old: {
-          buildCommand = ''
-            output=out
-            gappsWrapperArgs+=(--set WEBKIT_DISABLE_DMABUF_RENDERER 1)
-          '' + old.buildCommand;
-        });
-      })
-    ];
   };
 
   flake.modules.homeManager.metsker = { lib, pkgs, ... }: {
     home.packages = with pkgs; [
       openmw
-      modrinth-app
+      prismlauncher
       lutris
       umu-launcher # lutris runs proton through umu; without it no proton versions show up
       vintagestory

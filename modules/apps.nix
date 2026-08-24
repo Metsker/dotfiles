@@ -35,8 +35,8 @@
     ];
 
     # Telegram's miniapp webview dies with "Error 71 (Protocol error)" on NVIDIA - webkitgtk's
-    # dmabuf renderer cannot import NVIDIA's buffers into this wlroots session, same as
-    # modrinth-app in gaming.nix. Drop once that renderer survives an NVIDIA wlroots session.
+    # dmabuf renderer cannot import NVIDIA's buffers into this wlroots session.
+    # Drop once that renderer survives an NVIDIA wlroots session.
     nixpkgs.overlays = [
       (final: prev: {
         telegram-desktop = prev.telegram-desktop.overrideAttrs (old: {
