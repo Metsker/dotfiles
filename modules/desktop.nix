@@ -110,7 +110,7 @@
         runtimeInputs = [ wayfreeze slurp grim wlrctl tesseract wl-clipboard libnotify ];
         text = builtins.readFile ../scripts/textpicker.sh;
       })
-      # Super+C/V copy/paste: mmsg (mango) reads the focused appid, wtype injects Ctrl(+Shift)+C/V.
+      # Super+C/V copy/paste: mmsg (mango) reads the focused window's pid, wtype injects Ctrl(+Shift)+C/V.
       (writeShellApplication {
         name = "clipboard";
         runtimeInputs = [ wtype jq mangowm ];
