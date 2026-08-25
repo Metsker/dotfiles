@@ -73,6 +73,7 @@
       telegram-desktop
       discord
       krita
+      spotify
     ];
 
     # Thunar's two side tools; both are reachable from inside thunar itself.
