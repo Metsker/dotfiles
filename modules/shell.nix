@@ -38,6 +38,13 @@
         };
       };
 
+      programs.eza = {
+        enable = true;
+        git = true;
+        icons = "auto";
+        extraOptions = [ "--group-directories-first" ];
+      };
+
       programs.zoxide = {
         enable = true;
         options = [ "--cmd cd" ];
