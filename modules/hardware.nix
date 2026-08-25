@@ -6,10 +6,8 @@
     # Redistributable firmware blobs for BT/Wi-Fi/GPU hardware.
     hardware.enableRedistributableFirmware = true;
 
-    hardware.logitech.wireless = {
-      enable = true;
-      enableGraphical = true;
-    };
+    # Pulls in hardware.logitech.wireless.enable (udev rules) by default.
+    programs.solaar.enable = true;
 
     environment.etc."libinput/local-overrides.quirks".text = ''
       [Logitech MX Anywhere 3S]
