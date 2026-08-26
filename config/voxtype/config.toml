@@ -1,0 +1,52 @@
+# Push-to-talk dictation: hold Pause, speak, release, the text is typed at the cursor.
+
+# Parakeet runs on the CPU at ~22x real-time and returns nothing on silence, where whisper invents words.
+engine = "parakeet"
+state_file = "auto"
+
+[hotkey]
+# Mango has no key-release bind, so voxtype reads the key from evdev itself (needs the input group).
+enabled = true
+key = "PAUSE"
+modifiers = []
+mode = "push_to_talk"
+
+[audio]
+device = "default"
+sample_rate = 16000
+max_duration_secs = 120
+
+[audio.feedback]
+# The only cue that recording started, since the hotkey is a dead key with no LED.
+enabled = true
+theme = "subtle"
+volume = 0.5
+
+[parakeet]
+model = "parakeet-tdt-0.6b-v3-int8"
+# tdt gives real punctuation and capitalization; ctc is faster but emits bare characters.
+model_type = "tdt"
+# The model costs 1.85s to load, so keep it resident rather than paying that on every key press.
+on_demand_loading = false
+
+[output]
+mode = "type"
+# wtype builds its own keymap, so Cyrillic types without switching the desktop layout first.
+driver_order = ["wtype", "clipboard"]
+fallback_to_clipboard = true
+type_delay_ms = 0
+pre_type_delay_ms = 0
+
+[output.post_process]
+# Drops the leading capital and the trailing period so a dictated fragment joins the line in progress.
+command = "voxtype-postprocess"
+timeout_ms = 1000
+
+[output.notification]
+# The text lands at the cursor and the beeps mark the recording, so a popup only repeats both.
+on_recording_start = false
+on_recording_stop = false
+on_transcription = false
+
+[status]
+icon_theme = "minimal"

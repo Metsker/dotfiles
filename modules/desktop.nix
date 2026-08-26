@@ -52,6 +52,9 @@
 
     programs.gpu-screen-recorder.enable = true;
 
+    # voxtype grabs its push-to-talk key straight from /dev/input, because mango has no key-release bind.
+    users.users.metsker.extraGroups = [ "input" ];
+
     nixpkgs.overlays = [
       # Exposes the flake input under pkgs so the tool wrappers below can list it in runtimeInputs.
       (final: prev: {
@@ -74,6 +77,10 @@
       (final: prev: {
         gpu-screen-recorder = prev.gpu-screen-recorder.override { ffmpeg = prev.ffmpeg_8; };
       })
+      # Carries the parakeet engine, which beats vulkan whisper on this card and leaves the GPU alone.
+      (final: prev: {
+        voxtype = prev.voxtype.override { onnxSupport = true; };
+      })
     ];
   };
 
@@ -82,6 +89,22 @@
 
     xdg.configFile.mango = { source = dotfile "mango"; recursive = true; };
     xdg.configFile.uwsm = { source = dotfile "uwsm"; recursive = true; };
+    xdg.configFile.voxtype = { source = dotfile "voxtype"; recursive = true; };
+
+    # Nixpkgs ships no unit for the dictation daemon, and it only makes sense with a compositor up.
+    systemd.user.services.voxtype = {
+      Unit = {
+        Description = "Voxtype push-to-talk dictation daemon";
+        PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
+      };
+      Service = {
+        ExecStart = "${pkgs.voxtype}/bin/voxtype daemon";
+        Restart = "on-failure";
+        RestartSec = 3;
+      };
+      Install.WantedBy = [ "graphical-session.target" ];
+    };
 
     programs.noctalia = {
       enable = true;
@@ -91,6 +114,7 @@
     home.file.".local/state/noctalia/settings.toml".source = dotfile "noctalia/settings.toml";
 
     home.packages = with pkgs; [
+      voxtype
       xwayland
 
       (writeShellApplication {
@@ -115,6 +139,12 @@
         name = "clipboard";
         runtimeInputs = [ wtype jq mangowm ];
         text = builtins.readFile ../scripts/clipboard.sh;
+      })
+      # Runs on every dictation via voxtype's post_process hook; pure bash, so nothing to put on PATH.
+      (writeShellApplication {
+        name = "voxtype-postprocess";
+        runtimeInputs = [ ];
+        text = builtins.readFile ../scripts/voxtype-postprocess.sh;
       })
       (writeShellApplication {
         name = "record";
