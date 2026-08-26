@@ -41,6 +41,10 @@ pre_type_delay_ms = 0
 # Drops the leading capital and the trailing period so a dictated fragment joins the line in progress.
 command = "voxtype-postprocess"
 timeout_ms = 1000
+# The trailing space the script appends is the point of it, so keep voxtype from trimming it off.
+trim = false
+# The script emits nothing for silence, which must stay nothing rather than fall back to the raw text.
+fallback_on_empty = false
 
 [output.notification]
 # The text lands at the cursor and the beeps mark the recording, so a popup only repeats both.
