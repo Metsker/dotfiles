@@ -17,9 +17,9 @@ sample_rate = 16000
 max_duration_secs = 120
 
 [audio.feedback]
-# The only cue that recording started, since the hotkey is a dead key with no LED.
-enabled = true
-theme = "subtle"
+# Parakeet answers fast enough that the text itself is the cue; the beeps only interrupted.
+enabled = false
+theme = "mechanical"
 volume = 0.5
 
 [parakeet]
@@ -34,7 +34,7 @@ mode = "type"
 # wtype builds its own keymap, so Cyrillic types without switching the desktop layout first.
 driver_order = ["wtype", "clipboard"]
 fallback_to_clipboard = true
-type_delay_ms = 0
+type_delay_ms = 1
 pre_type_delay_ms = 0
 
 [output.post_process]
