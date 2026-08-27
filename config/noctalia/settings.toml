@@ -6,7 +6,7 @@ enable_sounds = true
 [bar.default]
 background_opacity = 0.74999998323619366
 capsule_radius = 8
-center = [ "nix-monitor", "bar", "spacer_2", "clock", "spacer_2", "status", "recorder" ]
+center = [ "nix-monitor", "bar", "spacer_2", "clock", "spacer_2", "status", "bar_2", "recorder" ]
 end = [
     "media",
     "audio_visualizer",
@@ -205,6 +205,10 @@ mangowc_config = "/home/metsker/dotfiles/config/mango/config.conf"
 [plugin_settings."ezequiel/mango_layouts"]
 panel_position = "auto"
 
+[plugin_settings."felipeartur/ai-usagebar"]
+panel_open_near_click = true
+panel_placement = "floating"
+
 [plugin_settings."metsker/mango-layout"]
 corner_roundness = 0.0
 picker_placement = "floating"
@@ -228,7 +232,8 @@ enabled = [
     "metsker/mango-layout",
     "metsker/window-info",
     "avivbintangaringga/nix-monitor",
-    "gabedunn/voxtype"
+    "gabedunn/voxtype",
+    "felipeartur/ai-usagebar"
 ]
 
     [[plugins.source]]
@@ -300,9 +305,11 @@ polkit_agent = true
     variant = "destructive"
 
 [theme]
-builtin = "Dracula"
+builtin = "Ayu"
 community_palette = "Atuel"
+mode = "dark"
 source = "wallpaper"
+wallpaper_scheme = "m3-content"
 
     [theme.templates]
     builtin_ids = [ "foot", "gtk3", "gtk4", "hyprland", "kcolorscheme", "mango" ]
@@ -314,19 +321,19 @@ source = "wallpaper"
         post_hook = "pkill -USR1 monstar 2>/dev/null || true"
 
 [wallpaper.default]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.last]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.monitors.DP-1]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.monitors.HDMI-A-2]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.monitors.HDMI-A-3]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [[wallpaper.favorite]]
 palette_source = "wallpaper"
@@ -334,9 +341,22 @@ path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 theme_mode = "dark"
 wallpaper_scheme = "m3-content"
 
+[[wallpaper.favorite]]
+builtin_palette = "Ayu"
+palette_source = "builtin"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
+theme_mode = "dark"
+
 [widget.bar]
 show_idle_on_horizontal = false
 type = "noctalia/timer:bar"
+
+[widget.bar_2]
+extras = "none"
+show_glyph = false
+show_value = false
+type = "felipeartur/ai-usagebar:bar"
+visualization = "gauge"
 
 [widget.clock]
 format = "{:%b %d, %H:%M}"
@@ -376,7 +396,6 @@ type = "noctalia/screen_recorder:recorder"
 
 [widget.spacer_2]
 enabled = true
-length = 25
 type = "spacer"
 
 [widget.status]
