@@ -60,7 +60,8 @@
     "context-mode@context-mode": true,
     "pixijs-skills@pixijs-skills": true,
     "lua-lsp@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true
+    "mattpocock-skills@mattpocock": true,
+    "andrej-karpathy-skills@karpathy-skills": true
   },
   "extraKnownMarketplaces": {
     "context-mode": {
@@ -73,6 +74,18 @@
       "source": {
         "source": "github",
         "repo": "pixijs/pixijs-skills"
+      }
+    },
+    "mattpocock": {
+      "source": {
+        "source": "github",
+        "repo": "mattpocock/skills"
+      }
+    },
+    "karpathy-skills": {
+      "source": {
+        "source": "github",
+        "repo": "forrestchang/andrej-karpathy-skills"
       }
     }
   },
