@@ -14,6 +14,7 @@
       lutris
       umu-launcher # lutris runs proton through umu; without it no proton versions show up
       vintagestory
+      osu-lazer-bin
     ];
 
     # Both steam and lutris scan compatibilitytools.d, so one link serves both.
