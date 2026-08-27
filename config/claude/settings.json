@@ -52,6 +52,9 @@
       }
     ]
   },
+  "worktree": {
+    "baseRef": "fresh"
+  },
   "statusLine": {
     "type": "command",
     "command": "bash ~/dotfiles/config/claude/statusline.sh"
@@ -92,6 +95,7 @@
   "spinnerTipsEnabled": false,
   "effortLevel": "xhigh",
   "awaySummaryEnabled": false,
+  "skipWorkflowUsageWarning": true,
   "theme": "auto",
   "editorMode": "normal"
 }
