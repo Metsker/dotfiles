@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "ai-usagebar": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787756221,
+        "narHash": "sha256-tw5Q078oCQK87gdbYBASTn+e309XsDXr8GHEXamilok=",
+        "owner": "akitaonrails",
+        "repo": "ai-usagebar",
+        "rev": "78f89b2b95a0be91b71e412112aeaaf5314f40d3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "akitaonrails",
+        "repo": "ai-usagebar",
+        "type": "github"
+      }
+    },
     "claude-code": {
       "inputs": {
         "nixpkgs": "nixpkgs",
@@ -308,6 +328,7 @@
     },
     "root": {
       "inputs": {
+        "ai-usagebar": "ai-usagebar",
         "claude-code": "claude-code",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",

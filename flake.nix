@@ -31,6 +31,11 @@
     monstar.url = "github:Metsker/monstar-nix";
     # No nixpkgs.follows: keep the flake's pin so the claude-code.cachix.org cache hits.
     claude-code.url = "github:sadjow/claude-code-nix";
+    ai-usagebar = {
+      url = "github:akitaonrails/ai-usagebar";
+      # Upstream pins a darwin nixpkgs branch; follow ours so there is only one.
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # Dendritic: every .nix file under modules/ is a flake-parts module, imported automatically.

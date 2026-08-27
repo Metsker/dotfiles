@@ -75,6 +75,8 @@
         claude # wrapped claude-code with --mcp-config
         pkgs.playwright-mcp # bundles its own NixOS chromium
         pkgs.context7-mcp
+        # ai-usagebar + ai-usagebar-tui: plan usage from ~/.claude/.credentials.json.
+        inputs.ai-usagebar.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
 
       programs.fish.shellAliases.c = "claude";
