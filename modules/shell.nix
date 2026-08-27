@@ -31,6 +31,12 @@
     {
       programs.fish = {
         enable = true;
+        # snacks.nvim gates kitty graphics on the XTVERSION terminal name; monstar is libghostty.
+        interactiveShellInit = ''
+          if test "$TERM" = monstar
+            set -gx SNACKS_GHOSTTY 1
+          end
+        '';
         shellAliases = {
           rebuild = "sudo -v; and nh os switch";
           restart = "systemctl --user restart";
@@ -72,8 +78,11 @@
       home.packages = [
         monstar
         # Terminal indirection (absolute store path: ~/.local/bin isn't on mango's session PATH).
-        (pkgs.writeShellScriptBin "term" ''exec ${monstar}/bin/monstar "$@"'')
-        pkgs.ghostty.terminfo # monstar sets TERM=xterm-ghostty; supplies that terminfo entry
+        # SNACKS_GHOSTTY is set here too: `term -e nvim` skips fish, so the shell guard never runs.
+        (pkgs.writeShellScriptBin "term" ''
+          export SNACKS_GHOSTTY=1
+          exec ${monstar}/bin/monstar "$@"
+        '')
         pkgs.github-cli
         pkgs.lazygit
       ];
