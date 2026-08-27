@@ -1,5 +1,5 @@
 {
-  # Dolphin, on trial next to thunar. The KF6 stack behind it is already resident - the kde
+  # Dolphin, the default file manager. The KF6 stack behind it is already resident - the kde
   # file-chooser portal in desktop.nix pulls it in - so this module costs about 19 MiB of its own.
   flake.modules.nixos.base = { pkgs, ... }: {
     # kio-admin registers its polkit action and system-bus helper only from the system profile; the
@@ -15,5 +15,7 @@
       kdegraphics-thumbnailers # raw, mobipocket, postscript and blender previews
       ffmpegthumbs # video previews; images and pdf come from kio-extras, installed by theming.nix
     ];
+
+    xdg.mimeApps.defaultApplications."inode/directory" = "org.kde.dolphin.desktop";
   };
 }

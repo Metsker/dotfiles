@@ -1,5 +1,6 @@
 {
-  # The GTK file manager, kept in its own file so it can be dropped whole while dolphin is on trial.
+  # The GTK file manager, no longer the default one. It stays for its own sake and because gvfs
+  # and tumbler come with it - dolphin serves mounts and thumbnails through kio instead.
   flake.modules.nixos.base = { pkgs, ... }: {
     # gvfs gives thunar trash and removable-device mounts; dolphin uses kio for both instead.
     services.gvfs.enable = true;
@@ -28,7 +29,5 @@
       exec = "thunar --bulk-rename %F";
       noDisplay = true;
     };
-
-    xdg.mimeApps.defaultApplications."inode/directory" = "thunar.desktop";
   };
 }
