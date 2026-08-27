@@ -6,13 +6,11 @@ enable_sounds = true
 [bar.default]
 background_opacity = 0.74999998323619366
 capsule_radius = 8
-center = [ "clock", "recorder" ]
+center = [ "nix-monitor", "bar", "spacer_2", "clock", "spacer_2", "status", "recorder" ]
 end = [
-    "audio_visualizer",
     "media",
-    "spacer_1",
+    "audio_visualizer",
     "tray",
-    "bar",
     "volume",
     "network",
     "bluetooth",
@@ -25,7 +23,7 @@ margin_edge = 8
 margin_ends = 8
 radius = 16
 shadow = false
-start = [ "launcher", "workspaces", "window", "layout" ]
+start = [ "workspaces", "layout", "window" ]
 
 [control_center]
 hidden_tabs = [ "power" ]
@@ -195,6 +193,10 @@ temperature_night = 4500
 [osd.kinds]
 keyboard_layout = false
 media = false
+privacy = false
+
+[plugin_settings."avivbintangaringga/nix-monitor"]
+panel_placement = "floating"
 
 [plugin_settings."blackbartblues/keymap"]
 compositor = "mangowc"
@@ -219,7 +221,15 @@ panel_placement = "floating"
 browser_placement = "floating"
 
 [plugins]
-enabled = [ "noctalia/screen_recorder", "noctalia/wallhaven", "noctalia/timer", "metsker/mango-layout", "metsker/window-info" ]
+enabled = [
+    "noctalia/screen_recorder",
+    "noctalia/wallhaven",
+    "noctalia/timer",
+    "metsker/mango-layout",
+    "metsker/window-info",
+    "avivbintangaringga/nix-monitor",
+    "gabedunn/voxtype"
+]
 
     [[plugins.source]]
     kind = "git"
@@ -351,19 +361,30 @@ enabled = true
 [widget.network]
 show_label = false
 
+[widget.nix-monitor]
+colorize_glyph = false
+show_text = false
+type = "avivbintangaringga/nix-monitor:nix-monitor"
+up_to_date_glyph = "heart-check"
+
 [widget.notifications]
-hide_when_no_unread = true
+enabled = false
 
 [widget.recorder]
 enabled = true
 type = "noctalia/screen_recorder:recorder"
 
-[widget.spacer_1]
-type = "spacer"
-
 [widget.spacer_2]
 enabled = true
+length = 25
 type = "spacer"
+
+[widget.status]
+idle_glyph = "microphone-mute"
+recording_glyph = "bluetooth-device-microphone"
+stopped_glyph = "bluetooth-device-microphone"
+streaming_glyph = "bluetooth-device-microphone"
+type = "gabedunn/voxtype:status"
 
 [widget.tray]
 detached_panel = true
