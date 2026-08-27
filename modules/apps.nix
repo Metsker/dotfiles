@@ -1,24 +1,10 @@
 { inputs, ... }:
 
-# Everyday desktop applications: browser, file manager, media, chat, art, VPN.
+# Everyday desktop applications: browser, media, chat, art, VPN.
 # The ones that carry real weight of their own live next door - claude.nix,
-# webapps.nix, gaming.nix.
+# webapps.nix, gaming.nix, and the two file managers in thunar.nix and dolphin.nix.
 {
   flake.modules.nixos.base = { config, pkgs, ... }: {
-    # gvfs gives the file manager trash and removable-device mounts.
-    services.gvfs.enable = true;
-
-    # The module also pulls in xfconf, which is where thunar keeps its settings.
-    programs.thunar = {
-      enable = true;
-      # Thunar has no archive handling of its own; this is what puts Extract Here and Compress in
-      # the context menu. It drives engrampa through a wrapper script.
-      plugins = [ pkgs.thunar-archive-plugin ];
-    };
-
-    # Thunar draws no thumbnails on its own; tumbler is the D-Bus thumbnailer it asks.
-    services.tumbler.enable = true;
-
     programs.amnezia-vpn.enable = true;
 
     boot.extraModulePackages = with config.boot.kernelPackages; [ amneziawg ];
@@ -76,18 +62,6 @@
       spotify
     ];
 
-    # Thunar's two side tools; both are reachable from inside thunar itself.
-    xdg.desktopEntries.thunar-settings = {
-      name = "Thunar Preferences";
-      exec = "thunar-settings";
-      noDisplay = true;
-    };
-    xdg.desktopEntries.thunar-bulk-rename = {
-      name = "Bulk Rename";
-      exec = "thunar --bulk-rename %F";
-      noDisplay = true;
-    };
-
     xdg.mimeApps.defaultApplications = {
       "text/html" = "zen-beta.desktop";
       "application/xhtml+xml" = "zen-beta.desktop";
@@ -96,7 +70,6 @@
       "x-scheme-handler/about" = "zen-beta.desktop";
       "x-scheme-handler/unknown" = "zen-beta.desktop";
 
-      "inode/directory" = "thunar.desktop";
       "application/zip" = "engrampa.desktop";
       "application/x-7z-compressed" = "engrampa.desktop";
       "application/vnd.rar" = "engrampa.desktop";
