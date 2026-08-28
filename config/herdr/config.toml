@@ -26,6 +26,11 @@ delivery = "system"
 name = "terminal"
 auto_switch = false
 
+[theme.custom]
+selection_bg = "#999999"
+active_row_bg = "#444444"
+surface_dim = "#444444"
+
 [experimental]
 kitty_graphics = true
 
