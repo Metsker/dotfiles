@@ -6,6 +6,7 @@ navigate_workspace_up = "k"
 navigate_workspace_down = "j"
 move_tab_previous = "prefix+alt+p"
 move_tab_next = "prefix+alt+n"
+focus_agent = "prefix+alt+1..9"
 
 [[keys.command]]
 key = "prefix+a"
