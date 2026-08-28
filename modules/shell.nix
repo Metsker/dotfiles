@@ -51,6 +51,8 @@
         extraOptions = [ "--group-directories-first" ];
       };
 
+      programs.bat.enable = true;
+
       programs.zoxide = {
         enable = true;
         options = [ "--cmd cd" ];
@@ -85,6 +87,7 @@
         '')
         pkgs.github-cli
         pkgs.lazygit
+        pkgs.jrnl
       ];
 
       xdg.configFile.monstar = { source = dotfile "monstar"; recursive = true; };
