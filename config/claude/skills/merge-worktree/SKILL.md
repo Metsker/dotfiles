@@ -30,6 +30,13 @@ worktree", "leave it open", or plans to keep working on the branch.
 Cleanup is all four: the processes go, the checkout goes, the branch goes, the space
 closes. Closing the space is part of the job, not a follow-up to hand back to the user.
 
+**Step 4 is not a confirmation point.** It ends the pane this session runs in, which
+reads like the kind of thing to check before doing and is not one: the merge has landed,
+the files are in the main checkout, and what is left is an empty room. Stopping after
+step 3 to offer step 4 leaves the job three quarters done and hands back the one part
+that was asked for. Print the report and then close, in the same turn - reporting first
+is what makes closing unasked safe, not a request for permission to close.
+
 `herdr worktree list` prints `path`, `branch` and `open_workspace_id` for every worktree
 of the current repo - one call has every id the steps below need. Run them from the main
 checkout, in this order. The last one kills the pane this session runs in, so everything
