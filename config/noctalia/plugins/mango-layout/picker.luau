@@ -330,13 +330,13 @@ function onKey(chord, pressed)
 end
 
 function readActive(result)
-	local ok, data = pcall(noctalia.json.decode, result.stdout)
-	if ok then
-		for _, monitor in ipairs(data and data.monitors or {}) do
-			if monitor.active then
-				activeSym = monitor.layout_symbol
-				break
-			end
+	-- json.decode reports a bad payload as (nil, err) rather than raising, so a
+	-- failed query just leaves the previous highlight in place.
+	local data = noctalia.json.decode(result.stdout)
+	for _, monitor in ipairs(data and data.monitors or {}) do
+		if monitor.active then
+			activeSym = monitor.layout_symbol
+			break
 		end
 	end
 	render()
