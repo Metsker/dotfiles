@@ -3,6 +3,9 @@
 
 -- ponytail: fixed cap; make it a plugin setting if a bar ever wants a different width.
 local LIMIT = 40
+-- The watch stream carries every focus change, so the tick exists only to notice
+-- that the stream itself died, which a mango restart is enough to do.
+local RESYNC_INTERVAL = 15000
 local MODES = {
 	{ key = "title", glyph = "app-window" },
 	{ key = "appid", glyph = "tag" },
@@ -60,18 +63,33 @@ end
 
 noctalia.state.watch("mode", apply)
 
+-- json.decode reports a bad payload as (nil, err) rather than raising, so an
+-- undecodable line arrives here as nil and reads as "nothing focused".
+local function accept(data)
+	client = (type(data) == "table" and data.title) and data or nil
+	render()
+end
+
 -- watch focusing-client emits a snapshot on connect + one JSON line per focus change.
 noctalia.runStream("mmsg watch focusing-client", function(line)
-	local ok, data = pcall(noctalia.json.decode, line)
-	client = (ok and type(data) == "table" and data.title) and data or nil
-	render()
+	local data = noctalia.json.decode(line)
+	accept(data)
 end)
 
--- Only for the first paint and as a fallback if the stream ever dies; the stream
--- itself drives every real update.
+-- The host never restarts a dead stream and gives the script no way to notice one,
+-- so the tick re-reads the same payload. Without it a mango restart freezes the
+-- widget on whatever happened to be focused at the time.
 function update()
-	noctalia.setUpdateInterval(5000)
+	noctalia.setUpdateInterval(RESYNC_INTERVAL)
 	render()
+	noctalia.runAsync("mmsg get focusing-client", function(result)
+		-- Only a successful query is worth believing; a failed one would otherwise
+		-- read as an empty desktop and hide the widget.
+		if result.exitCode == 0 then
+			local data = noctalia.json.decode(result.stdout)
+			accept(data)
+		end
+	end)
 end
 
 function onClick()
@@ -89,6 +107,6 @@ function onMiddleClick()
 	local value = current()
 	if value ~= "" then
 		noctalia.copyToClipboard(value, "text/plain;charset=utf-8")
-		noctalia.notify("Copied", value)
+		noctalia.notify(noctalia.tr("notify.copied"), value)
 	end
 end

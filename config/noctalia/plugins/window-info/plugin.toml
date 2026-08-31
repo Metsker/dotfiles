@@ -1,7 +1,7 @@
 id = "metsker/window-info"
 name = "Window Info"
-version = "1.0.0"
-plugin_api = 13
+version = "1.1.0"
+plugin_api = 14
 author = "metsker"
 license = "MIT"
 dependencies = ["mmsg"]
@@ -12,3 +12,9 @@ tags = ["bar", "mangowc"]
 [[widget]]
 id = "window"
 entry = "window-info.luau"
+
+# Middle click opens a widget's settings everywhere in the shell by default, and a
+# bound gesture wins over the script, so onMiddleClick only fires once the button is
+# unbound. Users can rebind it per instance.
+[widget.actions]
+middle = "none"
