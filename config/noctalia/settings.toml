@@ -23,7 +23,11 @@ margin_edge = 8
 margin_ends = 8
 radius = 16
 shadow = false
-start = [ "workspaces", "layout", "window" ]
+start = [ "launcher", "workspaces", "layout", "window" ]
+
+[brightness]
+enable_ddcutil = true
+sync_all_monitors = true
 
 [control_center]
 hidden_tabs = [ "power" ]
@@ -63,6 +67,7 @@ widget_order = []
 
 [dock]
 auto_hide = true
+border_width = 1.0
 reserve_space = false
 shadow = false
 
@@ -230,10 +235,10 @@ enabled = [
     "noctalia/wallhaven",
     "noctalia/timer",
     "metsker/mango-layout",
-    "metsker/window-info",
     "avivbintangaringga/nix-monitor",
     "gabedunn/voxtype",
-    "felipeartur/ai-usagebar"
+    "felipeartur/ai-usagebar",
+    "metsker/window-info"
 ]
 
     [[plugins.source]]
@@ -252,6 +257,7 @@ enabled = [
     name = "local"
 
 [shell]
+avatar_path = "/home/metsker/Chest/Media/pics/a staff/4444.jpg"
 corner_radius_scale = 0.0
 font_family = "JetBrainsMono Nerd Font"
 launch_apps_as_systemd_services = true
@@ -312,7 +318,7 @@ source = "wallpaper"
 wallpaper_scheme = "m3-content"
 
     [theme.templates]
-    builtin_ids = [ "foot", "gtk3", "gtk4", "hyprland", "kcolorscheme", "mango" ]
+    builtin_ids = [ "foot", "gtk3", "gtk4", "kcolorscheme", "mango" ]
     community_ids = [ "zen-browser", "neovim", "papirus-icons", "yazi" ]
 
         [theme.templates.user.monstar]
@@ -321,19 +327,19 @@ wallpaper_scheme = "m3-content"
         post_hook = "pkill -USR1 monstar 2>/dev/null || true"
 
 [wallpaper.default]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.last]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.monitors.DP-1]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.monitors.HDMI-A-2]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.monitors.HDMI-A-3]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [[wallpaper.favorite]]
 palette_source = "wallpaper"
@@ -362,7 +368,7 @@ visualization = "gauge"
 format = "{:%b %d, %H:%M}"
 
 [widget.launcher]
-glyph = "cookie"
+glyph = "noctalia"
 
 [widget.layout]
 type = "metsker/mango-layout:layout"
@@ -374,9 +380,6 @@ title_scroll = "on_hover"
     [widget.media.actions]
     left = "media toggle"
     right = "panel-toggle control-center media"
-
-[widget."metsker/mango-layout:layout"]
-enabled = true
 
 [widget.network]
 show_label = false
@@ -401,7 +404,7 @@ type = "spacer"
 [widget.status]
 idle_glyph = "microphone-mute"
 recording_glyph = "bluetooth-device-microphone"
-stopped_glyph = "bluetooth-device-microphone"
+stopped_glyph = "microphone-mute"
 streaming_glyph = "bluetooth-device-microphone"
 type = "gabedunn/voxtype:status"
 
