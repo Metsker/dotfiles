@@ -6,7 +6,12 @@ case "$action" in
 esac
 
 # Match the process, not the appid: a window renamed with mango's --app-id still resolves.
-pid=$(mmsg get focusing-client 2>/dev/null | jq -r '.pid // empty' || true)
+# Shared by both desktop profiles, so ask whichever compositor is actually up.
+if [ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]; then
+  pid=$(hyprctl activewindow -j 2>/dev/null | jq -r '.pid // empty' || true)
+else
+  pid=$(mmsg get focusing-client 2>/dev/null | jq -r '.pid // empty' || true)
+fi
 comm=""
 if [ -n "$pid" ] && [ -r "/proc/$pid/comm" ]; then
   read -r comm < "/proc/$pid/comm"
