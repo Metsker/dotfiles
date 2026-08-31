@@ -1,0 +1,7 @@
+# Upstream reference clones: noctalia shell source, docs, official plugins.
+# Refresh with: scripts/noctalia-refs-update.sh
+refs/
+
+# The root .gitignore excludes config/**/noctalia.* to drop theme-rendered files;
+# the Luau type definitions are hand-managed and must stay tracked.
+!plugins/noctalia.d.luau

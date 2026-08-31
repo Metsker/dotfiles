@@ -69,6 +69,11 @@
       lua-language-server
       stylua
 
+      # Noctalia plugins are Luau; luau-lsp type-checks them against the
+      # noctalia.d.luau definitions in config/noctalia/plugins.
+      luau
+      luau-lsp
+
       godot
       tiled
 
