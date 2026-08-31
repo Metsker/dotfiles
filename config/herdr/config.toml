@@ -45,4 +45,4 @@ pane_outer_borders = false
 status_indicators = "symbols"
 
 [ui.sidebar.agents]
-rows = [["state_icon", "workspace", "tab"], ["state_text"]]
+rows = [["state_icon", "workspace"], ["state_text"]]

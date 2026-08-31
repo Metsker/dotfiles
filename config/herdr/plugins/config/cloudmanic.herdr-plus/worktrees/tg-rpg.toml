@@ -1,0 +1,34 @@
+# What herdr-plus opens in a worktree of the tg-rpg workspace, in place of the
+# wildcard layout beside it that gives every other repository claude, a shell
+# and lazygit at its root. Four games sit two folders down from that root, and
+# a worktree whose tabs all start there costs the same `cd miniapps/<game>`
+# four times before any of them is usable.
+#
+# The game is cut out of the branch name because the branch is all there is to
+# read: herdr-plus matches a layout on the repository and an exact branch, and
+# a tab carries a command and no working directory, so the command itself has
+# to find the folder. The repository's own quick actions - its .herdr-plus
+# directory - name a branch `<game>/<something>` for exactly this reason; a
+# branch named anything else leaves the cd failing and the tabs at the root,
+# which is the right answer for a change that is not about one game.
+#
+# hub has no `dev` script - it is served by miniapps/hub/tools/serve.sh - so
+# its dev tab lands in the folder with the command failing behind it.
+
+repo = "tg-rpg"
+
+[[tabs]]
+name = "claude"
+command = "cd \"miniapps/$(git branch --show-current | cut -d/ -f1)\" 2>/dev/null; claude"
+
+[[tabs]]
+name = "dev"
+command = "cd \"miniapps/$(git branch --show-current | cut -d/ -f1)\" 2>/dev/null && bun run dev"
+
+[[tabs]]
+name = "shell"
+command = "cd \"miniapps/$(git branch --show-current | cut -d/ -f1)\" 2>/dev/null"
+
+[[tabs]]
+name = "git"
+command = "lazygit"

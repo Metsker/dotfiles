@@ -1,0 +1,13 @@
+# Wildcard layout: every worktree in every repo opens with these tabs.
+repo = "*"
+
+[[tabs]]
+name = "claude"
+command = "claude"
+
+[[tabs]]
+name = "shell"
+
+[[tabs]]
+name = "git"
+command = "lazygit"
