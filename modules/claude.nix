@@ -16,6 +16,28 @@
       # sadjow/claude-code-nix: hourly-updated build, cached at claude-code.cachix.org.
       claude-code = inputs.claude-code.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
+      # Not in nixpkgs, but the npm package declares no dependencies at all - it ships its
+      # own bundle - so the tarball plus a node wrapper is the entire build. Drop for
+      # pkgs.chrome-devtools-mcp once one exists.
+      chrome-devtools-mcp = pkgs.stdenv.mkDerivation (finalAttrs: {
+        pname = "chrome-devtools-mcp";
+        version = "1.8.0";
+        src = pkgs.fetchurl {
+          url = "https://registry.npmjs.org/chrome-devtools-mcp/-/chrome-devtools-mcp-${finalAttrs.version}.tgz";
+          hash = "sha256-rAM0QQzqddEaXrtVX7sBOaSjlN412YzCo7wKlZ8ATN0=";
+        };
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+        dontBuild = true;
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out/lib/chrome-devtools-mcp
+          cp -r . $out/lib/chrome-devtools-mcp/
+          makeWrapper ${pkgs.nodejs}/bin/node $out/bin/chrome-devtools-mcp \
+            --add-flags $out/lib/chrome-devtools-mcp/build/src/bin/chrome-devtools-mcp.js
+          runHook postInstall
+        '';
+      });
+
       # Single declarative source of truth for MCP servers, loaded via --mcp-config.
       mcpConfig = pkgs.writeText "claude-mcp.json" (builtins.toJSON {
         mcpServers = {
@@ -30,6 +52,22 @@
             args = [ "--headless" "--isolated" "--viewport-size" "1440x900" ];
           };
           context7 = { command = "${pkgs.context7-mcp}/bin/context7-mcp"; args = [ ]; };
+
+          # Playwright answers what the DOM says, which for a game drawing into one canvas
+          # is nothing at all. This one answers why a frame took 40ms: performance traces,
+          # CPU throttling, console and network. Chromium is passed explicitly because the
+          # Chrome puppeteer would otherwise fetch is dynamically linked against libraries
+          # on no path here - the same trap dev.nix documents for Playwright's browsers.
+          chrome-devtools = {
+            command = "${chrome-devtools-mcp}/bin/chrome-devtools-mcp";
+            args = [
+              "--headless"
+              "--isolated"
+              "--executablePath=${pkgs.chromium}/bin/chromium"
+              "--viewport=1440x900"
+              "--usageStatistics=false"
+            ];
+          };
         };
       });
 
@@ -75,6 +113,7 @@
         claude # wrapped claude-code with --mcp-config
         pkgs.playwright-mcp # bundles its own NixOS chromium
         pkgs.context7-mcp
+        chrome-devtools-mcp
         # ai-usagebar + ai-usagebar-tui: plan usage from ~/.claude/.credentials.json.
         inputs.ai-usagebar.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
