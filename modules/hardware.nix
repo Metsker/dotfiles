@@ -32,6 +32,9 @@
       # settings.General.Experimental = true; # battery reporting + better BLE
     };
 
+    # Noctalia's battery readouts come over UPower; on this desktop that is the wireless peripherals.
+    services.upower.enable = true;
+
     services.hardware.openrgb.enable = true;
 
     # ddcutil talks to the monitors over the GPU's i2c buses; this loads i2c-dev and
@@ -40,6 +43,9 @@
   };
 
   flake.modules.homeManager.metsker = { pkgs, ... }: {
+    # Noctalia loads effect presets over $XDG_RUNTIME_DIR/EasyEffectsServer, so the daemon has to be up.
+    services.easyeffects.enable = true;
+
     home.packages = [
       # No backlight class on a desktop, so monitor brightness goes over DDC/CI. The wrapper
       # shadows ddcutil itself; everything but `detect` is passed straight through.
