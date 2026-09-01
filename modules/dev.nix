@@ -54,6 +54,7 @@
       jq
       tealdeer
       tree-sitter
+      hyperfine
 
       nodejs
       bun
@@ -69,6 +70,11 @@
       lua-language-server
       stylua
 
+      # Claude Code's LSP tool has no server of its own: the typescript-lsp plugin in
+      # settings.json only tells it to look for this binary on PATH.
+      typescript-language-server
+      biome
+
       # Noctalia plugins are Luau; luau-lsp type-checks them against the
       # noctalia.d.luau definitions in config/noctalia/plugins.
       luau
@@ -76,6 +82,8 @@
 
       godot
       tiled
+      oxipng
+      gifski
 
       herdr
 
@@ -85,6 +93,35 @@
         name = "bootstrap-remote";
         runtimeInputs = [ openssh ];
         text = builtins.readFile ../scripts/bootstrap-remote.sh;
+      })
+
+      # Aseprite's batch CLI, out of the Steam copy rather than pkgs.aseprite.
+      #
+      # Both are 1.3.18.3, but Aseprite is unfree, so Hydra never builds it and the
+      # nixpkgs one is a local Aseprite-plus-Skia compile for a binary already on disk.
+      # `-b` opens no window, so this runs with neither DISPLAY nor WAYLAND_DISPLAY set
+      # and an agent can drive it.
+      #
+      # Two traps this wrapper cannot fix, only document. steam-run gives /tmp a private
+      # tmpfs, so an export written there exits 0 and leaves no file behind - write to the
+      # repository or $HOME instead. And --data omits meta.frameTags unless --list-tags
+      # rides along on the same command, which is the field AnimatedSprite reads:
+      #
+      #   aseprite -b in.aseprite --sheet out.png --data out.json \
+      #     --format json-array --sheet-pack --trim --list-tags
+      #
+      # Drop once pkgs.aseprite is something Hydra ships prebuilt.
+      (writeShellApplication {
+        name = "aseprite";
+        runtimeInputs = [ steam-run ];
+        text = ''
+          ase="$HOME/.local/share/Steam/steamapps/common/Aseprite/aseprite"
+          if [ ! -x "$ase" ]; then
+            echo "aseprite: not installed by Steam at $ase" >&2
+            exit 1
+          fi
+          exec steam-run "$ase" "$@"
+        '';
       })
 
       # Tiled ships MIME types for .tmx/.tsx only, so a project file lands on text/plain.
@@ -103,6 +140,14 @@
 
     xdg.mimeApps.defaultApplications = {
       "application/x-tiled-project" = "org.mapeditor.Tiled.desktop";
+    };
+
+    # Per-project toolchains: a project's own flake beats pinning every game's bun and
+    # node version into this one home profile. nix-direnv is what makes the reload cached
+    # rather than a full eval on every cd.
+    programs.direnv = {
+      enable = true;
+      nix-direnv.enable = true;
     };
 
     xdg.configFile."herdr/config.toml".source = dotfile "herdr/config.toml";
