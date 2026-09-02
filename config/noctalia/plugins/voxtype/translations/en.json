@@ -1,0 +1,16 @@
+{
+	"settings": {
+		"recording_glyph": {
+			"label": "Recording glyph",
+			"description": "Shown while the microphone is open."
+		},
+		"transcribing_glyph": {
+			"label": "Transcribing glyph",
+			"description": "Shown while the model turns the recording into text."
+		},
+		"error_glyph": {
+			"label": "Error glyph",
+			"description": "Shown when the daemon reports a failure."
+		}
+	}
+}

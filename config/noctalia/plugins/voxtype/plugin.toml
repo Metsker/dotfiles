@@ -1,0 +1,41 @@
+id = "metsker/voxtype"
+name = "Voxtype Indicator"
+version = "1.0.0"
+plugin_api = 9
+author = "metsker"
+license = "MIT"
+dependencies = ["voxtype"]
+icon = "microphone"
+description = "Shows a microphone while voxtype records or transcribes, and nothing at all while it is idle."
+tags = ["bar", "audio", "indicator"]
+
+# One stream for the whole shell: the widget is placed once per bar, and three bars
+# would otherwise mean three `voxtype status --follow` processes.
+[[service]]
+id = "watcher"
+entry = "watcher.luau"
+
+[[widget]]
+id = "indicator"
+entry = "indicator.luau"
+
+  [[widget.setting]]
+  key             = "recording_glyph"
+  type            = "glyph"
+  label_key       = "settings.recording_glyph.label"
+  description_key = "settings.recording_glyph.description"
+  default         = "microphone"
+
+  [[widget.setting]]
+  key             = "transcribing_glyph"
+  type            = "glyph"
+  label_key       = "settings.transcribing_glyph.label"
+  description_key = "settings.transcribing_glyph.description"
+  default         = "loader-2"
+
+  [[widget.setting]]
+  key             = "error_glyph"
+  type            = "glyph"
+  label_key       = "settings.error_glyph.label"
+  description_key = "settings.error_glyph.description"
+  default         = "alert-triangle"
