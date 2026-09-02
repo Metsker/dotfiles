@@ -25,6 +25,11 @@
 
     gtk = {
       enable = true;
+      font = {
+        name = "JetBrainsMono Nerd Font";
+        size = 10;
+        package = pkgs.nerd-fonts.jetbrains-mono;
+      };
       theme = {
         name = "adw-gtk3-dark";
         package = pkgs.adw-gtk3;
@@ -98,10 +103,16 @@
       # home.file symlink into the store would make noctalia's apply.py fail on open(). It only
       # rewrites the keys the color scheme names, so these two sections survive a theme switch.
       kde.settings.kdeglobals = {
+        # Qt reads a font per role and falls back to its own default for any role left unset, so
+        # every one of them has to name the family or dolphin keeps Noto Sans in its menus.
         General = {
-          font = "Noto Sans,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
+          font = "JetBrainsMono Nerd Font,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
           fixed = "JetBrainsMono Nerd Font,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
+          menuFont = "JetBrainsMono Nerd Font,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
+          toolBarFont = "JetBrainsMono Nerd Font,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
+          smallestReadableFont = "JetBrainsMono Nerd Font,8,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
         };
+        WM.activeFont = "JetBrainsMono Nerd Font,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
         # Qt has no icon theme of its own; without this Qt apps fall back to hicolor and show blanks.
         Icons.Theme = "Papirus-Dark";
       };
