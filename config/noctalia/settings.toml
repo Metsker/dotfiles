@@ -6,24 +6,13 @@ enable_sounds = true
 [bar.default]
 background_opacity = 0.74999998323619366
 capsule_radius = 8
-center = [ "nix-monitor", "bar", "spacer_2", "clock", "spacer_2", "status", "bar_2", "recorder" ]
-end = [
-    "media",
-    "audio_visualizer",
-    "tray",
-    "volume",
-    "network",
-    "bluetooth",
-    "brightness",
-    "battery",
-    "keyboard_layout",
-    "notifications"
-]
+center = [ "clock", "weather", "dictation", "update", "recorder" ]
+end = [ "audio_visualizer", "media", "tray", "bar_2", "volume", "cpu", "keyboard_layout", "notifications" ]
 margin_edge = 8
 margin_ends = 8
 radius = 16
 shadow = false
-start = [ "launcher", "workspaces", "layout", "window" ]
+start = [ "launcher", "workspaces", "window" ]
 
 [battery.device."/org/freedesktop/UPower/devices/battery_hidpp_battery_0"]
 warning_threshold = 10
@@ -237,9 +226,9 @@ enabled = [
     "noctalia/wallhaven",
     "noctalia/timer",
     "metsker/mango-layout",
-    "avivbintangaringga/nix-monitor",
-    "gabedunn/voxtype",
     "felipeartur/ai-usagebar",
+    "metsker/voxtype",
+    "metsker/nixos-update",
     "metsker/window-info"
 ]
 
@@ -355,9 +344,10 @@ palette_source = "builtin"
 path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 theme_mode = "dark"
 
-[widget.bar]
-show_idle_on_horizontal = false
-type = "noctalia/timer:bar"
+[widget.audio_visualizer]
+mirrored = false
+show_when_idle = true
+width = 48
 
 [widget.bar_2]
 extras = "none"
@@ -367,16 +357,26 @@ type = "felipeartur/ai-usagebar:bar"
 visualization = "gauge"
 
 [widget.clock]
+anchor = true
 format = "{:%b %d, %H:%M}"
 
-[widget.launcher]
-glyph = "noctalia"
+[widget.cpu]
+show_glyph = false
+show_value = false
 
-[widget.layout]
-type = "metsker/mango-layout:layout"
+[widget.dictation]
+type = "metsker/voxtype:indicator"
+
+[widget.keyboard_layout]
+show_glyph = false
+
+[widget.launcher]
+glyph = "terminal-2"
 
 [widget.media]
 hide_when_no_media = true
+max_length = 160
+show_progress = true
 title_scroll = "on_hover"
 
     [widget.media.actions]
@@ -386,39 +386,29 @@ title_scroll = "on_hover"
 [widget.network]
 show_label = false
 
-[widget.nix-monitor]
-colorize_glyph = false
-show_text = false
-type = "avivbintangaringga/nix-monitor:nix-monitor"
-up_to_date_glyph = "heart-check"
-
 [widget.notifications]
 enabled = false
 
 [widget.recorder]
-enabled = true
 type = "noctalia/screen_recorder:recorder"
-
-[widget.spacer_2]
-enabled = true
-type = "spacer"
-
-[widget.status]
-idle_glyph = "microphone-mute"
-recording_glyph = "bluetooth-device-microphone"
-stopped_glyph = "microphone-mute"
-streaming_glyph = "bluetooth-device-microphone"
-type = "gabedunn/voxtype:status"
 
 [widget.tray]
 detached_panel = true
 drawer = true
 
+[widget.update]
+type = "metsker/nixos-update:update"
+
 [widget.volume.actions]
 scroll_down = "volume-down 1"
 scroll_up = "volume-up 1"
 
+[widget.weather]
+show_condition = false
+show_temperature = false
+
 [widget.window]
+max_length = 24
 type = "metsker/window-info:window"
 
 [widget.workspaces]
