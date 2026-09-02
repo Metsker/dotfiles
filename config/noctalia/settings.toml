@@ -25,12 +25,14 @@ radius = 16
 shadow = false
 start = [ "launcher", "workspaces", "layout", "window" ]
 
+[battery.device."/org/freedesktop/UPower/devices/battery_hidpp_battery_0"]
+warning_threshold = 10
+
 [brightness]
 enable_ddcutil = true
 sync_all_monitors = true
 
 [control_center]
-hidden_tabs = [ "power" ]
 sidebar_section = "none"
 
     [control_center.calendar]
