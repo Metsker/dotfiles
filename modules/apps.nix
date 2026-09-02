@@ -19,6 +19,7 @@
       p7zip # engrampa shells out to 7z for 7z/zip-with-password archives
       unar # engrampa shells out to lsar/unar for rar
       amneziawg-tools
+      btop
     ];
 
     # Telegram's miniapp webview dies with "Error 71 (Protocol error)" on NVIDIA - webkitgtk's
