@@ -30,7 +30,7 @@ import { fileURLToPath } from 'node:url'
 /** The most of the tab the viewer may take. Half, and it is a ceiling not a target. */
 const HALF = 0.5
 const SELF = fileURLToPath(import.meta.url)
-const CACHE = `${process.env.XDG_CACHE_HOME || `${process.env.HOME}/.cache`}/show-screenshot/cell-aspect`
+const CACHE = `${process.env.XDG_CACHE_HOME || `${process.env.HOME}/.cache`}/screenshot-send/cell-aspect`
 
 /** Width and height out of the PNG header - the two big-endian u32 at byte 16. */
 function dims(file) {

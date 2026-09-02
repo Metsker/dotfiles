@@ -1,11 +1,11 @@
 ---
-name: show-screenshot
-description: Show the finished work as a picture rather than describing it - capture a screenshot of the result and draw it in a herdr pane beside the conversation, over the kitty graphics protocol. Use whenever "show-screenshot" appears in a prompt, before or after the request, or arrives as a message of its own once the work is done; it is an instruction to end the turn with a screenshot. Also use when asked to show, display or look at an image, chart or diagram.
+name: screenshot-send
+description: Show the finished work as a picture rather than describing it - capture a screenshot of the result and draw it in a herdr pane beside the conversation, over the kitty graphics protocol. Use whenever "screenshot-send" appears in a prompt, before or after the request, or arrives as a message of its own once the work is done; it is an instruction to end the turn with a screenshot. Also use when asked to show, display or look at an image, chart or diagram.
 ---
 
 # Show Screenshot
 
-`show-screenshot` in a prompt is not a question. It means: do the work as asked,
+`screenshot-send` in a prompt is not a question. It means: do the work as asked,
 then **capture the result and show it**, and let the picture carry the report. It
 is a whole sentence wherever it lands - appended to a request, in front of it, or
 sent on its own after the work is finished, where it means "show me what you just
@@ -43,8 +43,8 @@ something unrelated is worse than a sentence.
 ## 3. Show it
 
 ```bash
-node ~/.claude/skills/show-screenshot/show.mjs shot.png              # one
-node ~/.claude/skills/show-screenshot/show.mjs before.png after.png  # side by side
+node ~/.claude/skills/screenshot-send/show.mjs shot.png              # one
+node ~/.claude/skills/screenshot-send/show.mjs before.png after.png  # side by side
 ```
 
 That is the whole interface. It opens a pane on the right, sized to the pictures,
@@ -83,7 +83,7 @@ width to its own aspect ratio and nothing else: `cols = rows * CELL * w/h`, wher
 `CELL` is measured, not guessed. The drawing half asks the terminal with `CSI 16 t`
 and gets back `CSI 6 ; height ; width t` in pixels - 27 by 12 here, so 2.25, and a
 hardcoded 2 would squeeze every picture by 11%. Only that half has a tty to ask on,
-so what it measures is cached in `~/.cache/show-screenshot/cell-aspect` for the
+so what it measures is cached in `~/.cache/screenshot-send/cell-aspect` for the
 outer half to size the pane by. `HERDR_CELL_ASPECT` overrides both, and 2 is the
 fallback before anything has been measured.
 
