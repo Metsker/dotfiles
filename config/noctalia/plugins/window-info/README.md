@@ -26,10 +26,24 @@ Add the `window` widget from Noctalia's widget picker.
 | Middle-click | Copy the shown value to the clipboard |
 | Hover | Tooltip with the untruncated value |
 
-The glyph tracks the mode: a window frame for the title, a tag for the app id.
-Text longer than 40 characters is truncated; the tooltip always has the whole
+The glyph tracks the mode: by default a window frame for the title, a tag for
+the app id. Longer text is truncated to the maximum length; the tooltip always has the whole
 value. With no window focused the widget hides itself, glyph included, so an
 empty tag leaves no gap on the bar.
+
+## Settings
+
+Widget-level, edited with the bar widget's own settings, so a narrow bar and a
+wide one can carry the same widget at different caps.
+
+| Setting | Default | Effect |
+| --- | --- | --- |
+| Maximum length | 40 | Characters before the text is truncated, ellipsis included |
+| Title glyph | `app-window` | Shown while the title is displayed |
+| App id glyph | `tag` | Shown while the app id is displayed |
+
+Truncation counts characters rather than bytes, so a Cyrillic or emoji title is
+never cut mid-character.
 
 ## Notes
 

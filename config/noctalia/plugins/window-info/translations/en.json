@@ -1,5 +1,19 @@
 {
 	"notify": {
 		"copied": "Copied"
+	},
+	"settings": {
+		"max_length": {
+			"label": "Maximum length",
+			"description": "Characters before the title is truncated. The tooltip always carries the whole value."
+		},
+		"title_glyph": {
+			"label": "Title glyph",
+			"description": "Shown while the widget is displaying the window title."
+		},
+		"appid_glyph": {
+			"label": "App id glyph",
+			"description": "Shown while the widget is displaying the app id."
+		}
 	}
 }

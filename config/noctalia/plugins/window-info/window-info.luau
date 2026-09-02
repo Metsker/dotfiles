@@ -1,15 +1,17 @@
 --!nonstrict
 -- Bar widget: the focused window's title, toggled to its app id on click.
 
--- ponytail: fixed cap; make it a plugin setting if a bar ever wants a different width.
-local LIMIT = 40
 -- The watch stream carries every focus change, so the tick exists only to notice
 -- that the stream itself died, which a mango restart is enough to do.
 local RESYNC_INTERVAL = 15000
 local MODES = {
-	{ key = "title", glyph = "app-window" },
-	{ key = "appid", glyph = "tag" },
+	{ key = "title", glyph = noctalia.getConfig("title_glyph") },
+	{ key = "appid", glyph = noctalia.getConfig("appid_glyph") },
 }
+
+-- Read once: the host rebuilds the widget when a setting changes, so the script
+-- re-runs with the new value rather than needing a getConfig per render.
+local LIMIT = noctalia.getConfig("max_length")
 
 -- Every bar runs its own copy of this script, so the mode lives in the plugin's
 -- shared state (mirrors it across bars live) backed by a file (survives a restart).
