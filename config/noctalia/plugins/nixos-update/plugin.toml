@@ -1,0 +1,75 @@
+id = "metsker/nixos-update"
+name = "NixOS Update"
+version = "1.1.0"
+plugin_api = 9
+author = "metsker"
+license = "MIT"
+dependencies = []
+icon = "snowflake"
+description = "Shows a snowflake once a NixOS channel has moved past the revision the flake pins for it."
+tags = ["bar", "nixos"]
+
+# Plugin-level rather than widget-level: the service does the checking and the
+# widget does the drawing, and both are seeded from this one set.
+[[setting]]
+key             = "channel"
+type            = "string"
+label_key       = "settings.channel.label"
+description_key = "settings.channel.description"
+default         = "nixos-unstable"
+
+[[setting]]
+key             = "flake_lock"
+type            = "file"
+label_key       = "settings.flake_lock.label"
+description_key = "settings.flake_lock.description"
+default         = "~/dotfiles/flake.lock"
+extensions      = [".lock"]
+
+[[setting]]
+key             = "input"
+type            = "string"
+label_key       = "settings.input.label"
+description_key = "settings.input.description"
+default         = "nixpkgs"
+advanced        = true
+
+[[setting]]
+key             = "check_interval_minutes"
+type            = "int"
+label_key       = "settings.check_interval_minutes.label"
+description_key = "settings.check_interval_minutes.description"
+default         = 60
+min             = 5
+max             = 1440
+
+[[setting]]
+key             = "update_command"
+type            = "string"
+label_key       = "settings.update_command.label"
+description_key = "settings.update_command.description"
+default         = "cd ~/dotfiles && nix flake update && nh os switch"
+
+[[setting]]
+key             = "show_age"
+type            = "bool"
+label_key       = "settings.show_age.label"
+description_key = "settings.show_age.description"
+default         = true
+
+[[service]]
+id = "checker"
+entry = "checker.luau"
+
+[[widget]]
+id = "update"
+entry = "update.luau"
+
+  # Widget-level, unlike the rest: a glyph is presentation, so two placements of
+  # the widget can differ without splitting the check they share.
+  [[widget.setting]]
+  key             = "glyph"
+  type            = "glyph"
+  label_key       = "settings.glyph.label"
+  description_key = "settings.glyph.description"
+  default         = "snowflake"
