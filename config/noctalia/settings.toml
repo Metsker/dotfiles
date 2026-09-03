@@ -228,8 +228,8 @@ enabled = [
     "metsker/mango-layout",
     "felipeartur/ai-usagebar",
     "metsker/voxtype",
-    "metsker/nixos-update",
-    "metsker/window-info"
+    "metsker/window-info",
+    "metsker/nixos-update"
 ]
 
     [[plugins.source]]
@@ -397,6 +397,8 @@ detached_panel = true
 drawer = true
 
 [widget.update]
+glyph = "rotate"
+show_label = false
 type = "metsker/nixos-update:update"
 
 [widget.volume.actions]
