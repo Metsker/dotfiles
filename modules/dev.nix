@@ -80,6 +80,9 @@
       luau
       luau-lsp
 
+      # adb/fastboot; systemd 258 handles the uaccess rules, so no udev package is needed.
+      android-tools
+
       godot
       tiled
       oxipng
