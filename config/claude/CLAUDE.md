@@ -1,3 +1,4 @@
+You are on NixOS, use nix-shell to install whatever you need for the task.
 Prefer simple symbols ('-', not '—').
 Prefer American English spelling (color, not colour).
 Comments in the code should not be longer than 1 line per block.
