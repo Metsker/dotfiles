@@ -138,8 +138,17 @@ package ships; it bypasses uwsm and starts no shell, so it is the wrong one to p
   profile: `record` drives noctalia's screen_recorder plugin and DMS ships no equivalent.
   `screenshot` still asks mango's `mmsg` for window boxes and the cursor position, so on this
   profile it works without window snapping.
-- **monstar** is the terminal, built from a flake input. `term` in `modules/shell.nix` is an
-  absolute-store-path shim because `~/.local/bin` is not on either compositor's session PATH.
+- **monstar** is the terminal, built from a flake input. `modules/shell.nix` names it exactly
+  once, in a file-level `terminal` binding, and spends that on `$TERMINAL` in
+  `environment.sessionVariables` and on the two KDE keys - swapping terminals is that one edit.
+  Both compositors' keybinds spawn `$TERMINAL`, which works because their `spawn`/`exec` go
+  through `sh`; noctalia reads it too, its own discovery list ending at foot. KIO's launcher
+  reads `kdeglobals` rather than the environment, so an activation script writes
+  `TerminalApplication` and `TerminalService` there - unset, dolphin's "Open Terminal Here"
+  falls through to an absent konsole and does nothing. A desktop entry's `Exec` is never
+  shell-expanded, so entries needing a terminal set `Terminal=true` and let the launcher supply
+  one instead of naming it. `SNACKS_GHOSTTY` is a session variable for the same reason: `-e nvim`
+  starts no shell, and libghostty does not answer to the XTVERSION probe snacks.nvim gates on.
 - `config/niri/` is an inactive leftover - niri is not installed, and
   `patches/hyprland-scrolling-clamp-camera.diff` is unused. Do not treat them as live config.
 

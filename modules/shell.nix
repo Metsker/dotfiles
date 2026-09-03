@@ -1,6 +1,14 @@
 { inputs, ... }:
 
 # The text-mode half of the desktop: shell, terminal, editor, file manager, git.
+let
+  # The only place the terminal is named. $TERMINAL covers anything that spawns one through a
+  # shell; KIO's launcher reads kdeglobals instead, so it needs the same answer written there.
+  terminal = {
+    binary = "monstar";
+    desktopId = "dev.rockorager.monstar.desktop";
+  };
+in
 {
   flake.modules.nixos.base = { pkgs, ... }: {
     programs.fish = {
@@ -15,6 +23,12 @@
     environment.sessionVariables = {
       EDITOR = "nvim";
       VISUAL = "nvim";
+      # Anything that spawns a terminal reads this; noctalia's own discovery list ends
+      # at foot and never names monstar.
+      TERMINAL = terminal.binary;
+      # snacks.nvim gates kitty graphics on the XTVERSION terminal name, which libghostty
+      # does not answer to; set for the session because `-e nvim` starts no shell.
+      SNACKS_GHOSTTY = "1";
     };
 
     # No nixpkgs.follows on the input, so this cache actually hits.
@@ -24,19 +38,13 @@
     };
   };
 
-  flake.modules.homeManager.metsker = { pkgs, dotfile, ... }:
+  flake.modules.homeManager.metsker = { lib, pkgs, dotfile, ... }:
     let
       monstar = inputs.monstar.packages.${pkgs.stdenv.hostPlatform.system}.default;
     in
     {
       programs.fish = {
         enable = true;
-        # snacks.nvim gates kitty graphics on the XTVERSION terminal name; monstar is libghostty.
-        interactiveShellInit = ''
-          if test "$TERM" = monstar
-            set -gx SNACKS_GHOSTTY 1
-          end
-        '';
         shellAliases = {
           rebuild = "sudo -v; and nh os switch";
           restart = "systemctl --user restart";
@@ -79,16 +87,21 @@
 
       home.packages = [
         monstar
-        # Terminal indirection (absolute store path: ~/.local/bin isn't on mango's session PATH).
-        # SNACKS_GHOSTTY is set here too: `term -e nvim` skips fish, so the shell guard never runs.
-        (pkgs.writeShellScriptBin "term" ''
-          export SNACKS_GHOSTTY=1
-          exec ${monstar}/bin/monstar "$@"
-        '')
         pkgs.github-cli
         pkgs.lazygit
         pkgs.jrnl
       ];
+
+      # KIO's terminal launcher reads kdeglobals, not the environment, and falls through to
+      # konsole when these are unset - which is why dolphin's "Open Terminal Here" did nothing.
+      # Written by activation rather than home.file because noctalia merges colors and fonts into
+      # the same file at runtime, and a read-only store symlink would break that.
+      home.activation.kdeTerminal = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        run ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 --file kdeglobals --group General \
+          --key TerminalApplication ${terminal.binary}
+        run ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 --file kdeglobals --group General \
+          --key TerminalService ${terminal.desktopId}
+      '';
 
       xdg.configFile.monstar = { source = dotfile "monstar"; recursive = true; };
       xdg.configFile.foot = { source = dotfile "foot"; recursive = true; };
@@ -100,8 +113,10 @@
       xdg.desktopEntries.nvim = {
         name = "Neovim";
         genericName = "Text Editor";
-        exec = "term -e nvim %F";
-        terminal = false;
+        exec = "nvim %F";
+        # The launcher supplies the terminal - noctalia through $TERMINAL, KIO through kdeglobals -
+        # so this entry names none. A desktop Exec is not shell-expanded, so $TERMINAL cannot go here.
+        terminal = true;
         type = "Application";
         icon = "nvim";
         categories = [ "Utility" "TextEditor" ];

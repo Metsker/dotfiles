@@ -145,14 +145,14 @@ bind(mod .. " + Escape", hl.dsp.exec_cmd("dms ipc call powermenu toggle"))
 bind(mod .. " + CTRL + Escape", hl.dsp.exec_cmd("dms ipc call lock lock"))
 
 -- Launchers
-bind(mod .. " + Return", hl.dsp.exec_cmd("term"))
-bind(mod .. " + ALT + Return", hl.dsp.exec_cmd("term -e herdr"))
+bind(mod .. " + Return", hl.dsp.exec_cmd("$TERMINAL"))
+bind(mod .. " + ALT + Return", hl.dsp.exec_cmd("$TERMINAL -e herdr"))
 bind(mod .. " + SHIFT + Return", hl.dsp.exec_cmd("zen-beta"))
-bind(mod .. " + SHIFT + F", hl.dsp.exec_cmd("term -e yazi"))
+bind(mod .. " + SHIFT + F", hl.dsp.exec_cmd("$TERMINAL -e yazi"))
 bind(mod .. " + ALT + SHIFT + F", hl.dsp.exec_cmd("dolphin"))
-bind(mod .. " + SHIFT + S", hl.dsp.exec_cmd("term --working-directory ~/dotfiles/ -e nvim modules/"))
+bind(mod .. " + SHIFT + S", hl.dsp.exec_cmd("$TERMINAL --working-directory ~/dotfiles/ -e nvim modules/"))
 -- mango's Super+Shift+M opens its own config; the counterpart here is the Hyprland one.
-bind(mod .. " + SHIFT + M", hl.dsp.exec_cmd("term --working-directory ~/dotfiles/config/hypr/ -e nvim ."))
+bind(mod .. " + SHIFT + M", hl.dsp.exec_cmd("$TERMINAL --working-directory ~/dotfiles/config/hypr/ -e nvim ."))
 bind(mod .. " + space", hl.dsp.exec_cmd("dms ipc call spotlight toggle"), { description = "Default Launcher: Toggle" })
 
 -- Clipboard (mac-style): the clipboard script sends Ctrl+C/V in apps, Ctrl+Shift+C/V in terminals.
