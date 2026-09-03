@@ -7,6 +7,10 @@
 			"label": "Glyph",
 			"description": "Shown while the channel is ahead of the pinned revision."
 		},
+		"show_label": {
+			"label": "Show label",
+			"description": "Print how long ago the pinned revision was published beside the glyph. Off leaves the glyph alone."
+		},
 		"channel": {
 			"label": "Channel",
 			"description": "The channel to watch, as it appears under channels.nixos.org - for example nixos-unstable or nixos-25.11."
@@ -26,10 +30,6 @@
 		"update_command": {
 			"label": "Update command",
 			"description": "Run in a terminal when the widget is clicked."
-		},
-		"show_age": {
-			"label": "Show age",
-			"description": "Print how long ago the pinned revision was published beside the glyph."
 		}
 	}
 }

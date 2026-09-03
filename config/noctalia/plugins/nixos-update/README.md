@@ -24,30 +24,31 @@ Add the `update` widget from Noctalia's widget picker. Clicking it opens a
 terminal running the update command.
 
 The text beside the glyph is how old the pinned revision is, in days, taken
-from the lock's own `lastModified`. The tooltip carries both short revisions and
-the channel they were compared for.
+from the lock's own `lastModified`. Turning the label off leaves the glyph on
+its own. Either way the tooltip carries both short revisions and the channel
+they were compared for.
 
 ## Settings
 
-The glyph is a widget setting, edited with the bar widget's own settings, so
-two placements can differ. The other six are plugin-level, edited under
-Settings → Plugins.
+The glyph and the label toggle are widget settings, edited with the bar
+widget's own settings, so two placements can differ. The other five are
+plugin-level, edited under Settings → Plugins.
 
 | Setting | Default | Effect |
 | --- | --- | --- |
 | Glyph | `snowflake` | Shown while the channel is ahead of the pin |
+| Show label | on | Print the pin's age beside the glyph |
 | Channel | `nixos-unstable` | Which channel's head to fetch |
 | Flake lock | `~/dotfiles/flake.lock` | The lock file to read the pin from |
 | Flake input | `nixpkgs` | Which of the flake's inputs to compare (advanced) |
 | Check interval | 60 min | Minutes between checks |
 | Update command | `cd ~/dotfiles && nix flake update && nh os switch` | Run in a terminal on click |
-| Show age | on | Print the pin's age beside the glyph |
 
 ## Notes
 
-Everything but the glyph is plugin-level, because the service does the checking
-and the widget only draws: one settings page under Settings → Plugins feeds
-both, and one request per interval covers every bar.
+The checking settings are plugin-level and the drawing settings widget-level,
+because the service does the checking and the widget only draws: one settings
+page feeds both, and one request per interval covers every bar.
 
 A flake input that only *follows* another input has no revision of its own -
 `flake.lock` records it as a path rather than a node name. Pointing the Flake

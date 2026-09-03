@@ -26,7 +26,7 @@ local function render()
 	end
 	barWidget.setVisible(true)
 	barWidget.setGlyph(noctalia.getConfig("glyph"))
-	barWidget.setText(noctalia.getConfig("show_age") and age() or "")
+	barWidget.setText(noctalia.getConfig("show_label") and age() or "")
 	barWidget.setTooltip(noctalia.tr("tooltip.behind", {
 		channel = status.channel,
 		-- Short revisions: the tooltip is a glance, not something to copy out of.
