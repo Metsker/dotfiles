@@ -7,7 +7,7 @@ enable_sounds = true
 background_opacity = 0.74999998323619366
 capsule_radius = 8
 center = [ "clock", "weather", "dictation", "update", "recorder" ]
-end = [ "tray", "audio_visualizer", "media", "volume", "bar_2", "cpu", "keyboard_layout", "notifications" ]
+end = [ "tray", "media", "volume", "audio_visualizer", "bar_2", "cpu", "keyboard_layout", "notifications" ]
 margin_edge = 8
 margin_ends = 8
 radius = 16
@@ -212,7 +212,7 @@ corner_roundness = 0.0
 picker_placement = "floating"
 
 [plugin_settings."noctalia/screen_recorder"]
-audio_source = "default_output"
+audio_source = "both"
 hide_inactive = true
 video_source = "portal"
 
@@ -384,6 +384,8 @@ title_scroll = "on_hover"
     [widget.media.actions]
     left = "media toggle"
     right = "panel-toggle control-center media"
+    scroll_down = "media previous-player"
+    scroll_up = "media next-player"
 
 [widget.network]
 show_label = false
