@@ -68,8 +68,6 @@
       discord
       krita
       spotify
-      # Also the session's Secret Service provider, which is what lets noctalia persist credentials.
-      keepassxc
     ];
 
     xdg.mimeApps.defaultApplications = {
