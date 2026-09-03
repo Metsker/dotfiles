@@ -13,6 +13,13 @@
     # autostart already launches the client gated on nm-online; mask the duplicate XDG unit.
     systemd.user.units."app-AmneziaVPN@autostart.service".enable = false;
 
+    # openFirewall punches 53317 tcp+udp; the firewall is on by default, and without
+    # that hole discovery finds nothing and an incoming transfer never connects.
+    programs.localsend = {
+      enable = true;
+      openFirewall = true;
+    };
+
     environment.systemPackages = with pkgs; [
       unzip
       zip
