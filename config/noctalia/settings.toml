@@ -6,11 +6,13 @@ enable_sounds = true
 [bar.default]
 background_opacity = 0.74999998323619366
 capsule_radius = 8
+capsule_thickness = 0.89999998360872269
 center = [ "clock", "weather", "dictation", "update", "recorder" ]
 end = [ "tray", "media", "volume", "audio_visualizer", "bar_2", "cpu", "keyboard_layout", "notifications" ]
-margin_edge = 8
-margin_ends = 8
-radius = 16
+margin_ends = 0
+radius = 0
+radius_bottom_left = 8
+radius_bottom_right = 8
 shadow = false
 start = [ "launcher", "workspaces", "window" ]
 
@@ -320,19 +322,19 @@ wallpaper_scheme = "m3-content"
         post_hook = "pkill -USR1 monstar 2>/dev/null || true"
 
 [wallpaper.default]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.last]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.monitors.DP-1]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.monitors.HDMI-A-2]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [wallpaper.monitors.HDMI-A-3]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
 [[wallpaper.favorite]]
 palette_source = "wallpaper"
@@ -401,7 +403,7 @@ detached_panel = true
 drawer = true
 
 [widget.update]
-glyph = "rotate"
+glyph = "rotate-clockwise-2"
 show_label = false
 type = "metsker/nixos-update:update"
 
