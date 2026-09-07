@@ -286,19 +286,19 @@ wallpaper_scheme = "m3-content"
         post_hook = "pkill -USR1 monstar 2>/dev/null || true"
 
 [wallpaper.default]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 
 [wallpaper.last]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 
 [wallpaper.monitors.DP-1]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 
 [wallpaper.monitors.HDMI-A-2]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 
 [wallpaper.monitors.HDMI-A-3]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 
 [[wallpaper.favorite]]
 palette_source = "wallpaper"
@@ -307,10 +307,10 @@ theme_mode = "dark"
 wallpaper_scheme = "m3-content"
 
 [[wallpaper.favorite]]
-builtin_palette = "Ayu"
-palette_source = "builtin"
+palette_source = "wallpaper"
 path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 theme_mode = "dark"
+wallpaper_scheme = "m3-content"
 
 [widget.audio_visualizer]
 mirrored = false
