@@ -283,3 +283,9 @@ blur_optimized = false
 [[layer_rule]]
 match.namespace = "^(selection|wayfreeze|hyprpicker)$"
 blur = false
+
+[animation.workspaces]
+enabled = false
+
+[overview]
+shortcuts = false
