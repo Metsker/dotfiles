@@ -18,7 +18,34 @@
     programs.umbriel.package = pkgs.umbriel;
 
     # Exposes the flake input under pkgs so the shared tool wrappers can list it in runtimeInputs.
-    nixpkgs.overlays = [ inputs.umbriel.overlays.default ];
+    nixpkgs.overlays = [
+      inputs.umbriel.overlays.default
+      # Satellite focuses override-redirect windows, and Steam closes a menu the moment focus
+      # lands on it - so every Steam dropdown dies. Source is PR 494, which never focuses an
+      # override-redirect window and hands WM_TAKE_FOCUS clients the choice, as Hyprland's XWM
+      # does. Drop when https://github.com/Supreeeme/xwayland-satellite/pull/494 reaches nixpkgs.
+      # driftwm's X11 goes through the same package, so it is patched here too.
+      (final: prev: {
+        xwayland-satellite = prev.xwayland-satellite.overrideAttrs (old:
+          let
+            src = final.fetchFromGitHub {
+              owner = "3akev";
+              repo = "xwayland-satellite";
+              rev = "9d51b59ff3c38464e7654096c9b10a8052a26b25";
+              hash = "sha256-hJWNd9MqNzKEDV59E45jeqtbSz/+xrg/Comg6GjAKDo=";
+            };
+          in
+          {
+            version = "${old.version}-pr494";
+            inherit src;
+            # buildRustPackage derives cargoDeps from the original src, so it has to be rebuilt too.
+            cargoDeps = final.rustPlatform.fetchCargoVendor {
+              inherit src;
+              hash = "sha256-s1gl9eR6Mt2QLrhfcowstPFjzwE/lz4PJhJzWYHoIHg=";
+            };
+          });
+      })
+    ];
 
     # Merges into the module's own default of [ "umbriel" "gtk" ]; umbriel's portal handles the
     # screencast side, so this is the only key worth overriding.
