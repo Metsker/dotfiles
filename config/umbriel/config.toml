@@ -231,6 +231,21 @@ match.app_id = "^zen$"
 match.title = "^Library$"
 default_floating = true
 
+# Float every Steam window except the library itself, whose title is exactly "Steam".
+[[window_rule]]
+match.app_id = "^[Ss]team$"
+match.title = "^(?!Steam$).*"
+default_floating = true
+
+# The toast Steam raises when a friend starts a game. Steam titles it
+# notificationtoasts_<id>_desktop, which is what umbriel's own example config matches on.
+[[window_rule]]
+match.title = "^notificationtoasts_.+_desktop"
+default_floating = true
+default_position = { x = 0, y = 0, anchor = "bottom_right" }
+default_focused = false
+default_pinned = true
+
 #autostart rules
 [[window_rule]]
 match.app_id = "^org[.]telegram[.]desktop$"
