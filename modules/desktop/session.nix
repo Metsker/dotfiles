@@ -1,15 +1,20 @@
 { inputs, ... }:
 
-# The half of the graphical session both desktop profiles share: the uwsm plumbing that runs a
-# compositor under systemd, the greeter that picks between the profiles, the portals, and the
-# wayland tools that do not care which compositor is up.
+# The half of the graphical session every desktop profile shares: noctalia, the one shell, the uwsm
+# plumbing, the greeter that picks between the compositors, the portals, and the wayland tools that
+# do not care which compositor is up.
 #
-# A profile is a compositor + shell pair, one file each (mango-noctalia.nix, hyprland-dms.nix).
-# Both are always installed; swapping means logging out and picking the other entry in the greeter.
-# Each profile binds its shell to uwsm's per-compositor target, so only the matching one starts.
+# A profile is one compositor, one file each (mango.nix, driftwm.nix, umbriel.nix). All three are
+# always installed; swapping means logging out and picking another entry in the greeter. noctalia is
+# the shell on all of them, so it binds to graphical-session.target - the one target all three reach.
 {
   flake.modules.nixos.base = { pkgs, ... }: {
     imports = [ inputs.noctalia-greeter.nixosModules.default ];
+
+    nix.settings.extra-substituters = [ "https://noctalia.cachix.org" ];
+    nix.settings.extra-trusted-public-keys = [
+      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+    ];
 
     # Runs the compositor under systemd user units: app scopes tear down cleanly, and uwsm
     # publishes a wayland-session@<compositor>.target that each profile hangs its shell off.
@@ -50,9 +55,20 @@
     ];
   };
 
-  flake.modules.homeManager.metsker = { pkgs, dotfile, ... }: {
+  flake.modules.homeManager.metsker = { config, pkgs, dotfile, ... }: {
+    imports = [ inputs.noctalia.homeModules.default ];
+
     xdg.configFile.uwsm = { source = dotfile "uwsm"; recursive = true; };
     xdg.configFile.voxtype = { source = dotfile "voxtype"; recursive = true; };
+
+    # The module's own graphical-session.target is right here: every profile reaches it, and every
+    # profile wants noctalia. Its per-compositor features come from runtime detection, not from Nix.
+    programs.noctalia = {
+      enable = true;
+      systemd.enable = true;
+    };
+
+    home.file.".local/state/noctalia/settings.toml".source = dotfile "noctalia/settings.toml";
 
     # Nixpkgs ships no unit for the dictation daemon, and it only makes sense with a compositor up.
     systemd.user.services.voxtype = {
@@ -91,11 +107,17 @@
         text = builtins.readFile ../../scripts/textpicker.sh;
       })
       # Super+C/V copy/paste: asks the running compositor for the focused window's pid,
-      # then wtype injects Ctrl(+Shift)+C/V. Shared, so it carries both compositors' clients.
+      # then wtype injects Ctrl(+Shift)+C/V. Shared, so it carries all three compositors' clients.
       (writeShellApplication {
         name = "clipboard";
-        runtimeInputs = [ wtype jq mangowm hyprland ];
+        runtimeInputs = [ wtype jq mangowm driftwm umbriel ];
         text = builtins.readFile ../../scripts/clipboard.sh;
+      })
+      # Drives noctalia's screen_recorder plugin, so it works wherever noctalia does.
+      (writeShellApplication {
+        name = "record";
+        runtimeInputs = [ config.programs.noctalia.package procps gnused ];
+        text = builtins.readFile ../../scripts/record.sh;
       })
       # Runs on every dictation via voxtype's post_process hook; pure bash, so nothing to put on PATH.
       (writeShellApplication {

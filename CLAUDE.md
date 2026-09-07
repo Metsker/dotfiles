@@ -58,9 +58,10 @@ One file per domain, not per app - a new program joins the file its domain alrea
 | `hardware.nix` | GPU, firmware, audio, bluetooth, peripherals |
 | `user.nix` | the account, home-manager wiring, the `dotfile` argument |
 | `theming.nix` | GTK/Qt/cursor/icons, fonts |
-| `desktop/session.nix` | uwsm, greetd, portals, screencast, voxtype, the wayland tool scripts |
-| `desktop/mango-noctalia.nix` | desktop profile: mango + noctalia |
-| `desktop/hyprland-dms.nix` | desktop profile: hyprland + DankMaterialShell |
+| `desktop/session.nix` | noctalia, uwsm, greetd, portals, screencast, voxtype, the wayland tool scripts |
+| `desktop/mango.nix` | desktop profile: mango |
+| `desktop/driftwm.nix` | desktop profile: driftwm |
+| `desktop/umbriel.nix` | desktop profile: umbriel |
 | `shell.nix` | fish, monstar, foot, yazi, neovim, git |
 | `dev.nix` | toolchain, playwright browsers, herdr, remote host bootstrap |
 | `apps.nix` | browser, file manager, media, chat, art, VPN |
@@ -99,49 +100,53 @@ condition becomes permanent.
 
 ## Desktop stack
 
-Two **desktop profiles**, each a compositor + shell pair in one module, both installed at once.
-There is no autologin: the greeter is where a profile gets picked, and swapping means logging out
-and choosing the other entry. Everything a pair needs - packages, overlays, portal config, config
-symlinks, its own scripts - lives in that pair's file, and `modules/desktop/session.nix` holds only
-what both need.
+Three **desktop profiles**, one compositor each, all installed at once. There is no autologin: the
+greeter is where a profile gets picked, and swapping means logging out and choosing another entry.
 
-**uwsm** publishes a `wayland-session@<compositor>.target` per session, and each profile hangs its
-shell off its own one. That is what keeps the other profile's shell down; `graphical-session.target`
-would start both. The instance name comes from the session entry, so it must match the entry the
-profile registers - `mango-uwsm` from `programs.uwsm.waylandCompositors`, `hyprland-uwsm` from
-`programs.hyprland.withUWSM`. The greeter also lists a plain `hyprland` entry that the hyprland
-package ships; it bypasses uwsm and starts no shell, so it is the wrong one to pick.
+**noctalia is the shell on all three**, so it is not part of any profile - it lives in
+`modules/desktop/session.nix` on `graphical-session.target`, the one target every profile reaches.
+A profile's file therefore holds only its compositor: packages, overlays, portal config, its config
+symlink. Adding a fourth compositor means adding one file and nothing else.
 
-- **mango + noctalia** (`modules/desktop/mango-noctalia.nix`). `config/mango/config.conf` sources the
-  other `.conf` files. noctalia owns theming: its templates render color palettes into app configs at
+The three reach that target by different routes. Only mango is **uwsm**-managed: uwsm publishes a
+`wayland-session@<compositor>.target` per session, whose instance name must match the entry
+`programs.uwsm.waylandCompositors` registers. driftwm ships its own `driftwm-session` and
+`driftwm.service`, and umbriel its own `start-umbriel`, `umbriel.service` and
+`umbriel-session.target`; both pull `graphical-session.target` up behind them. Nothing needs gating
+any more, because there is only one shell and every profile wants it.
+
+- **mango** (`modules/desktop/mango.nix`). `config/mango/config.conf` sources the other `.conf`
+  files. Master layout with the master area on the right (`right_tile`), and per-monitor tags 1-9.
+- **driftwm** (`modules/desktop/driftwm.nix`). An infinite-canvas compositor: windows keep their
+  native size on a 2D canvas and the display is a camera over it, so there are no workspaces and
+  mango's per-monitor tags have no analogue - `Mod+1-4` are camera bookmarks. `config/driftwm/config.toml`
+  hot-reloads on save; every default is documented in the package's own `config.reference.toml`.
+  Ported from mango: the launcher set, the input setup, the monitor layout and the silent-open rules.
+  `Mod+C`/`Mod+V` are the clipboard script, which displaces `center-window` onto `Mod+Ctrl+C`.
+  Its NixOS module sets the portal config, portal list and gnome-keyring with `mkDefault`, and a
+  list option takes only its highest-priority definitions - so the module's portal defaults are
+  dropped wholesale by the other modules' plain assignments and have to be repeated in the file.
+  `screenshot` asks mango's `mmsg` for window boxes and the cursor position, so here it works
+  without window snapping. The canvas background is a GLSL shader from the package's own
+  `share/driftwm/wallpapers/`, named through `/run/current-system/sw` rather than a store path that
+  moves; `environment.pathsToLink` is what puts that directory in the system profile at all.
+- **umbriel** (`modules/desktop/umbriel.nix`). noctalia's own compositor, so the pairing needs no
+  glue: its example config already carries noctalia's window and layer rules, and noctalia's
+  `umbriel` theme template renders `~/.config/umbriel/noctalia.toml`, which `config.toml` includes
+  through `[include.optional]`. Scrolling, dwindle and master layouts; `config/umbriel/config.toml`
+  is ported from `config/mango/*.conf`, down to mango's per-monitor tag binds - nine static
+  workspaces per output, reached as `workspace-switch:<n>/<output>`. Umbriel has no touchscreen
+  mapping yet, so mango's `touch_map_to_mon` has no equivalent.
+- noctalia owns theming on every profile: its templates render color palettes into app configs at
   theme-switch time, and the rendered outputs are gitignored (`**/noctalia.*`, `**/themes/noctalia`).
   Edit the template (`config/noctalia/templates/`) or the noctalia settings, never the generated file.
-  `config/mango/noctalia.conf` and `config/monstar/themes/noctalia` are both generated.
-- **hyprland + dms** (`modules/desktop/hyprland-dms.nix`). DankMaterialShell owns the Hyprland
-  config: `dms setup` writes `~/.config/hypr/hyprland.lua` plus the `dms/` fragments beside it
-  (`binds.lua`, `layout.lua`, `colors.lua`, `windowrules.lua`, `cursor.lua`), and the DMS Settings
-  pages rewrite them at runtime, so none of that is tracked - run `dms setup` once on a fresh
-  machine. Two exceptions are symlinked out of `config/hypr/dms/`: `binds-user.lua`, which setup
-  never rewrites and which carries everything personal (input, workspace pinning, autostart,
-  window rules, keybinds), and `outputs.lua`, the monitor layout, which setup leaves alone while
-  it is non-empty. `hyprland.lua` requires `binds-user.lua` last, so a key the generated config
-  already bound has to be released with `hl.unbind` before it can be re-used - `binds-user.lua`
-  wraps that pair in a local `bind` helper. **Setup only appends `require("dms.binds")` and
-  `require("dms.binds-user")` to `hyprland.lua`**, so `outputs.lua`, `layout.lua`, `colors.lua`
-  and `windowrules.lua` would never load; `binds-user.lua` requires them itself at the top.
-  Its settings are ported from `config/mango/*.conf` so both profiles behave the same: master
-  layout with the master area on the right (mango's `right_tile`), and mango's per-monitor tags
-  1-9 flattened into global workspace ids with the monitor in the tens digit - 1-9 on HDMI-A-2,
-  11-19 on DP-1, 21-29 on the HDMI-A-3 panel. Panels are driven by
-  `dms ipc call <target> <function>`, so a bind does nothing while the shell is down. DMS's
-  matugen theming is independent of noctalia's templates. There is no recording bind on this
-  profile: `record` drives noctalia's screen_recorder plugin and DMS ships no equivalent.
-  `screenshot` still asks mango's `mmsg` for window boxes and the cursor position, so on this
-  profile it works without window snapping.
+  `config/mango/noctalia.conf`, `config/umbriel/noctalia.toml` and `config/monstar/themes/noctalia`
+  are all generated. Its per-compositor features come from runtime detection, not from Nix: mango and
+  umbriel have workspace backends, driftwm falls to the `Unknown` path and shows no workspace module.
 - **monstar** is the terminal, built from a flake input. `modules/shell.nix` names it exactly
   once, in a file-level `terminal` binding, and spends that on `$TERMINAL` in
   `environment.sessionVariables` and on the two KDE keys - swapping terminals is that one edit.
-  Both compositors' keybinds spawn `$TERMINAL`, which works because their `spawn`/`exec` go
+  All three compositors' keybinds spawn `$TERMINAL`, which works because their `spawn`/`exec` go
   through `sh`; noctalia reads it too, its own discovery list ending at foot. KIO's launcher
   reads `kdeglobals` rather than the environment, so an activation script writes
   `TerminalApplication` and `TerminalService` there - unset, dolphin's "Open Terminal Here"

@@ -8,13 +8,13 @@ background_opacity = 0.74999998323619366
 capsule_radius = 8
 capsule_thickness = 0.89999998360872269
 center = [ "clock", "weather", "dictation", "update", "recorder" ]
+concave_edge_corners = false
 end = [ "tray", "media", "volume", "audio_visualizer", "bar_2", "cpu", "keyboard_layout", "notifications" ]
-margin_ends = 0
-radius = 0
-radius_bottom_left = 8
-radius_bottom_right = 8
+margin_edge = 4
+margin_ends = 4
+radius = 16
 shadow = false
-start = [ "launcher", "workspaces", "window" ]
+start = [ "launcher", "workspaces", "window", "active_window" ]
 
 [battery.device."/org/freedesktop/UPower/devices/battery_hidpp_battery_0"]
 warning_threshold = 10
@@ -313,7 +313,7 @@ source = "wallpaper"
 wallpaper_scheme = "m3-content"
 
     [theme.templates]
-    builtin_ids = [ "btop", "foot", "gtk3", "gtk4", "kcolorscheme", "mango" ]
+    builtin_ids = [ "btop", "foot", "gtk3", "gtk4", "kcolorscheme", "mango", "umbriel" ]
     community_ids = [ "zen-browser", "neovim", "papirus-icons", "yazi" ]
 
         [theme.templates.user.monstar]
@@ -322,19 +322,19 @@ wallpaper_scheme = "m3-content"
         post_hook = "pkill -USR1 monstar 2>/dev/null || true"
 
 [wallpaper.default]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
 [wallpaper.last]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
 [wallpaper.monitors.DP-1]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
 [wallpaper.monitors.HDMI-A-2]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
 [wallpaper.monitors.HDMI-A-3]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
 [[wallpaper.favorite]]
 palette_source = "wallpaper"
@@ -423,3 +423,7 @@ type = "metsker/window-info:window"
 enabled = true
 focused_output_only = true
 show_labels = false
+
+    [widget.workspaces.actions]
+    scroll_down = "none"
+    scroll_up = "none"

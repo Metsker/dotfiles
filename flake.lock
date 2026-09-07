@@ -39,57 +39,23 @@
         "type": "github"
       }
     },
-    "dank-material-shell": {
+    "driftwm": {
       "inputs": {
-        "dank-qml-common": "dank-qml-common",
-        "flake-compat": "flake-compat",
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1788645884,
-        "narHash": "sha256-SEZjSpyIKDd6fxmBfGzfzORAL6R4FvMzobX0nLMofSA=",
-        "owner": "AvengeMedia",
-        "repo": "DankMaterialShell",
-        "rev": "f9eb2381b0201d2ac26f8b5de9a22bc3dfe73f92",
+        "lastModified": 1788706356,
+        "narHash": "sha256-Aa/kYfzIV+AjPhKP7u5l8BD6m526Jciihg78TK+1K38=",
+        "owner": "malbiruk",
+        "repo": "driftwm",
+        "rev": "a19a66eabf8e3a851028d6d739761c5471f84fec",
         "type": "github"
       },
       "original": {
-        "owner": "AvengeMedia",
-        "repo": "DankMaterialShell",
-        "type": "github"
-      }
-    },
-    "dank-qml-common": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1788376015,
-        "narHash": "sha256-/tT8rTznLADndTwLBzdgzzgfJH1ZhYQibYo5v/F8U+U=",
-        "owner": "AvengeMedia",
-        "repo": "dank-qml-common",
-        "rev": "26396ce432d6c71c3f5367438f96f4a8d667e160",
-        "type": "github"
-      },
-      "original": {
-        "owner": "AvengeMedia",
-        "repo": "dank-qml-common",
-        "type": "github"
-      }
-    },
-    "flake-compat": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1767039857,
-        "narHash": "sha256-vNpUSpF5Nuw8xvDLj2KCwwksIbjua2LZCqhV1LNRDns=",
-        "owner": "NixOS",
-        "repo": "flake-compat",
-        "rev": "5edf11c44bc78a0d334f6334cdaf7d60d732daab",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "repo": "flake-compat",
+        "owner": "malbiruk",
+        "repo": "driftwm",
         "type": "github"
       }
     },
@@ -384,7 +350,7 @@
       "inputs": {
         "ai-usagebar": "ai-usagebar",
         "claude-code": "claude-code",
-        "dank-material-shell": "dank-material-shell",
+        "driftwm": "driftwm",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
         "import-tree": "import-tree",
@@ -393,6 +359,7 @@
         "nixpkgs": "nixpkgs_3",
         "noctalia": "noctalia",
         "noctalia-greeter": "noctalia-greeter",
+        "umbriel": "umbriel",
         "zen-browser": "zen-browser"
       }
     },
@@ -446,6 +413,48 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default-linux",
+        "type": "github"
+      }
+    },
+    "umbriel": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "xdg-desktop-portal-umbriel": "xdg-desktop-portal-umbriel"
+      },
+      "locked": {
+        "lastModified": 1788753019,
+        "narHash": "sha256-QdQG3D2qpxb0F47dU7KsrJCVpdArtuEXFafbOlPWivg=",
+        "owner": "noctalia-dev",
+        "repo": "umbriel",
+        "rev": "91b9569b685a44837dac894d1aef976c6425b780",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "umbriel",
+        "type": "github"
+      }
+    },
+    "xdg-desktop-portal-umbriel": {
+      "inputs": {
+        "nixpkgs": [
+          "umbriel",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1788532681,
+        "narHash": "sha256-xVLPCVS5RElZQirnx90DB+4OEvUGGqklMsNW+eP6EbE=",
+        "owner": "noctalia-dev",
+        "repo": "xdg-desktop-portal-umbriel",
+        "rev": "5e7efc50ce5013b4799f60c9de8b830026f236a4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "xdg-desktop-portal-umbriel",
         "type": "github"
       }
     },

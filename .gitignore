@@ -3,6 +3,3 @@ config/**/noctalia.*
 config/**/themes/noctalia
 .playwright-mcp/
 result
-
-# Rendered by DMS's matugen foot template into the tracked foot config dir.
-config/foot/dank-colors.ini

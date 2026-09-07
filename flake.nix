@@ -19,10 +19,12 @@
       url = "github:mangowm/mango";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    dank-material-shell = {
-      url = "github:AvengeMedia/DankMaterialShell";
-      # Its home module builds dms-shell against the caller's pkgs, so the input's own nixpkgs
-      # only feeds its devShells - following ours costs nothing and keeps one nixpkgs in the lock.
+    driftwm = {
+      url = "github:malbiruk/driftwm";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    umbriel = {
+      url = "github:noctalia-dev/umbriel";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     noctalia-greeter = {
