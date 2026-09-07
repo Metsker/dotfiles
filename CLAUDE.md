@@ -92,6 +92,20 @@ Conventions that follow from this:
 in `runtimeInputs`. A script must never assume a binary is on PATH - add it to `runtimeInputs` instead.
 `set -euo pipefail` and shellcheck are applied by the wrapper.
 
+`scripts/wminfo.sh` is the only script that names a compositor. It answers three questions -
+`boxes` (window rectangles for slurp), `cursorpos` and `focused-name` - and the wayland tools
+(`screenshot`, `textpicker`, `clipboard`) ask it instead of branching on `XDG_CURRENT_DESKTOP`
+themselves. A query the running compositor cannot answer returns nothing, and the caller decides
+what that means: no boxes is no window snapping, no cursor position is no pointer parking.
+Supporting a fourth compositor is one more case block there.
+
+`screenshot` and `textpicker` grab the whole screen the moment they start and crop that grab to the
+selected region afterwards, rather than capturing once the region is drawn. On the NVIDIA blob an
+output can end up without a cursor plane, and the compositor then composites the pointer into the
+framebuffer, so every screencopy of that output carries it - mango parks the pointer for the grab,
+umbriel hides it on the keypress (`input.cursor.hide_when_typing`), and neither lasts past the mouse
+moving to select. wayfreeze is only the still backdrop the region is drawn against.
+
 ### Overlays
 
 Each overlay pins or patches an upstream package and carries a comment naming the
@@ -126,8 +140,8 @@ any more, because there is only one shell and every profile wants it.
   Its NixOS module sets the portal config, portal list and gnome-keyring with `mkDefault`, and a
   list option takes only its highest-priority definitions - so the module's portal defaults are
   dropped wholesale by the other modules' plain assignments and have to be repeated in the file.
-  `screenshot` asks mango's `mmsg` for window boxes and the cursor position, so here it works
-  without window snapping. The canvas background is a GLSL shader from the package's own
+  `wminfo` has no boxes or cursor query for driftwm's IPC, so screenshots there do not snap to
+  windows. The canvas background is a GLSL shader from the package's own
   `share/driftwm/wallpapers/`, named through `/run/current-system/sw` rather than a store path that
   moves; `environment.pathsToLink` is what puts that directory in the system profile at all.
 - **umbriel** (`modules/desktop/umbriel.nix`). noctalia's own compositor, so the pairing needs no
@@ -136,7 +150,9 @@ any more, because there is only one shell and every profile wants it.
   through `[include.optional]`. Scrolling, dwindle and master layouts; `config/umbriel/config.toml`
   is ported from `config/mango/*.conf`, down to mango's per-monitor tag binds - nine static
   workspaces per output, reached as `workspace-switch:<n>/<output>`. Umbriel has no touchscreen
-  mapping yet, so mango's `touch_map_to_mon` has no equivalent.
+  mapping yet, so mango's `touch_map_to_mon` has no equivalent. `input.cursor.hide_when_typing` is
+  on because HDMI-A-2 gets no cursor plane from the NVIDIA blob - without it the composited pointer
+  lands in every screenshot of that output.
 - noctalia owns theming on every profile: its templates render color palettes into app configs at
   theme-switch time, and the rendered outputs are gitignored (`**/noctalia.*`, `**/themes/noctalia`).
   Edit the template (`config/noctalia/templates/`) or the noctalia settings, never the generated file.

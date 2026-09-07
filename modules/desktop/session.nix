@@ -85,13 +85,22 @@
       Install.WantedBy = [ "graphical-session.target" ];
     };
 
-    home.packages = with pkgs; [
+    home.packages = with pkgs; let
+      # The one place a compositor is named: the tools below query it instead of branching.
+      wminfo = writeShellApplication {
+        name = "wminfo";
+        runtimeInputs = [ jq mangowm driftwm umbriel ];
+        text = builtins.readFile ../../scripts/wminfo.sh;
+      };
+    in
+    [
+      wminfo
       voxtype
       xwayland
 
       (writeShellApplication {
         name = "screenshot";
-        runtimeInputs = [ grim slurp satty wayfreeze wlrctl libnotify ];
+        runtimeInputs = [ grim slurp satty wayfreeze wlrctl libnotify imagemagick wminfo ];
         text = builtins.readFile ../../scripts/screenshot.sh;
       })
       # wayfreeze gives the instant freeze; hyprpicker picks with its zoom lens.
@@ -103,14 +112,14 @@
       # Freeze, slurp a region, OCR it with tesseract, copy the text to the clipboard.
       (writeShellApplication {
         name = "textpicker";
-        runtimeInputs = [ wayfreeze slurp grim wlrctl tesseract wl-clipboard libnotify ];
+        runtimeInputs = [ wayfreeze slurp grim wlrctl tesseract wl-clipboard libnotify imagemagick wminfo ];
         text = builtins.readFile ../../scripts/textpicker.sh;
       })
-      # Super+C/V copy/paste: asks the running compositor for the focused window's pid,
-      # then wtype injects Ctrl(+Shift)+C/V. Shared, so it carries all three compositors' clients.
+      # Super+C/V copy/paste: asks wminfo for the focused window, then wtype injects
+      # Ctrl(+Shift)+C/V - terminals take the shift, everything else does not.
       (writeShellApplication {
         name = "clipboard";
-        runtimeInputs = [ wtype jq mangowm driftwm umbriel ];
+        runtimeInputs = [ wtype wminfo ];
         text = builtins.readFile ../../scripts/clipboard.sh;
       })
       # Drives noctalia's screen_recorder plugin, so it works wherever noctalia does.

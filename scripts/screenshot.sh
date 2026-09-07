@@ -3,36 +3,43 @@ mkdir -p "$save_dir"
 outfile="$save_dir/$(date +%Y-%m-%d_%H-%M-%S).png"
 
 tmp="$(mktemp --suffix=.png)"
+full="$(mktemp --suffix=.ppm)"
 boxes="$(mktemp)"
+geo="$(mktemp)"
 cleanup() {
-  rm -f "$tmp" "$boxes"
+  rm -f "$tmp" "$full" "$boxes" "$geo"
   return 0
 }
 trap cleanup EXIT
 
-mmsg get all-clients 2>/dev/null \
-  | jq -r '.clients[]
-           | select(.is_visible and (.is_minimized | not))
-           | "\(.x),\(.y) \(.width)x\(.height) \(.appid)"' 2>/dev/null > "$boxes" || true
+wminfo boxes > "$boxes"
 
-# Workaround: wlroots falls back to a software cursor on the NVIDIA blob and bakes it
-# into the framebuffer, and screencopy's overlay_cursor can only add a cursor, never
-# remove one - so grim -c and wayfreeze --hide-cursor are both no-ops here. Park the
-# pointer bottom-right instead, where the arrow renders off-screen. Two captures need
-# it: wayfreeze's still frame, and grim's shot of the live pointer over that frame.
-# Proper fix would be a compositor-side screenshot rendered from the scene graph.
-pos="$(mmsg get cursorpos | jq -r '"\(.x|floor) \(.y|floor)"' 2>/dev/null || true)"
-park='wlrctl pointer move 20000 20000'
-unpark="wlrctl pointer move -20000 -20000; wlrctl pointer move $pos"
+# Take the picture now, not after the region is drawn. The NVIDIA blob leaves some outputs without a
+# cursor plane, so the compositor composites the pointer into the framebuffer and every screencopy
+# carries it: mango parks the pointer for this shot, umbriel hides it on the keypress that spawned
+# the script (input.cursor.hide_when_typing). Neither survives the pointer moving to select, so
+# wayfreeze is only the still backdrop and the saved pixels come from here, cropped. ppm skips the
+# png encode, which keeps the grab near 70ms.
+pos="$(wminfo cursorpos)"
+if [ -n "$pos" ]; then
+  # Park the pointer bottom-right, where the arrow renders off-screen, then put it back.
+  wlrctl pointer move 20000 20000
+  sleep 0.1
+  grim -t ppm "$full"
+  wlrctl pointer move -20000 -20000
+  wlrctl pointer move "${pos% *}" "${pos#* }"
+else
+  grim -t ppm "$full"
+fi
 
-# wayfreeze runs --before-freeze-cmd after it has grabbed the frame, so park out here
-# and let that hook put the pointer back before the frozen overlay is shown.
-eval "$park"
-sleep 0.1
+wayfreeze --hide-cursor --after-freeze-cmd "slurp -o < '$boxes' > '$geo'; kill \$PPID" || true
 
-wayfreeze --hide-cursor --before-freeze-cmd "$unpark" --after-freeze-cmd \
-  "geometry=\$(slurp -o < '$boxes') && $park && sleep 0.1 \
-   && grim -g \"\$geometry\" '$tmp'; $unpark; kill \$PPID" || true
+read -r geometry < "$geo" || exit 0
+
+# ponytail: the crop assumes the output layout starts at 0,0, which is where grim's full-screen
+# capture begins; a monitor placed left of or above the origin wants an origin query in wminfo.
+offset="${geometry%% *}"
+magick "$full" -crop "${geometry#* }+${offset%,*}+${offset#*,}" +repage "$tmp"
 
 [ -s "$tmp" ] || exit 0
 
