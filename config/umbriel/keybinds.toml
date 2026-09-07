@@ -2,8 +2,8 @@
 [keybinds]
 "Mod+Q" = "window-close"
 "Mod+F" = "window-toggle-fullscreen"
-# "Mod+M" = "window-toggle-maximize-to-edges"
 "Mod+M" = "window-toggle-maximize"
+"Mod+Alt+M" = "window-toggle-maximize-to-edges"
 "Mod+T" = "window-toggle-floating"
 "Mod+R" = "window-cycle-width"
 "Mod+Shift+R" = "window-cycle-width-back"
