@@ -156,5 +156,42 @@
     xdg.configFile."herdr/config.toml".source = dotfile "herdr/config.toml";
     xdg.configFile."herdr/plugins/config/cloudmanic.herdr-plus".source =
       dotfile "herdr/plugins/config/cloudmanic.herdr-plus";
+
+    # DELETE once nixpkgs has herdr > 0.8.2 - herdrdev/herdr#3415 is fixed on master
+    # and queued for the next release.
+    #
+    # Started from a terminal, the herdr server inherits that terminal's cgroup, so on
+    # logout or reboot systemd SIGTERMs it and all of its panes at once. The shells die
+    # in ~20ms and herdr reacts ~180ms later, by which point it has been told every pane
+    # exited - it closes the emptied workspaces and its shutdown save persists that. Four
+    # workspaces came back as one on 2026-09-07, and the same race cost a session on
+    # mango, so this is the cgroup rather than any one compositor.
+    #
+    # Its own unit exists only so KillMode=mixed applies: SIGTERM reaches the server
+    # alone, which then stops its panes itself and saves the full tree - the path that
+    # already works for a manual `herdr server stop`. The compositor's teardown cannot
+    # reach the panes any more either, since they now live in this unit's cgroup.
+    #
+    # Note this starts the server at login rather than on the first `herdr`, so the saved
+    # session is restored (and its agents resumed) before the terminal is opened.
+    systemd.user.services.herdr = {
+      Unit = {
+        Description = "herdr session server";
+        PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
+        # A server the client already spawned still holds the socket, so the first
+        # activation cannot bind; give up rather than retry until the next login.
+        StartLimitIntervalSec = 60;
+        StartLimitBurst = 3;
+      };
+      Service = {
+        ExecStart = "${pkgs.herdr}/bin/herdr server";
+        KillMode = "mixed";
+        TimeoutStopSec = 30;
+        Restart = "on-failure";
+        RestartSec = 3;
+      };
+      Install.WantedBy = [ "graphical-session.target" ];
+    };
   };
 }
