@@ -60,6 +60,8 @@ natural_scroll = false
 
 [input.cursor]
 follows_focus = true
+hide_when_typing = true
+hide_timeout_ms = 5000
 
 [input.focus]
 follows_mouse = true
