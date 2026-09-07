@@ -1,0 +1,13 @@
+# Layout modes; the active one is per workspace, set with workspace-set-layout.
+[layout]
+mode = "scrolling"
+gap = 4
+
+[layout.scrolling]
+expand_single_column = true
+default_width_fraction = 0.5
+
+[layout.master]
+position = "right"
+default_width_fraction = 0.5
+new_on_top = false

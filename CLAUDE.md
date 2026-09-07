@@ -146,10 +146,14 @@ any more, because there is only one shell and every profile wants it.
   moves; `environment.pathsToLink` is what puts that directory in the system profile at all.
 - **umbriel** (`modules/desktop/umbriel.nix`). noctalia's own compositor, so the pairing needs no
   glue: its example config already carries noctalia's window and layer rules, and noctalia's
-  `umbriel` theme template renders `~/.config/umbriel/noctalia.toml`, which `config.toml` includes
-  through `[include.optional]`. Scrolling, dwindle and master layouts; `config/umbriel/config.toml`
-  is ported from `config/mango/*.conf`, down to mango's per-monitor tag binds - nine static
-  workspaces per output, reached as `workspace-switch:<n>/<output>`. Umbriel has no touchscreen
+  `umbriel` theme template renders `~/.config/umbriel/noctalia.toml`, which `config.toml` pulls in
+  through `[include]`. The config is split like mango's: `config.toml` carries the include list,
+  `[general]` and the odds and ends, and `outputs.toml`, `appearance.toml`, `input.toml`,
+  `layout.toml`, `rules.toml` and `keybinds.toml` carry the rest. Includes are applied in list
+  order and the main file last, so every section lives in exactly one file rather than relying on
+  how umbriel merges a table defined twice. Scrolling, dwindle and master layouts; ported from
+  `config/mango/*.conf`, down to mango's per-monitor tag binds - nine static workspaces per output,
+  reached as `workspace-switch:<n>/<output>`. Umbriel has no touchscreen
   mapping yet, so mango's `touch_map_to_mon` has no equivalent. `input.cursor.hide_when_typing` is
   on because HDMI-A-2 gets no cursor plane from the NVIDIA blob - without it the composited pointer
   lands in every screenshot of that output.

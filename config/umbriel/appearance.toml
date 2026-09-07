@@ -1,0 +1,8 @@
+# Colors come from noctalia.toml, which its theme template regenerates.
+[appearance]
+corner_radius = 0
+
+[appearance.blur]
+passes = 2
+radius = 5
+saturation = 1.0

@@ -1,0 +1,104 @@
+# Window and layer rules, in order - a later rule overrides the settings it repeats.
+[[window_rule]]
+blur = true
+blur_optimized = false
+
+[[window_rule]]
+match.app_id = "^dev[.]noctalia[.]Noctalia$"
+default_floating = true
+default_size = [1020, 900]
+
+[[window_rule]]
+match.app_id = "^dev[.]noctalia[.]UmbrielSharePicker$"
+default_floating = true
+default_size = [800, 600]
+
+[[window_rule]]
+match.app_id = "^(com[.]gabm[.]satty|mpv|imv|engrampa)$"
+default_floating = true
+default_width = 0.75
+default_height = 0.75
+
+[[window_rule]]
+match.app_id = "^AmneziaVPN$"
+default_floating = true
+
+[[window_rule]]
+match.app_id = "^org[.]telegram[.]desktop$"
+match.title = "^Media viewer$"
+default_floating = true
+
+[[window_rule]]
+match.title = "^Select Folder$"
+default_floating = true
+
+[[window_rule]]
+match.app_id = "^zen$"
+match.title = "^Library$"
+default_floating = true
+
+[[window_rule]]
+match.app_id = "^[Ss]team$"
+match.title = "^(?!Steam$).*"
+default_floating = true
+
+[[window_rule]]
+match.title = "^notificationtoasts_.+_desktop"
+default_floating = true
+default_position = { x = 0, y = 0, anchor = "bottom_right" }
+default_focused = false
+default_pinned = true
+
+#autostart rules
+[[window_rule]]
+match.app_id = "^org[.]telegram[.]desktop$"
+match.at_startup = true
+default_output = "DP-1"
+default_workspace = 2
+default_focused = false
+
+[[window_rule]]
+match.app_id = "^discord$"
+match.at_startup = true
+default_output = "DP-1"
+default_workspace = 2
+default_focused = false
+
+[[window_rule]]
+match.app_id = "^spotify$"
+match.at_startup = true
+default_output = "DP-1"
+default_workspace = 3
+default_focused = false
+
+[[window_rule]]
+match.app_id = "^herdr$"
+match.at_startup = true
+default_output = "DP-1"
+default_workspace = 1
+default_focused = false
+
+[[window_rule]]
+match.app_id = "^notes[.]metsker[.]dev__brain$"
+match.at_startup = true
+default_output = "HDMI-A-3"
+default_workspace = 1
+default_focused = false
+
+[[window_rule]]
+match.app_id = "^notes[.]metsker[.]dev__gamedev$"
+match.at_startup = true
+default_output = "HDMI-A-3"
+default_workspace = 2
+default_focused = false
+
+[[layer_rule]]
+match.namespace = "^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd|desktop-widget-[^\"]*)$"
+blur = true
+blur_ignore_alpha = 0.5
+blur_popups = true
+blur_optimized = false
+
+[[layer_rule]]
+match.namespace = "^(selection|wayfreeze|hyprpicker)$"
+blur = false

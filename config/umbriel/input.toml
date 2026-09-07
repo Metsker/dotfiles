@@ -1,0 +1,22 @@
+# Keyboard, pointer and focus behavior.
+[input.keyboard]
+layout = "us,ru"
+options = "caps:escape,grp:ctrl_space_toggle"
+repeat_rate = 25
+repeat_delay = 600
+
+[input.touchpad]
+tap = true
+natural_scroll = true
+disable_while_typing = true
+
+[input.mouse]
+natural_scroll = false
+
+[input.cursor]
+follows_focus = true
+hide_when_typing = true
+hide_timeout_ms = 5000
+
+[input.focus]
+follows_mouse = true
