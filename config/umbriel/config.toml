@@ -8,20 +8,13 @@ files = [
   "layout.toml",
   "rules.toml",
   "keybinds.toml",
+  "autostart.toml",
   "noctalia.toml",
 ]
 
 [general]
 show_cheatsheet = false
 xwayland = true
-# VPN and solaar are systemd units now (modules/vpn.nix, modules/hardware.nix).
-autostart = [
-  "Telegram",
-  "discord",
-  "spotify",
-  "$TERMINAL --app-id herdr -e herdr",
-  "webapp https://notes.metsker.dev/brain/",
-]
 
 [environment]
 NIXOS_OZONE_WL = "1"
