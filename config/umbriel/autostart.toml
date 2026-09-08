@@ -1,5 +1,3 @@
-# XDG autostart entries run too, so this list only carries what ships no .desktop entry.
-# The rules that place these windows live here beside the list that starts them.
 [general]
 autostart = [
   "$TERMINAL --app-id herdr -e herdr",
