@@ -115,8 +115,9 @@ condition becomes permanent.
 
 ## Desktop stack
 
-Three **desktop profiles**, one compositor each, all installed at once. There is no autologin: the
-greeter is where a profile gets picked, and swapping means logging out and choosing another entry.
+Three **desktop profiles**, one compositor each, all installed at once. Boot autologins into
+umbriel through greetd's `initial_session` (in `session.nix`, next to the greeter it skips); the
+greeter is reached by logging out, which is also how a profile gets swapped.
 
 **noctalia is the shell on all three**, so it is not part of any profile - it lives in
 `modules/desktop/session.nix` on `graphical-session.target`, the one target every profile reaches.

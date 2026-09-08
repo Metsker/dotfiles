@@ -10,6 +10,8 @@
 #
 # Like driftwm it is not uwsm-managed - start-umbriel runs umbriel.service, which brings up
 # umbriel-session.target and graphical-session.target behind it.
+#
+# It is also the profile boot autologins into, which session.nix sets up.
 {
   flake.modules.nixos.base = { pkgs, ... }: {
     imports = [ inputs.umbriel.nixosModules.default ];

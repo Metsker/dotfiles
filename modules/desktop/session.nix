@@ -20,9 +20,17 @@
     # publishes a wayland-session@<compositor>.target that each profile hangs its shell off.
     programs.uwsm.enable = true;
 
-    # No autologin any more: the greeter is where the profile gets picked, and it remembers
-    # the last choice. The LUKS passphrase still gates access at boot.
+    # Where a profile gets picked, and it remembers the last choice.
     programs.noctalia-greeter.enable = true;
+
+    # Boot goes straight into umbriel instead of drawing the greeter. initial_session fires once
+    # per greetd start, so logging out lands back in the greeter and the other two profiles stay
+    # one logout away; changing the default profile is the command below. The LUKS passphrase is
+    # what actually gates the machine at boot, and greetd still waits on the VPN either way.
+    services.greetd.settings.initial_session = {
+      command = "${pkgs.umbriel}/bin/start-umbriel";
+      user = "metsker";
+    };
 
     # Electron apps (Discord) ignore SIGTERM and stall logout for 90s; SIGKILL them after 10s instead.
     systemd.user.settings.Manager.DefaultTimeoutStopSec = "10s";
