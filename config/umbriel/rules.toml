@@ -1,4 +1,7 @@
 # Window and layer rules, in order - a later rule overrides the settings it repeats.
+# No blur_optimized here: with it off, a window blurs only the surfaces behind it, and a window
+# over nothing but the wallpaper has none - the global optimized blur is what reaches the backdrop.
+
 [[window_rule]]
 blur = true
 blur_optimized = false
