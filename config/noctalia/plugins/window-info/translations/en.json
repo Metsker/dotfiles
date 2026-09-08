@@ -7,13 +7,17 @@
 			"label": "Maximum length",
 			"description": "Characters before the title is truncated. The tooltip always carries the whole value."
 		},
+		"app_icon": {
+			"label": "App icon",
+			"description": "Show the focused app's own icon instead of the mode glyph. Falls back to the glyph when the app id resolves to no icon."
+		},
 		"title_glyph": {
 			"label": "Title glyph",
-			"description": "Shown while the widget is displaying the window title."
+			"description": "Shown while the widget is displaying the window title, unless the app icon replaces it."
 		},
 		"appid_glyph": {
 			"label": "App id glyph",
-			"description": "Shown while the widget is displaying the app id."
+			"description": "Shown while the widget is displaying the app id, unless the app icon replaces it."
 		}
 	}
 }

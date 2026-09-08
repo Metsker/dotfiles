@@ -12,6 +12,7 @@ local MODES = {
 -- Read once: the host rebuilds the widget when a setting changes, so the script
 -- re-runs with the new value rather than needing a getConfig per render.
 local LIMIT = noctalia.getConfig("max_length")
+local USE_ICON = noctalia.getConfig("app_icon")
 
 -- Every bar runs its own copy of this script, so the mode lives in the plugin's
 -- shared state (mirrors it across bars live) backed by a file (survives a restart).
@@ -49,7 +50,15 @@ local function render()
 	end
 	local value = current()
 	barWidget.setVisible(true)
-	barWidget.setGlyph(MODES[mode].glyph)
+	-- Resolving per render costs nothing: the host caches its icon lookups, and the
+	-- glyph stays the fallback for an app id no desktop entry or icon theme matches.
+	local icon = USE_ICON and client.appid and noctalia.appIconPath(client.appid)
+	if icon then
+		-- No size: the default is the glyph's own, so the widget keeps its height.
+		barWidget.setImage(icon)
+	else
+		barWidget.setGlyph(MODES[mode].glyph)
+	end
 	barWidget.setText(clip(value))
 	-- Untruncated, so a clipped title is still readable on hover.
 	barWidget.setTooltip(value)
