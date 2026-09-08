@@ -10,16 +10,6 @@
       #   iconUrl = source to fetch; needed for self-hosted/auth-gated domains a
       #             favicon service can't reach (see https://dashboardicons.com).
       apps = {
-        brain = {
-          url = "https://notes.metsker.dev/brain/";
-          name = "Brain";
-          iconUrl = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/silverbullet.png";
-        };
-        gamedev = {
-          url = "https://notes.metsker.dev/gamedev/";
-          name = "Gamedev";
-          iconUrl = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/silverbullet.png";
-        };
         tldraw = {
           url = "https://tldraw.com/";
           name = "tldraw";
