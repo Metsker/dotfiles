@@ -42,8 +42,16 @@ processing a note.
 
    ```sh
    cd ~/notes/obsidian/brain
-   grep -rhoP '^\s+- \K.+' --include="*.md" -A0 . | sort | uniq -c | sort -rn   # tag census
-   ls wiki/                                                                     # topics in play
+   # tag census - only the tags block of each frontmatter, so base blocks and body
+   # lists do not pollute the counts
+   find . -name '*.md' -exec awk '
+     FNR==1{fm=0; intags=0}
+     /^---$/{fm++; next}
+     fm==1 && /^tags:/{intags=1; next}
+     fm==1 && /^[A-Za-z]/{intags=0}
+     fm==1 && intags && /^ *- /{sub(/^ *- /,""); print}
+   ' {} + | sort | uniq -c | sort -rn
+   ls wiki/   # topics in play
    ```
 
    Then grep the vault for each concept the capture raises. A concept that already has a
@@ -105,6 +113,9 @@ Rules that matter:
 - **Wikilinks are bare**: `[[Set Bonuses]]`, not `[[wiki/rpg/Set Bonuses|Set Bonuses]]`.
   Both vaults are set to `newLinkFormat: shortest`, so the short form resolves and stays
   readable. The path form survives from the SilverBullet era; do not add more of it.
+  The exception is a filename that repeats across folders - `gamedev` has three
+  `inbox.md`, so a bare `[[inbox]]` resolves to whichever one Obsidian picks. Link those
+  by path with an alias: `[[rpg/inbox|inbox]]`.
 - **Attachments embed by name alone**: `![[thorny_devil.jpg]]`. Every image lives in
   `brain/attachments/`, which is the configured attachment folder.
 - **Callouts are `> [!note]`**, not SilverBullet's `> **note**`.
