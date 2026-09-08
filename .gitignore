@@ -1,6 +1,9 @@
 # Rendered by noctalia's theme templates; scoped to config/ so the nix modules stay tracked.
 config/**/noctalia.*
 config/**/themes/noctalia
+
+# Float rules the window-info widget writes through wminfo; umbriel watches it as an optional include.
+config/umbriel/float-rules.toml
 .playwright-mcp/
 result
 

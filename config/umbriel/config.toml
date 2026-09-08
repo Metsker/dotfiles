@@ -3,14 +3,17 @@
 [include]
 files = [
   "outputs.toml",
-  "appearance.toml",
   "input.toml",
-  "layout.toml",
-  "rules.toml",
   "keybinds.toml",
+  "layout.toml",
+  "appearance.toml",
+  "rules.toml",
   "autostart.toml",
   "noctalia.toml",
 ]
+
+[include.optional]
+files = [ "float-rules.toml" ]
 
 [general]
 show_cheatsheet = false

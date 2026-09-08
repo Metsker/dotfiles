@@ -93,14 +93,18 @@ Conventions that follow from this:
 in `runtimeInputs`. A script must never assume a binary is on PATH - add it to `runtimeInputs` instead.
 `set -euo pipefail` and shellcheck are applied by the wrapper.
 
-`scripts/wminfo.sh` is the only script that names a compositor. It answers five questions -
-`boxes` (window rectangles for slurp), `cursorpos`, `focused-name`, `focused-window` and
-`watch-focused-window` - and the wayland tools (`screenshot`, `textpicker`, `clipboard`) plus
-noctalia's `window-info` plugin ask it instead of branching on `XDG_CURRENT_DESKTOP` themselves.
+`scripts/wminfo.sh` is the only script that names a compositor. It answers seven questions -
+`boxes` (window rectangles for slurp), `cursorpos`, `focused-name`, `focused-window`,
+`watch-focused-window`, `float-rules` and `float-rule` - and the wayland tools (`screenshot`,
+`textpicker`, `clipboard`) plus noctalia's `window-info` plugin ask it instead of branching on
+`XDG_CURRENT_DESKTOP` themselves.
 A query the running compositor cannot answer returns nothing, and the caller decides what that
 means: no boxes is no window snapping, no cursor position is no pointer parking, no focused window
-is a hidden bar widget. The two window queries are the exception to that silence - they exit
-nonzero when the IPC itself fails, so a caller can tell that from an empty desktop.
+is a hidden bar widget, no float rules is a right-click that reports it changed nothing. The two
+window queries are the exception to that silence - they exit nonzero when the IPC itself fails, so
+a caller can tell that from an empty desktop. `float-rule` is the one query that writes: it edits
+the compositor's own rule file and reloads it, because a float rule has to survive the window it
+was read off.
 Supporting a fourth compositor is one more case block there.
 
 `screenshot` and `textpicker` grab the whole screen the moment they start and crop that grab to the

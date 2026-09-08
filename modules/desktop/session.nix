@@ -101,7 +101,7 @@
       # The one place a compositor is named: the tools below query it instead of branching.
       wminfo = writeShellApplication {
         name = "wminfo";
-        runtimeInputs = [ jq mangowm driftwm umbriel ];
+        runtimeInputs = [ jq gnused gnugrep coreutils mangowm driftwm umbriel ];
         text = builtins.readFile ../../scripts/wminfo.sh;
       };
     in
