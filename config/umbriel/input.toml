@@ -20,3 +20,4 @@ hide_timeout_ms = 5000
 
 [input.focus]
 follows_mouse = true
+follows_mouse_max_scroll = 0
