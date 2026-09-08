@@ -71,6 +71,22 @@
         };
       });
 
+      # ~/.claude/skills merges two sources, so it is linked one skill at a time rather than as
+      # a single directory. The hand-written ones stay out-of-store symlinks, so editing a
+      # SKILL.md still takes effect without a rebuild; kepano/obsidian-skills is pinned by the
+      # flake input and read-only in the store. Only adding or removing a skill needs a rebuild.
+      skillsIn = src:
+        builtins.attrNames (lib.filterAttrs (_: type: type == "directory") (builtins.readDir src));
+      skillLinks = mkSource: names:
+        map (name: lib.nameValuePair ".claude/skills/${name}" { source = mkSource name; }) names;
+      # Own skills come last, so a name they share with an upstream one resolves to ours.
+      vendoredSkills = skillLinks
+        (name: "${inputs.obsidian-skills}/skills/${name}")
+        (skillsIn "${inputs.obsidian-skills}/skills");
+      ownSkills = skillLinks
+        (name: dotfile "claude/skills/${name}")
+        (skillsIn ../config/claude/skills);
+
       # Wrap claude so every launch loads the Nix-managed servers; merges with project .mcp.json.
       # =form is required: --mcp-config is variadic and the space form swallows the subcommand.
       claude = pkgs.writeShellScriptBin "claude" ''
@@ -82,6 +98,17 @@
       home.activation.claudeSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         run mkdir -p "$HOME/.claude"
         run ln -sf "${dotfiles}/claude/settings.json" "$HOME/.claude/settings.json"
+      '';
+
+      # ~/.claude/skills used to be one symlink to the dotfiles directory. It is now a real
+      # directory holding one symlink per skill, so that generation's link has to go first:
+      # left in place, home-manager writes the per-skill links *through* it, straight into
+      # the source directory, where each one then points back at itself. Runs before
+      # checkLinkTargets so the file phase sees a clean path.
+      home.activation.claudeSkillsLegacyLink = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
+        if [ -L "$HOME/.claude/skills" ]; then
+          run rm "$HOME/.claude/skills"
+        fi
       '';
 
       # One-time: drop the stale user-scope MCP entries the old activation wrote; MCP now comes from --mcp-config.
@@ -105,9 +132,10 @@
         fi
       '';
 
-      home.file.".claude/CLAUDE.md".source = dotfile "claude/CLAUDE.md";
-      home.file.".claude/keybindings.json".source = dotfile "claude/keybindings.json";
-      home.file.".claude/skills".source = dotfile "claude/skills";
+      home.file = lib.listToAttrs (vendoredSkills ++ ownSkills) // {
+        ".claude/CLAUDE.md".source = dotfile "claude/CLAUDE.md";
+        ".claude/keybindings.json".source = dotfile "claude/keybindings.json";
+      };
 
       home.packages = [
         claude # wrapped claude-code with --mcp-config
