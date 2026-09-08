@@ -1,8 +1,5 @@
 config_version = 14
 
-[audio]
-enable_sounds = true
-
 [bar.default]
 background_opacity = 0.74999998323619366
 capsule_radius = 8
@@ -231,8 +228,8 @@ enabled = [
     "noctalia/timer",
     "felipeartur/ai-usagebar",
     "metsker/voxtype",
-    "metsker/window-info",
-    "metsker/nixos-update"
+    "metsker/nixos-update",
+    "metsker/window-info"
 ]
 
     [[plugins.source]]
@@ -285,19 +282,19 @@ wallpaper_scheme = "m3-content"
         post_hook = "pkill -USR1 monstar 2>/dev/null || true"
 
 [wallpaper.default]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
 [wallpaper.last]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
 [wallpaper.monitors.DP-1]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
 [wallpaper.monitors.HDMI-A-2]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
 [wallpaper.monitors.HDMI-A-3]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
+path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
 [[wallpaper.favorite]]
 palette_source = "wallpaper"
