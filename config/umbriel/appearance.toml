@@ -6,3 +6,9 @@ corner_radius = 0
 passes = 2
 radius = 5
 saturation = 1.0
+
+[animation.workspaces]
+enabled = false
+
+[overview]
+shortcuts = false

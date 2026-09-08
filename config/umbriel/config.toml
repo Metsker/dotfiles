@@ -15,9 +15,3 @@ files = [
 [general]
 show_cheatsheet = false
 xwayland = true
-
-[animation.workspaces]
-enabled = false
-
-[overview]
-shortcuts = false
