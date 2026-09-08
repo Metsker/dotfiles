@@ -39,14 +39,14 @@ default_workspace = 1
 default_focused = false
 
 [[window_rule]]
-match.app_id = "^notes[.]metsker[.]dev__brain$"
+match.app_id = "^chrome-notes[.]metsker[.]dev__brain$"
 match.at_startup = true
 default_output = "HDMI-A-3"
 default_workspace = 1
 default_focused = false
 
 [[window_rule]]
-match.app_id = "^notes[.]metsker[.]dev__gamedev$"
+match.app_id = "^chrome-notes[.]metsker[.]dev__gamedev$"
 match.at_startup = true
 default_output = "HDMI-A-3"
 default_workspace = 2
