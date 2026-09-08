@@ -1,6 +1,6 @@
 { inputs, ... }:
 
-# Everyday desktop applications: browser, media, chat, art.
+# Everyday desktop applications: browser, media, chat, art, notes.
 # The ones that carry real weight of their own live next door - vpn.nix, claude.nix,
 # webapps.nix, gaming.nix, and the two file managers in thunar.nix and dolphin.nix.
 {
@@ -59,6 +59,7 @@
       discord
       krita
       spotify
+      obsidian
     ];
 
     xdg.mimeApps.defaultApplications = {

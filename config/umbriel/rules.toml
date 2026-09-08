@@ -4,6 +4,11 @@ blur = true
 blur_optimized = false
 
 [[window_rule]]
+match.app_id = "^md[.]Obsidian$"
+match.title = "Settings|Community themes|Community plugins"
+default_floating = true
+
+[[window_rule]]
 match.app_id = "^dev[.]noctalia[.]Noctalia$"
 default_floating = true
 default_size = [1020, 900]

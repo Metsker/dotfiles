@@ -64,7 +64,7 @@ One file per domain, not per app - a new program joins the file its domain alrea
 | `desktop/umbriel.nix` | desktop profile: umbriel |
 | `shell.nix` | fish, monstar, foot, yazi, neovim, git |
 | `dev.nix` | toolchain, playwright browsers, herdr, remote host bootstrap |
-| `apps.nix` | browser, file manager, media, chat, art |
+| `apps.nix` | browser, file manager, media, chat, art, notes |
 | `vpn.nix` | the AmneziaVPN client, the boot-time tunnel, the greeter gate |
 | `claude.nix`, `webapps.nix`, `gaming.nix` | each big enough to stand alone |
 
