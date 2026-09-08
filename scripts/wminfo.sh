@@ -1,11 +1,15 @@
-query=${1:?usage: wminfo boxes|cursorpos|focused-name}
+query=${1:?usage: wminfo boxes|cursorpos|focused-name|focused-window|watch-focused-window}
 
-# The only script that names a compositor: the wayland tools ask these three questions and stay
-# branch-free, so a new compositor is one more case block here and nothing else.
+# The only script that names a compositor: the wayland tools and noctalia's window-info widget ask
+# these questions and stay branch-free, so a new compositor is one more case block here and nothing else.
 #
-#   boxes         window rectangles for slurp to snap to, one "x,y wxh label" per line
-#   cursorpos     the pointer as "x y", empty where the compositor cannot report it
-#   focused-name  the focused window's process name, or its app id where the IPC carries no pid
+#   boxes                 window rectangles for slurp to snap to, one "x,y wxh label" per line
+#   cursorpos             the pointer as "x y", empty where the compositor cannot report it
+#   focused-name          the focused window's process name, or its app id where the IPC carries no pid
+#   focused-window        the focused window as {"title":...,"appid":...}, once
+#   watch-focused-window  that same object again on every focus change, until killed
+#
+# Both window queries exit nonzero when the IPC itself fails; null fields are an empty desktop.
 
 # Match the process rather than the app id: a window renamed with --app-id still resolves.
 pid_name() {
@@ -28,6 +32,11 @@ case "${XDG_CURRENT_DESKTOP:-}" in
         mmsg get cursorpos 2>/dev/null | jq -r '"\(.x|floor) \(.y|floor)"' 2>/dev/null || true ;;
       focused-name)
         pid_name "$(mmsg get focusing-client 2>/dev/null | jq -r '.pid // empty' 2>/dev/null || true)" ;;
+      # Whatever mango sends for an empty desktop carries no title, and that maps to null fields.
+      focused-window)
+        mmsg get focusing-client | jq -c '{title, appid}' ;;
+      watch-focused-window)
+        mmsg watch focusing-client | jq -c --unbuffered '{title, appid}' ;;
     esac ;;
   umbriel)
     case "$query" in
@@ -44,11 +53,17 @@ case "${XDG_CURRENT_DESKTOP:-}" in
       # focused is set once per output; active marks the single window holding the keyboard.
       focused-name)
         pid_name "$(umbriel windows --json 2>/dev/null | jq -r '.[] | select(.active) | .pid // empty' 2>/dev/null || true)" ;;
+      focused-window)
+        umbriel windows --json | jq -c 'map(select(.active)) | (.[0] // {}) | {title, appid: .app_id}' ;;
+      # The stream carries the whole window list per change, wrapped in an event envelope.
+      watch-focused-window)
+        umbriel subscribe windows \
+          | jq -c --unbuffered '(.data // []) | map(select(.active)) | (.[0] // {}) | {title, appid: .app_id}' ;;
     esac ;;
   driftwm)
     case "$query" in
-      # driftwm's IPC carries neither window boxes nor the pointer, so screenshots do not snap.
-      boxes | cursorpos) ;;
+      # driftwm's IPC carries neither window boxes, the pointer, nor a focus event to watch.
+      boxes | cursorpos | focused-window | watch-focused-window) ;;
       focused-name)
         driftwm msg focus --json 2>/dev/null | jq -r '.Ok.Focused.app_id // empty' 2>/dev/null || true ;;
     esac ;;
