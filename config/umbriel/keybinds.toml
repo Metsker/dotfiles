@@ -34,7 +34,7 @@
 "Mod+Shift+Return" = "spawn:zen-beta"
 "Mod+Shift+F" = "spawn:$TERMINAL -e yazi"
 "Mod+Shift+S" = "spawn:$TERMINAL --working-directory ~/dotfiles/ -e nvim modules/"
-"Mod+Shift+M" = "spawn:$TERMINAL --working-directory ~/dotfiles/config/umbriel/ -e nvim ."
+"Mod+Shift+W" = "spawn:$TERMINAL --working-directory ~/dotfiles/config/umbriel/ -e nvim ."
 "Mod+Alt+Shift+F" = "spawn:dolphin"
 "Mod+Space" = "spawn:noctalia msg panel-toggle launcher"
 "Mod+Escape" = "spawn:noctalia msg panel-toggle session"
@@ -112,3 +112,6 @@
 "Mod+Alt+Ctrl+Shift+7" = "window-move-to-workspace:7/HDMI-A-3"
 "Mod+Alt+Ctrl+Shift+8" = "window-move-to-workspace:8/HDMI-A-3"
 "Mod+Alt+Ctrl+Shift+9" = "window-move-to-workspace:9/HDMI-A-3"
+
+"XF86AudioRaiseVolume" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+"
+"XF86AudioLowerVolume" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-"
