@@ -1,6 +1,15 @@
 {
 	"notify": {
-		"copied": "Copied"
+		"copied": "Copied",
+		"rule": {
+			"added": "Float rule added",
+			"removed": "Float rule removed",
+			"unsupported": "This compositor takes no float rules",
+			"failed": "Could not write the float rule"
+		}
+	},
+	"tooltip": {
+		"floating": "Float rule: this window opens floating"
 	},
 	"settings": {
 		"max_length": {

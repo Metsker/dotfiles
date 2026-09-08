@@ -28,6 +28,9 @@ end
 
 local mode = stored()
 local client = nil
+-- The compositor's own float rules as wminfo reports them: one rule per app id, carrying every
+-- title floated under it. An empty app id is the rule for windows that set none.
+local rules = {}
 
 -- Byte-wise sub would cut a Cyrillic or emoji title mid-character.
 local function clip(value)
@@ -40,6 +43,21 @@ end
 
 local function current()
 	return client and client[MODES[mode].key] or ""
+end
+
+-- A rule names both the app id and the title, so it floats the window it was read off and no
+-- other window of that app - the tooltip and the toggle both ask about this window alone.
+local function ruled(appid, title)
+	for _, rule in ipairs(rules) do
+		if rule.appid == appid then
+			for _, listed in ipairs(rule.titles) do
+				if listed == title then
+					return true
+				end
+			end
+		end
+	end
+	return false
 end
 
 local function render()
@@ -60,8 +78,37 @@ local function render()
 		barWidget.setGlyph(MODES[mode].glyph)
 	end
 	barWidget.setText(clip(value))
-	-- Untruncated, so a clipped title is still readable on hover.
-	barWidget.setTooltip(value)
+	-- Untruncated, so a clipped title is still readable on hover, and naming the float rule
+	-- because the rule is otherwise invisible until the next window opens.
+	local floats = ruled(client.appid or "", client.title or "")
+	barWidget.setTooltip(floats and (value .. "\n" .. noctalia.tr("tooltip.floating")) or value)
+end
+
+-- Cheap enough to re-read on the tick: it is one file the compositor's config dir already carries.
+local function refreshRules(done)
+	noctalia.runAsync("wminfo float-rules", function(result)
+		if result.exitCode ~= 0 then
+			return
+		end
+		local found = {}
+		for line in string.gmatch(result.stdout, "[^\n]+") do
+			local appid, rest = string.match(line, "^([^\t]*)\t(.*)$")
+			if appid then
+				local titles = {}
+				-- A trailing empty field is a real title, so walk the separators rather than
+				-- matching non-empty runs the way gmatch on "[^\t]+" would.
+				for at in string.gmatch(rest .. "\t", "(.-)\t") do
+					table.insert(titles, at)
+				end
+				table.insert(found, { appid = appid, titles = titles })
+			end
+		end
+		rules = found
+		render()
+		if done then
+			done()
+		end
+	end)
 end
 
 local function apply(value)
@@ -95,6 +142,7 @@ end)
 function update()
 	noctalia.setUpdateInterval(RESYNC_INTERVAL)
 	render()
+	refreshRules()
 	noctalia.runAsync("wminfo focused-window", function(result)
 		-- Only a successful query is worth believing; a failed one would otherwise
 		-- read as an empty desktop and hide the widget.
@@ -122,4 +170,37 @@ function onMiddleClick()
 		noctalia.copyToClipboard(value, "text/plain;charset=utf-8")
 		noctalia.notify(noctalia.tr("notify.copied"), value)
 	end
+end
+
+-- The rule names the app id and the title together, whichever of the two the widget happens to be
+-- showing, so it floats this window rather than everything sharing one of its two names. A second
+-- window of the same app joins its title to that rule instead of opening another. An argv table
+-- rather than a command line, because a title is arbitrary text.
+function onRightClick()
+	if not client then
+		return
+	end
+	local appid, title = client.appid or "", client.title or ""
+	-- The shown value names the window in the notification, falling back to the title where the
+	-- app id the widget is showing is the one the window never set.
+	local value = current()
+	if value == "" then
+		value = title
+	end
+	local before = ruled(appid, title)
+	noctalia.runAsync({ "wminfo", "float-rule", appid, title }, function(result)
+		if result.exitCode ~= 0 then
+			noctalia.notifyError(noctalia.tr("notify.rule.failed"), value)
+			return
+		end
+		refreshRules(function()
+			local after = ruled(appid, title)
+			if after == before then
+				-- A compositor wminfo writes no rules for answers the query with nothing at all.
+				noctalia.notifyError(noctalia.tr("notify.rule.unsupported"), value)
+			else
+				noctalia.notify(noctalia.tr(after and "notify.rule.added" or "notify.rule.removed"), value)
+			end
+		end)
+	end)
 end

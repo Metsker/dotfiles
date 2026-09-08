@@ -1,12 +1,12 @@
 id = "metsker/window-info"
 name = "Window Info"
-version = "1.4.0"
-plugin_api = 14
+version = "1.6.0"
+plugin_api = 24
 author = "metsker"
 license = "MIT"
 dependencies = ["wminfo"]
 icon = "app-window"
-description = "Shows the focused window's title or app id, toggled on click."
+description = "Shows the focused window's title or app id, and writes the compositor float rule you right-click."
 tags = ["bar", "mangowc", "umbriel"]
 
 [[widget]]
