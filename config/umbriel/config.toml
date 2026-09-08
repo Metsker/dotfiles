@@ -16,9 +16,6 @@ files = [
 show_cheatsheet = false
 xwayland = true
 
-[environment]
-NIXOS_OZONE_WL = "1"
-
 [animation.workspaces]
 enabled = false
 

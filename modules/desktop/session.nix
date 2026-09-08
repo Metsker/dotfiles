@@ -35,6 +35,11 @@
     # Electron apps (Discord) ignore SIGTERM and stall logout for 90s; SIGKILL them after 10s instead.
     systemd.user.settings.Manager.DefaultTimeoutStopSec = "10s";
 
+    # Read by the nixpkgs wrappers around chromium and electron, not by the apps themselves: set,
+    # they pass --ozone-platform-hint=auto and run as wayland clients instead of through XWayland.
+    # A package flag rather than a compositor setting, so it belongs to the session, not a profile.
+    environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
     xdg.portal.wlr.settings.screencast = {
       chooser_type = "simple";
       chooser_cmd = "${pkgs.slurp}/bin/slurp -f 'Monitor: %o' -or";
@@ -66,7 +71,6 @@
   flake.modules.homeManager.metsker = { config, pkgs, dotfile, ... }: {
     imports = [ inputs.noctalia.homeModules.default ];
 
-    xdg.configFile.uwsm = { source = dotfile "uwsm"; recursive = true; };
     xdg.configFile.voxtype = { source = dotfile "voxtype"; recursive = true; };
 
     # The module's own graphical-session.target is right here: every profile reaches it, and every

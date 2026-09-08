@@ -14,9 +14,6 @@ autostart = [
   "webapp https://notes.metsker.dev/brain/",
 ]
 
-[env]
-NIXOS_OZONE_WL = "1"
-
 # The store path moves on every rebuild, so go through the system profile's stable one.
 # pink_cloud declares neither u_time nor u_zoom, so it slides rigidly with the camera and
 # cache_shader can bake it once instead of re-evaluating it every frame the viewport moves.
