@@ -5,10 +5,8 @@
 # bookmarks instead. What is ported is the launcher set, the input setup and the monitor layout.
 
 # XDG autostart entries run too, so this list only carries what ships no .desktop autostart entry.
-# The VPN is a system unit now (modules/vpn.nix).
+# VPN and solaar are systemd units now (modules/vpn.nix, modules/hardware.nix).
 autostart = [
-  "openrgb-profile carrot",
-  "solaar-start",
   "Telegram",
   "discord",
   "spotify",

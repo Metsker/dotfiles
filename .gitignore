@@ -3,3 +3,6 @@ config/**/noctalia.*
 config/**/themes/noctalia
 .playwright-mcp/
 result
+
+# OpenRGB writes its detection log here on every start; the profiles next to it are tracked.
+config/openrgb/logs/

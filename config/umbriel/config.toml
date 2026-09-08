@@ -14,10 +14,8 @@ files = [
 [general]
 show_cheatsheet = false
 xwayland = true
-# The VPN is a system unit now (modules/vpn.nix).
+# VPN and solaar are systemd units now (modules/vpn.nix, modules/hardware.nix).
 autostart = [
-  "openrgb-profile carrot",
-  "solaar-start",
   "Telegram",
   "discord",
   "spotify",

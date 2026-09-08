@@ -7,7 +7,12 @@
     hardware.enableRedistributableFirmware = true;
 
     # Pulls in hardware.logitech.wireless.enable (udev rules) by default.
-    programs.solaar.enable = true;
+    programs.solaar = {
+      enable = true;
+      # The module's own user service, rather than an autostart line in all three compositors:
+      # it restarts on failure and stops with the session, which a spawned process does not.
+      userService.enable = true;
+    };
 
     environment.etc."libinput/local-overrides.quirks".text = ''
       [Logitech MX Anywhere 3S]
@@ -35,14 +40,29 @@
     # Noctalia's battery readouts come over UPower; on this desktop that is the wireless peripherals.
     services.upower.enable = true;
 
-    services.hardware.openrgb.enable = true;
+    services.hardware.openrgb = {
+      enable = true;
+      # The server applies the profile itself once its own ~20s of device detection finishes -
+      # which is all the old poll-then-launch script was doing from the outside.
+      startupProfile = "carrot";
+    };
+
+    # The server reads profiles from its own state dir while the GUI writes them to the user's
+    # config dir; a symlink keeps the file the GUI saves as the only copy.
+    systemd.tmpfiles.rules = [
+      "L+ /var/lib/OpenRGB/carrot.orp - - - - /home/metsker/.config/OpenRGB/carrot.orp"
+    ];
 
     # ddcutil talks to the monitors over the GPU's i2c buses; this loads i2c-dev and
     # grants the seat user access, instead of leaning on OpenRGB's udev rules for it.
     hardware.i2c.enable = true;
   };
 
-  flake.modules.homeManager.metsker = { pkgs, ... }: {
+  flake.modules.homeManager.metsker = { pkgs, dotfile, ... }: {
+    # A whole directory, not `recursive`: OpenRGB rewrites OpenRGB.json and drops a detection log
+    # per start into this directory, which per-file store symlinks would make read-only.
+    xdg.configFile.OpenRGB.source = dotfile "openrgb";
+
     # Noctalia loads effect presets over $XDG_RUNTIME_DIR/EasyEffectsServer, so the daemon has to be up.
     services.easyeffects.enable = true;
 
@@ -54,17 +74,6 @@
         runtimeInputs = [ pkgs.coreutils pkgs.gawk pkgs.gnugrep ];
         runtimeEnv.DDCUTIL_REAL = "${pkgs.ddcutil}/bin/ddcutil";
         text = builtins.readFile ../scripts/ddcutil-connector-fix.sh;
-      })
-      # Waits out the OpenRGB SDK server's device detection, then applies the named profile.
-      (pkgs.writeShellApplication {
-        name = "openrgb-profile";
-        runtimeInputs = [ pkgs.openrgb ];
-        text = builtins.readFile ../scripts/openrgb-profile.sh;
-      })
-      (pkgs.writeShellApplication {
-        name = "solaar-start";
-        runtimeInputs = [ pkgs.solaar ];
-        text = builtins.readFile ../scripts/solaar-start.sh;
       })
     ];
   };
