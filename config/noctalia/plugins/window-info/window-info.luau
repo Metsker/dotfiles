@@ -2,7 +2,7 @@
 -- Bar widget: the focused window's title, toggled to its app id on click.
 
 -- The watch stream carries every focus change, so the tick exists only to notice
--- that the stream itself died, which a mango restart is enough to do.
+-- that the stream itself died, which a compositor restart is enough to do.
 local RESYNC_INTERVAL = 15000
 local MODES = {
 	{ key = "title", glyph = noctalia.getConfig("title_glyph") },
@@ -66,25 +66,27 @@ end
 noctalia.state.watch("mode", apply)
 
 -- json.decode reports a bad payload as (nil, err) rather than raising, so an
--- undecodable line arrives here as nil and reads as "nothing focused".
+-- undecodable line arrives here as nil and reads as "nothing focused", which is
+-- also what wminfo's null title means.
 local function accept(data)
 	client = (type(data) == "table" and data.title) and data or nil
 	render()
 end
 
--- watch focusing-client emits a snapshot on connect + one JSON line per focus change.
-noctalia.runStream("mmsg watch focusing-client", function(line)
+-- wminfo is where the compositors are named: it turns whichever IPC is running
+-- into {"title":…,"appid":…}, and answers neither query where there is no IPC to ask.
+noctalia.runStream("wminfo watch-focused-window", function(line)
 	local data = noctalia.json.decode(line)
 	accept(data)
 end)
 
 -- The host never restarts a dead stream and gives the script no way to notice one,
--- so the tick re-reads the same payload. Without it a mango restart freezes the
--- widget on whatever happened to be focused at the time.
+-- so the tick re-reads the same payload. Without it a compositor restart freezes
+-- the widget on whatever happened to be focused at the time.
 function update()
 	noctalia.setUpdateInterval(RESYNC_INTERVAL)
 	render()
-	noctalia.runAsync("mmsg get focusing-client", function(result)
+	noctalia.runAsync("wminfo focused-window", function(result)
 		-- Only a successful query is worth believing; a failed one would otherwise
 		-- read as an empty desktop and hide the widget.
 		if result.exitCode == 0 then

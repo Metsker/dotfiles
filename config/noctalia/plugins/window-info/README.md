@@ -13,8 +13,21 @@ Noctalia's own active window widget shows the title only.
 
 ## Requirements
 
-MangoWC and its `mmsg` command on `PATH`. The widget reads
-`mmsg watch focusing-client` for live focus changes.
+`wminfo` on `PATH` - this repo's compositor-query script (`scripts/wminfo.sh`, wrapped in
+`modules/desktop/session.nix`). It is the only place a compositor is named, so the widget asks it
+two questions and branches on nothing:
+
+| Query | Answer |
+| --- | --- |
+| `wminfo watch-focused-window` | `{"title":…,"appid":…}` at every focus change, until killed |
+| `wminfo focused-window` | that same object once, for the resync tick |
+
+Null fields are an empty desktop and hide the widget. A nonzero exit means the IPC itself failed,
+and the last value stays on the bar rather than blinking out. A compositor that answers neither -
+driftwm, whose IPC carries no focus event to watch - leaves the widget hidden.
+
+MangoWC and Umbriel are what wminfo answers for today; a third compositor is a case block there
+rather than a change here.
 
 ## Usage
 
