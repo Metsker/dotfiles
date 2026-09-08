@@ -5,9 +5,8 @@
 # bookmarks instead. What is ported is the launcher set, the input setup and the monitor layout.
 
 # XDG autostart entries run too, so this list only carries what ships no .desktop autostart entry.
-# nm-online: the session starts before the network is up, and connecting too early stalls for 60s+.
+# The VPN is a system unit now (modules/vpn.nix).
 autostart = [
-  "nm-online -q -t 30; exec AmneziaVPN",
   "openrgb-profile carrot",
   "solaar-start",
   "Telegram",

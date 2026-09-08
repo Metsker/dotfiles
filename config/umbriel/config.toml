@@ -14,9 +14,8 @@ files = [
 [general]
 show_cheatsheet = false
 xwayland = true
-# nm-online: the session starts before the network is up, and connecting too early stalls for 60s+.
+# The VPN is a system unit now (modules/vpn.nix).
 autostart = [
-  "nm-online -q -t 30; exec AmneziaVPN",
   "openrgb-profile carrot",
   "solaar-start",
   "Telegram",

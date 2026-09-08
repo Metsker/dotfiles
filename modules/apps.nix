@@ -1,18 +1,10 @@
 { inputs, ... }:
 
-# Everyday desktop applications: browser, media, chat, art, VPN.
-# The ones that carry real weight of their own live next door - claude.nix,
+# Everyday desktop applications: browser, media, chat, art.
+# The ones that carry real weight of their own live next door - vpn.nix, claude.nix,
 # webapps.nix, gaming.nix, and the two file managers in thunar.nix and dolphin.nix.
 {
-  flake.modules.nixos.base = { config, pkgs, ... }: {
-    programs.amnezia-vpn.enable = true;
-
-    boot.extraModulePackages = with config.boot.kernelPackages; [ amneziawg ];
-
-    # Amnezia's "launch at startup" entry must exist (it gates launch-minimized), but mango's
-    # autostart already launches the client gated on nm-online; mask the duplicate XDG unit.
-    systemd.user.units."app-AmneziaVPN@autostart.service".enable = false;
-
+  flake.modules.nixos.base = { pkgs, ... }: {
     # openFirewall punches 53317 tcp+udp; the firewall is on by default, and without
     # that hole discovery finds nothing and an incoming transfer never connects.
     programs.localsend = {
@@ -25,7 +17,6 @@
       zip
       p7zip # engrampa shells out to 7z for 7z/zip-with-password archives
       unar # engrampa shells out to lsar/unar for rar
-      amneziawg-tools
       btop
     ];
 
