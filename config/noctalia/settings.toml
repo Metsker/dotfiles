@@ -9,12 +9,12 @@ capsule_radius = 8
 capsule_thickness = 0.89999998360872269
 center = [ "clock", "weather", "dictation", "update", "recorder" ]
 concave_edge_corners = false
-end = [ "tray", "media", "volume", "audio_visualizer", "bar_2", "cpu", "keyboard_layout", "notifications" ]
+end = [ "tray", "media", "volume", "audio_visualizer", "bar_2", "cpu", "bluetooth", "keyboard_layout", "notifications" ]
 margin_edge = 4
 margin_ends = 4
 radius = 16
 shadow = false
-start = [ "launcher", "workspaces", "window", "active_window" ]
+start = [ "launcher", "workspaces", "window" ]
 
 [battery.device."/org/freedesktop/UPower/devices/battery_hidpp_battery_0"]
 warning_threshold = 10
@@ -229,7 +229,6 @@ enabled = [
     "noctalia/screen_recorder",
     "noctalia/wallhaven",
     "noctalia/timer",
-    "metsker/mango-layout",
     "felipeartur/ai-usagebar",
     "metsker/voxtype",
     "metsker/window-info",
@@ -312,9 +311,12 @@ path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 theme_mode = "dark"
 wallpaper_scheme = "m3-content"
 
+[widget.active_window]
+display = "icon_only"
+min_length = 0
+
 [widget.audio_visualizer]
 mirrored = false
-show_when_idle = true
 width = 48
 
 [widget.bar_2]
@@ -323,6 +325,9 @@ show_glyph = false
 show_value = false
 type = "felipeartur/ai-usagebar:bar"
 visualization = "gauge"
+
+[widget.bluetooth]
+hide_when_adapter_off = true
 
 [widget.clock]
 anchor = true
@@ -381,12 +386,14 @@ show_temperature = false
 
 [widget.window]
 max_length = 24
+title_glyph = "tag"
 type = "metsker/window-info:window"
 
 [widget.workspaces]
 enabled = true
 focused_output_only = true
 show_labels = false
+urgent_color = "secondary"
 
     [widget.workspaces.actions]
     scroll_down = "none"
