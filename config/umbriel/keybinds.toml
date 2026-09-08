@@ -48,6 +48,8 @@
 "Mod+Ctrl+Print" = "spawn:textpicker"
 "Mod+Alt+Print" = "spawn:record"
 
+"Mod+Y" = { action = "spawn:voxtype record toggle", repeat = false }
+
 "Mod+Z" = "scratchpad-toggle"
 "Mod+Shift+Z" = "window-toggle-scratchpad"
 "Mod+O" = { action = "overview-toggle", repeat = false }
