@@ -2,7 +2,7 @@
 
 # Everyday desktop applications: browser, media, chat, art, notes.
 # The ones that carry real weight of their own live next door - vpn.nix, claude.nix,
-# webapps.nix, gaming.nix, and the two file managers in thunar.nix and dolphin.nix.
+# webapps.nix, gaming.nix, and the file manager in dolphin.nix.
 {
   flake.modules.nixos.base = { pkgs, ... }: {
     # openFirewall punches 53317 tcp+udp; the firewall is on by default, and without

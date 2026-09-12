@@ -10,7 +10,7 @@
   flake.modules.homeManager.metsker = { pkgs, ... }: {
     home.packages = with pkgs.kdePackages; [
       dolphin
-      ark # Extract Here and Compress in the context menu, dolphin's answer to thunar-archive-plugin
+      ark # Extract Here and Compress in the context menu
       kio-admin
       kdegraphics-thumbnailers # raw, mobipocket, postscript and blender previews
       ffmpegthumbs # video previews; images and pdf come from kio-extras, installed by theming.nix
