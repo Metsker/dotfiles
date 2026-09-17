@@ -29,19 +29,16 @@ sidebar_section = "none"
     show_events_card = false
 
     [[control_center.shortcuts]]
-    type = "wifi"
-
-    [[control_center.shortcuts]]
     type = "bluetooth"
 
     [[control_center.shortcuts]]
     type = "caffeine"
 
     [[control_center.shortcuts]]
-    type = "nightlight"
+    type = "notification"
 
     [[control_center.shortcuts]]
-    type = "notification"
+    type = "noctalia/wallhaven:shortcut"
 
     [[control_center.shortcuts]]
     type = "wallpaper"
@@ -271,7 +268,7 @@ builtin = "Ayu"
 community_palette = "Atuel"
 mode = "dark"
 source = "wallpaper"
-wallpaper_scheme = "m3-content"
+wallpaper_scheme = "m3-rainbow"
 
     [theme.templates]
     builtin_ids = [ "btop", "foot", "gtk3", "gtk4", "kcolorscheme", "mango", "umbriel" ]
@@ -283,19 +280,19 @@ wallpaper_scheme = "m3-content"
         post_hook = "pkill -USR1 monstar 2>/dev/null || true"
 
 [wallpaper.default]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/wallhaven-6lekex.jpg"
 
 [wallpaper.last]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/wallhaven-6lekex.jpg"
 
 [wallpaper.monitors.DP-1]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/wallhaven-6lekex.jpg"
 
 [wallpaper.monitors.HDMI-A-2]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/wallhaven-6lekex.jpg"
 
 [wallpaper.monitors.HDMI-A-3]
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+path = "/home/metsker/Pictures/wallhaven-6lekex.jpg"
 
 [[wallpaper.favorite]]
 palette_source = "wallpaper"
@@ -370,7 +367,7 @@ detached_panel = true
 drawer = true
 
 [widget.update]
-glyph = "rotate-clockwise-2"
+glyph = "refresh"
 show_label = false
 type = "metsker/nixos-update:update"
 
