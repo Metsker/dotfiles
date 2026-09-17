@@ -1,0 +1,42 @@
+{
+	"tooltip": {
+		"up": "{interface} is up - click to disconnect",
+		"down": "{interface} is down - click to connect",
+		"busy": "Waiting for authorization to change {interface}"
+	},
+	"shortcut": {
+		"up": "VPN on",
+		"down": "VPN off",
+		"busy": "Authorizing"
+	},
+	"notify": {
+		"up_failed": "Could not bring {interface} up",
+		"down_failed": "Could not bring {interface} down"
+	},
+	"settings": {
+		"interface": {
+			"label": "Interface",
+			"description": "The tunnel's interface name. A link of this name existing is what the widget reads as connected."
+		},
+		"config_file": {
+			"label": "Config file",
+			"description": "The AmneziaWG configuration awg-quick is given. Naming the file rather than the interface is what lets the conf live outside /etc/amneziawg."
+		},
+		"up_glyph": {
+			"label": "Connected glyph",
+			"description": "Shown by the bar widget and the control-center tile while the tunnel is up."
+		},
+		"down_glyph": {
+			"label": "Disconnected glyph",
+			"description": "Shown by the bar widget and the control-center tile while the tunnel is down."
+		},
+		"path": {
+			"label": "Command path",
+			"description": "PATH handed to the elevated command. pkexec replaces the inherited one with the FHS bin directories, which hold nothing on NixOS, and awg-quick needs to find awg."
+		},
+		"show_label": {
+			"label": "Show label",
+			"description": "Print the interface name beside the glyph. Off leaves the glyph alone."
+		}
+	}
+}

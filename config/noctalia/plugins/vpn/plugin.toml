@@ -1,0 +1,72 @@
+id = "metsker/vpn"
+name = "VPN"
+version = "1.1.0"
+plugin_api = 24
+author = "metsker"
+license = "MIT"
+dependencies = ["pkexec", "awg-quick"]
+icon = "shield-check"
+description = "Brings an AmneziaWG tunnel up or down with awg-quick, and shows which of the two it currently is."
+tags = ["bar", "network", "privacy"]
+
+# Plugin-level throughout: the bar widget and the control-center tile are two
+# views of one tunnel, so every setting that names it or draws it is shared.
+[[setting]]
+key             = "interface"
+type            = "string"
+label_key       = "settings.interface.label"
+description_key = "settings.interface.description"
+default         = "amn0"
+
+[[setting]]
+key             = "config_file"
+type            = "file"
+label_key       = "settings.config_file.label"
+description_key = "settings.config_file.description"
+default         = "/etc/amnezia/amneziawg/amn0.conf"
+extensions      = [".conf"]
+
+[[setting]]
+key             = "up_glyph"
+type            = "glyph"
+label_key       = "settings.up_glyph.label"
+description_key = "settings.up_glyph.description"
+default         = "shield-check"
+
+[[setting]]
+key             = "down_glyph"
+type            = "glyph"
+label_key       = "settings.down_glyph.label"
+description_key = "settings.down_glyph.description"
+default         = "shield-off"
+
+[[setting]]
+key             = "path"
+type            = "string"
+label_key       = "settings.path.label"
+description_key = "settings.path.description"
+default         = "/run/current-system/sw/bin"
+advanced        = true
+
+# The state and the one command that changes it live here rather than in either
+# surface: a shortcut gets no update() tick and so cannot poll, and two surfaces
+# each running their own toggle would stack two password dialogs.
+[[service]]
+id = "watcher"
+entry = "watcher.luau"
+
+[[widget]]
+id = "vpn"
+entry = "vpn.luau"
+
+  # Widget-level, unlike the rest: a bar has room for a label and a tile does not.
+  [[widget.setting]]
+  key             = "show_label"
+  type            = "bool"
+  label_key       = "settings.show_label.label"
+  description_key = "settings.show_label.description"
+  default         = false
+
+[[shortcut]]
+id = "toggle"
+entry = "tile.luau"
