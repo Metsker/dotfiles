@@ -21,7 +21,7 @@
     programs.uwsm.enable = true;
 
     # Where a profile gets picked, and it remembers the last choice.
-    programs.noctalia-greeter.enable = true;
+    services.displayManager.noctalia-greeter.enable = true;
 
     # Boot goes straight into umbriel instead of drawing the greeter. initial_session fires once
     # per greetd start, so logging out lands back in the greeter and the other two profiles stay
