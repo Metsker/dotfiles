@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * Show PNGs to the user, in a herdr pane beside the conversation.
  *
@@ -23,7 +23,7 @@
  * anything else first (`magick in.jpg out.png`).
  */
 import { closeSync, constants, mkdirSync, openSync, readFileSync, readSync, writeFileSync, writeSync } from 'node:fs'
-import { dirname } from 'node:path'
+import { dirname, resolve } from 'node:path'
 import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 
@@ -44,7 +44,8 @@ const json = (...args) => JSON.parse(herdr(...args)).result
 const nap = (ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms)
 
 const drawing = process.argv[2] === '--draw'
-const files = process.argv.slice(drawing ? 3 : 2)
+// Absolute, because the viewer pane is a fresh shell that need not share our cwd.
+const files = process.argv.slice(drawing ? 3 : 2).map((f) => resolve(f))
 if (!files.length) {
   console.error('usage: show.mjs <image.png>...')
   process.exit(2)
@@ -224,6 +225,6 @@ const { pane } = json('pane', 'split', '--pane', mine, '--direction', 'right',
 herdr('pane', 'rename', pane.pane_id, 'imgview')
 // The pane is a fresh shell; give it a moment to be ready for a line.
 await new Promise((r) => setTimeout(r, 600))
-herdr('pane', 'run', pane.pane_id, 'node', SELF, '--draw', ...files)
+herdr('pane', 'run', pane.pane_id, 'bun', SELF, '--draw', ...files)
 console.log(`${pane.pane_id} · ${want} of ${layout.area.width} columns · ` +
   `${files.length} image(s) in ${shape.shelves.length} row(s), ${shape.tall} tall`)

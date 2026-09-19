@@ -43,12 +43,17 @@ something unrelated is worse than a sentence.
 ## 3. Show it
 
 ```bash
-node ~/.claude/skills/screenshot-send/show.mjs shot.png              # one
-node ~/.claude/skills/screenshot-send/show.mjs before.png after.png  # side by side
+bun ~/.claude/skills/screenshot-send/show.mjs <scratchpad>/shot.png                         # one
+bun ~/.claude/skills/screenshot-send/show.mjs <scratchpad>/before.png <scratchpad>/after.png  # side by side
 ```
 
 That is the whole interface. It opens a pane on the right, sized to the pictures,
 and draws them; a second call replaces what is in it rather than splitting again.
+
+Pass absolute paths. The viewer is a fresh shell that starts in its own directory,
+not the caller's, so the script resolves every path against the caller's cwd before
+handing it over - a relative path still works, but an absolute one says what it means.
+
 Still say in words what the picture shows - what was measured, what is fixed. The
 shot is the evidence, not the whole answer.
 
