@@ -85,6 +85,12 @@ in
         };
       };
 
+      programs.delta = {
+        enable = true;
+        enableGitIntegration = true;
+        options.navigate = true;
+      };
+
       home.packages = [
         monstar
         pkgs.github-cli
