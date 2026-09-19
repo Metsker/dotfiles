@@ -9,11 +9,10 @@ files = [
   "appearance.toml",
   "rules.toml",
   "autostart.toml",
-  "noctalia.toml",
-]
+  ]
 
 [include.optional]
-files = [ "float-rules.toml" ]
+files = [ "float-rules.toml", "noctalia.toml"]
 
 [general]
 show_cheatsheet = false
