@@ -29,6 +29,9 @@ sidebar_section = "none"
     show_events_card = false
 
     [[control_center.shortcuts]]
+    type = "metsker/vpn:toggle"
+
+    [[control_center.shortcuts]]
     type = "bluetooth"
 
     [[control_center.shortcuts]]
@@ -59,9 +62,6 @@ auto_hide = true
 border_width = 1.0
 reserve_space = false
 shadow = false
-
-[hooks]
-session_unlocked = "mmsg dispatch reload_config"
 
 [idle]
 behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]
