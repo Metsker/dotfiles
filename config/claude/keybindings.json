@@ -7,6 +7,12 @@
       "bindings": {
         "ctrl+f": "autocomplete:accept"
       }
+    },
+    {
+      "context": "Chat",
+      "bindings": {
+        "ctrl+/": "chat:undo"
+      }
     }
   ]
 }
