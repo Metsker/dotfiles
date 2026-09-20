@@ -1,9 +1,7 @@
 --!nonstrict
--- Bar widget: the focused window's title, toggled to its app id on click.
+-- Bar widget: the focused window's title, toggled to its app id on click. It only draws -
+-- the watcher service owns the stream, the float rules and the icon lookups.
 
--- The watch stream carries every focus change, so the tick exists only to notice
--- that the stream itself died, which a compositor restart is enough to do.
-local RESYNC_INTERVAL = 15000
 local MODES = {
 	{ key = "title", glyph = noctalia.getConfig("title_glyph") },
 	{ key = "appid", glyph = noctalia.getConfig("appid_glyph") },
@@ -13,6 +11,9 @@ local MODES = {
 -- re-runs with the new value rather than needing a getConfig per render.
 local LIMIT = noctalia.getConfig("max_length")
 local USE_ICON = noctalia.getConfig("app_icon")
+
+-- Nothing here polls: the watcher service owns the stream and this only redraws.
+local TICK_INTERVAL = 60000
 
 -- Every bar runs its own copy of this script, so the mode lives in the plugin's
 -- shared state (mirrors it across bars live) backed by a file (survives a restart).
@@ -27,10 +28,7 @@ local function stored()
 end
 
 local mode = stored()
-local client = nil
--- The compositor's own float rules as wminfo reports them: one rule per app id, carrying every
--- title floated under it. An empty app id is the rule for windows that set none.
-local rules = {}
+local window = noctalia.state.get("window")
 
 -- Byte-wise sub would cut a Cyrillic or emoji title mid-character.
 local function clip(value)
@@ -42,115 +40,50 @@ local function clip(value)
 end
 
 local function current()
-	return client and client[MODES[mode].key] or ""
-end
-
--- A rule names both the app id and the title, so it floats the window it was read off and no
--- other window of that app - the tooltip and the toggle both ask about this window alone.
-local function ruled(appid, title)
-	for _, rule in ipairs(rules) do
-		if rule.appid == appid then
-			for _, listed in ipairs(rule.titles) do
-				if listed == title then
-					return true
-				end
-			end
-		end
-	end
-	return false
+	return window and window[MODES[mode].key] or ""
 end
 
 local function render()
-	if not client then
+	if not (window and window.focused) then
 		barWidget.clearTooltip()
 		barWidget.setVisible(false)
 		return
 	end
 	local value = current()
 	barWidget.setVisible(true)
-	-- Resolving per render costs nothing: the host caches its icon lookups, and the
-	-- glyph stays the fallback for an app id no desktop entry or icon theme matches.
-	local icon = USE_ICON and client.appid and noctalia.appIconPath(client.appid)
-	if icon then
+	-- The service resolved the icon once for the whole shell; the glyph stays the fallback
+	-- for an app id no desktop entry and no icon theme matched.
+	if USE_ICON and window.icon then
 		-- No size: the default is the glyph's own, so the widget keeps its height.
-		barWidget.setImage(icon)
+		barWidget.setImage(window.icon)
 	else
 		barWidget.setGlyph(MODES[mode].glyph)
 	end
 	barWidget.setText(clip(value))
 	-- Untruncated, so a clipped title is still readable on hover, and naming the float rule
 	-- because the rule is otherwise invisible until the next window opens.
-	local floats = ruled(client.appid or "", client.title or "")
-	barWidget.setTooltip(floats and (value .. "\n" .. noctalia.tr("tooltip.floating")) or value)
+	barWidget.setTooltip(window.floating and (value .. "\n" .. noctalia.tr("tooltip.floating")) or value)
 end
 
--- Cheap enough to re-read on the tick: it is one file the compositor's config dir already carries.
-local function refreshRules(done)
-	noctalia.runAsync("wminfo float-rules", function(result)
-		if result.exitCode ~= 0 then
-			return
-		end
-		local found = {}
-		for line in string.gmatch(result.stdout, "[^\n]+") do
-			local appid, rest = string.match(line, "^([^\t]*)\t(.*)$")
-			if appid then
-				local titles = {}
-				-- A trailing empty field is a real title, so walk the separators rather than
-				-- matching non-empty runs the way gmatch on "[^\t]+" would.
-				for at in string.gmatch(rest .. "\t", "(.-)\t") do
-					table.insert(titles, at)
-				end
-				table.insert(found, { appid = appid, titles = titles })
-			end
-		end
-		rules = found
-		render()
-		if done then
-			done()
-		end
-	end)
-end
+noctalia.state.watch("window", function(value)
+	window = value
+	render()
+end)
 
-local function apply(value)
+noctalia.state.watch("mode", function(value)
 	-- The setter is notified too, so the clicked bar lands here having already rendered.
 	if MODES[value] and value ~= mode then
 		mode = value
 		render()
 	end
-end
-
-noctalia.state.watch("mode", apply)
-
--- json.decode reports a bad payload as (nil, err) rather than raising, so an
--- undecodable line arrives here as nil and reads as "nothing focused", which is
--- also what wminfo's null title means.
-local function accept(data)
-	client = (type(data) == "table" and data.title) and data or nil
-	render()
-end
-
--- wminfo is where the compositors are named: it turns whichever IPC is running
--- into {"title":…,"appid":…}, and answers neither query where there is no IPC to ask.
-noctalia.runStream("wminfo watch-focused-window", function(line)
-	local data = noctalia.json.decode(line)
-	accept(data)
 end)
 
--- The host never restarts a dead stream and gives the script no way to notice one,
--- so the tick re-reads the same payload. Without it a compositor restart freezes
--- the widget on whatever happened to be focused at the time.
+-- A bar that reloads mid-session has missed the focus change that put the window where it is,
+-- so re-read the published value rather than waiting for the next one.
 function update()
-	noctalia.setUpdateInterval(RESYNC_INTERVAL)
+	noctalia.setUpdateInterval(TICK_INTERVAL)
+	window = noctalia.state.get("window")
 	render()
-	refreshRules()
-	noctalia.runAsync("wminfo focused-window", function(result)
-		-- Only a successful query is worth believing; a failed one would otherwise
-		-- read as an empty desktop and hide the widget.
-		if result.exitCode == 0 then
-			local data = noctalia.json.decode(result.stdout)
-			accept(data)
-		end
-	end)
 end
 
 function onClick()
@@ -172,35 +105,22 @@ function onMiddleClick()
 	end
 end
 
--- The rule names the app id and the title together, whichever of the two the widget happens to be
--- showing, so it floats this window rather than everything sharing one of its two names. A second
--- window of the same app joins its title to that rule instead of opening another. An argv table
--- rather than a command line, because a title is arbitrary text.
+-- Asking for the rule rather than writing it keeps one right-click to one write, however many
+-- bars carry the widget; the shown value rides along because only this bar knows which of the
+-- two names it is displaying.
 function onRightClick()
-	if not client then
+	if not (window and window.focused) then
 		return
 	end
-	local appid, title = client.appid or "", client.title or ""
-	-- The shown value names the window in the notification, falling back to the title where the
-	-- app id the widget is showing is the one the window never set.
 	local value = current()
-	if value == "" then
-		value = title
-	end
-	local before = ruled(appid, title)
-	noctalia.runAsync({ "wminfo", "float-rule", appid, title }, function(result)
-		if result.exitCode ~= 0 then
-			noctalia.notifyError(noctalia.tr("notify.rule.failed"), value)
-			return
-		end
-		refreshRules(function()
-			local after = ruled(appid, title)
-			if after == before then
-				-- A compositor wminfo writes no rules for answers the query with nothing at all.
-				noctalia.notifyError(noctalia.tr("notify.rule.unsupported"), value)
-			else
-				noctalia.notify(noctalia.tr(after and "notify.rule.added" or "notify.rule.removed"), value)
-			end
-		end)
-	end)
+	noctalia.state.set("command", {
+		action = "float-rule",
+		appid = window.appid,
+		title = window.title,
+		label = value ~= "" and value or window.title,
+		at = noctalia.nowMs(),
+	})
 end
+
+-- Hide before the first tick, or the widget shows its manifest glyph until then.
+render()

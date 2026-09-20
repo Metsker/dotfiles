@@ -12,12 +12,17 @@ only when the title is empty, and has no way to ask for the app id.
 | Field | Value |
 | --- | --- |
 | ID | `metsker/window-info` |
-| Entries | Bar widget: `window` |
+| Entries | Service: `watcher`; bar widget: `window` |
+
+The `watcher` service owns everything that costs something - the focus stream, the float rules and
+the app icon lookups - and publishes one payload through the plugin's shared state. Every bar's
+widget draws that payload and does nothing else, so a widget placed on three monitors still means
+one stream and one lookup per app id.
 
 ## Requirements
 
 `wminfo` on `PATH` - this repo's compositor-query script (`scripts/wminfo.sh`, wrapped in
-`modules/desktop/session.nix`). It is the only place a compositor is named, so the widget asks it
+`modules/desktop/session.nix`). It is the only place a compositor is named, so the service asks it
 four questions and branches on nothing:
 
 | Query | Answer |
@@ -30,6 +35,11 @@ four questions and branches on nothing:
 Null fields are an empty desktop and hide the widget. A nonzero exit means the IPC itself failed,
 and the last value stays on the bar rather than blinking out. A compositor that answers neither -
 driftwm, whose IPC carries no focus event to watch - leaves the widget hidden.
+
+The stream is restarted by a shell loop around it, because the host never restarts a dead one and
+gives the script no way to notice: a compositor restart costs a couple of seconds rather than the
+rest of the session. The loop only starts once `focused-window` has answered at all, so the
+compositor that answers nothing gets no command respawned at it forever.
 
 Umbriel is the only compositor wminfo writes rules for today. MangoWC keeps its rules in its own
 config language, which nothing writes yet, so a right-click there reports that it changed nothing.
@@ -47,7 +57,9 @@ Add the `window` widget from Noctalia's widget picker.
 
 The focused app's own icon sits where a glyph would, resolved the way the built-in active window
 widget resolves it - the desktop entry for the app id, then the icon theme - and drawn at the glyph's
-size. An app id that matches no entry and no themed icon falls back to the mode glyph: by default a
+size. That resolution scans the filesystem on a miss and the host caches nothing, so the service
+resolves each app id once and remembers the answer, misses included. An app id that matches no
+entry and no themed icon falls back to the mode glyph: by default a
 window frame for the title, a tag for the app id. Longer text is truncated to the maximum length;
 the tooltip always has the whole value. With no window focused the widget hides itself, icon
 included, so an empty tag leaves no gap on the bar.
@@ -121,6 +133,8 @@ on every monitor at once, through the plugin's shared state. It is also written
 to `$XDG_STATE_HOME/noctalia/plugins/data/metsker/window-info/mode`, so a shell
 restart comes back on whichever mode was last picked.
 
-A right-click reports what actually changed rather than what was asked for: the widget re-reads
+A right-click reports what actually changed rather than what was asked for: the service re-reads
 `wminfo float-rules` afterwards, and says the rule was added, dropped, or - on a compositor wminfo
-writes no rules for - that nothing changed at all.
+writes no rules for - that nothing changed at all. The clicked bar asks for the rule rather than
+writing it, so one press is one write however many bars carry the widget; it sends the value it is
+showing along, because that is the name the notification uses.
