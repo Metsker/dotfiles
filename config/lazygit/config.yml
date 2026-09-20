@@ -3,3 +3,7 @@ gui:
     selectedLineBgColor:
       - black
   border: single
+git:
+  diffRenderers:
+    - name: delta
+      command: delta --paging=never
