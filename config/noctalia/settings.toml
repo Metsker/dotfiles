@@ -272,7 +272,7 @@ builtin = "Ayu"
 community_palette = "Atuel"
 mode = "dark"
 source = "wallpaper"
-wallpaper_scheme = "m3-rainbow"
+wallpaper_scheme = "m3-content"
 
     [theme.templates]
     builtin_ids = [ "btop", "foot", "gtk3", "gtk4", "kcolorscheme", "mango", "umbriel" ]
@@ -283,32 +283,38 @@ wallpaper_scheme = "m3-rainbow"
         output_path = "~/.config/monstar/themes/noctalia"
         post_hook = "pkill -USR1 monstar 2>/dev/null || true"
 
-[wallpaper.default]
-path = "/home/metsker/Pictures/wallhaven-6lekex.jpg"
+[wallpaper]
+directory = "~/Pictures/Wallpapers"
 
-[wallpaper.last]
-path = "/home/metsker/Pictures/wallhaven-6lekex.jpg"
+    [wallpaper.automation]
+    enabled = true
 
-[wallpaper.monitors.DP-1]
-path = "/home/metsker/Pictures/wallhaven-6lekex.jpg"
+    [wallpaper.default]
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 
-[wallpaper.monitors.HDMI-A-2]
-path = "/home/metsker/Pictures/wallhaven-6lekex.jpg"
+    [wallpaper.last]
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 
-[wallpaper.monitors.HDMI-A-3]
-path = "/home/metsker/Pictures/wallhaven-6lekex.jpg"
+    [wallpaper.monitors.DP-1]
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 
-[[wallpaper.favorite]]
-palette_source = "wallpaper"
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
-theme_mode = "dark"
-wallpaper_scheme = "m3-content"
+    [wallpaper.monitors.HDMI-A-2]
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 
-[[wallpaper.favorite]]
-palette_source = "wallpaper"
-path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
-theme_mode = "dark"
-wallpaper_scheme = "m3-content"
+    [wallpaper.monitors.HDMI-A-3]
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
+
+    [[wallpaper.favorite]]
+    palette_source = "wallpaper"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+    theme_mode = "dark"
+    wallpaper_scheme = "m3-content"
+
+    [[wallpaper.favorite]]
+    palette_source = "wallpaper"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
+    theme_mode = "dark"
+    wallpaper_scheme = "m3-content"
 
 [widget.active_window]
 display = "icon_only"
