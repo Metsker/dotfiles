@@ -45,11 +45,6 @@
       url = "github:kepano/obsidian-skills";
       flake = false;
     };
-    ai-usagebar = {
-      url = "github:akitaonrails/ai-usagebar";
-      # Upstream pins a darwin nixpkgs branch; follow ours so there is only one.
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   # Dendritic: every .nix file under modules/ is a flake-parts module, imported automatically.

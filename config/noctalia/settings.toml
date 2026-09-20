@@ -6,7 +6,7 @@ capsule_radius = 8
 capsule_thickness = 0.89999998360872269
 center = [ "clock", "weather", "dictation", "update", "recorder" ]
 concave_edge_corners = false
-end = [ "tray", "media", "volume", "audio_visualizer", "bar_2", "cpu", "vpn", "bluetooth", "keyboard_layout" ]
+end = [ "tray", "audio_visualizer", "media", "volume", "cpu", "pill", "vpn", "bluetooth", "keyboard_layout", "widget" ]
 margin_edge = 4
 margin_ends = 4
 radius = 16
@@ -199,9 +199,8 @@ mangowc_config = "/home/metsker/dotfiles/config/mango/config.conf"
 [plugin_settings."ezequiel/mango_layouts"]
 panel_position = "auto"
 
-[plugin_settings."felipeartur/ai-usagebar"]
-panel_open_near_click = true
-panel_placement = "floating"
+[plugin_settings."jrohland/claudecode"]
+popout_placement = "floating"
 
 [plugin_settings."metsker/mango-layout"]
 corner_roundness = 0.0
@@ -223,11 +222,11 @@ enabled = [
     "noctalia/screen_recorder",
     "noctalia/wallhaven",
     "noctalia/timer",
-    "felipeartur/ai-usagebar",
     "metsker/voxtype",
     "metsker/nixos-update",
     "metsker/vpn",
-    "metsker/window-info"
+    "metsker/window-info",
+    "jrohland/claudecode"
 ]
 
     [[plugins.source]]
@@ -244,6 +243,11 @@ enabled = [
     kind = "path"
     location = "/home/metsker/dotfiles/config/noctalia/plugins"
     name = "local"
+
+    [[plugins.source]]
+    kind = "git"
+    location = "https://github.com/Metsker/noctalia-v5-claudecode"
+    name = "claudecode"
 
 [shell]
 avatar_path = "/home/metsker/Chest/Media/pics/a staff/4444.jpg"
@@ -314,13 +318,6 @@ min_length = 0
 mirrored = false
 width = 48
 
-[widget.bar_2]
-extras = "none"
-show_glyph = false
-show_value = false
-type = "felipeartur/ai-usagebar:bar"
-visualization = "gauge"
-
 [widget.bluetooth]
 hide_when_adapter_off = true
 
@@ -358,6 +355,12 @@ show_label = false
 
 [widget.notifications]
 enabled = false
+
+[widget.pill]
+pill_metric = "both"
+pill_style = "ring"
+ring_thickness = 4
+type = "jrohland/claudecode:pill"
 
 [widget.recorder]
 type = "noctalia/screen_recorder:recorder"

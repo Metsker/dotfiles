@@ -142,8 +142,6 @@
         pkgs.playwright-mcp # bundles its own NixOS chromium
         pkgs.context7-mcp
         chrome-devtools-mcp
-        # ai-usagebar + ai-usagebar-tui: plan usage from ~/.claude/.credentials.json.
-        inputs.ai-usagebar.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
 
       programs.fish.shellAliases.c = "claude";

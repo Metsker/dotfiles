@@ -1,25 +1,5 @@
 {
   "nodes": {
-    "ai-usagebar": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1789737470,
-        "narHash": "sha256-KwUWxr/b6ruJYqD4KzBNm/OVjEhYvq8+j/d2I7FZdSc=",
-        "owner": "akitaonrails",
-        "repo": "ai-usagebar",
-        "rev": "5893ef965f0de3aaa869d32f351baf372871a395",
-        "type": "github"
-      },
-      "original": {
-        "owner": "akitaonrails",
-        "repo": "ai-usagebar",
-        "type": "github"
-      }
-    },
     "claude-code": {
       "inputs": {
         "nixpkgs": "nixpkgs",
@@ -364,7 +344,6 @@
     },
     "root": {
       "inputs": {
-        "ai-usagebar": "ai-usagebar",
         "claude-code": "claude-code",
         "driftwm": "driftwm",
         "flake-parts": "flake-parts",
