@@ -4,9 +4,9 @@
 # plumbing, the greeter that picks between the compositors, the portals, and the wayland tools that
 # do not care which compositor is up.
 #
-# A profile is one compositor, one file each (mango.nix, driftwm.nix, umbriel.nix). All three are
-# always installed; swapping means logging out and picking another entry in the greeter. noctalia is
-# the shell on all of them, so it binds to graphical-session.target - the one target all three reach.
+# A profile is one compositor, one file each (mango.nix, umbriel.nix). Both are always installed;
+# swapping means logging out and picking another entry in the greeter. noctalia is the shell on
+# both of them, so it binds to graphical-session.target - the one target every profile reaches.
 {
   flake.modules.nixos.base = { pkgs, ... }: {
     imports = [ inputs.noctalia-greeter.nixosModules.default ];
@@ -24,7 +24,7 @@
     services.displayManager.noctalia-greeter.enable = true;
 
     # Boot goes straight into umbriel instead of drawing the greeter. initial_session fires once
-    # per greetd start, so logging out lands back in the greeter and the other two profiles stay
+    # per greetd start, so logging out lands back in the greeter and the other profile stays
     # one logout away; changing the default profile is the command below. The LUKS passphrase is
     # what actually gates the machine at boot, and greetd still waits on the VPN either way.
     services.greetd.settings.initial_session = {
@@ -101,7 +101,7 @@
       # The one place a compositor is named: the tools below query it instead of branching.
       wminfo = writeShellApplication {
         name = "wminfo";
-        runtimeInputs = [ jq gnused gnugrep coreutils mangowm driftwm umbriel ];
+        runtimeInputs = [ jq gnused gnugrep coreutils mangowm umbriel ];
         text = builtins.readFile ../../scripts/wminfo.sh;
       };
     in

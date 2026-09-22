@@ -33,8 +33,8 @@ four questions and branches on nothing:
 | `wminfo float-rule <appid> <title>` | adds that title to the app's rule, drops it where it is already there |
 
 Null fields are an empty desktop and hide the widget. A nonzero exit means the IPC itself failed,
-and the last value stays on the bar rather than blinking out. A compositor that answers neither -
-driftwm, whose IPC carries no focus event to watch - leaves the widget hidden.
+and the last value stays on the bar rather than blinking out. A compositor whose IPC carries no
+focus event to watch answers neither, and leaves the widget hidden.
 
 The stream is restarted by a shell loop around it, because the host never restarts a dead one and
 gives the script no way to notice: a compositor restart costs a couple of seconds rather than the

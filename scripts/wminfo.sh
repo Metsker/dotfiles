@@ -127,11 +127,4 @@ case "${XDG_CURRENT_DESKTOP:-}" in
           umbriel msg window-toggle-floating > /dev/null
         fi ;;
     esac ;;
-  driftwm)
-    case "$query" in
-      # driftwm's IPC carries neither window boxes, the pointer, nor a focus event to watch.
-      boxes | cursorpos | focused-window | watch-focused-window | float-rules | float-rule) ;;
-      focused-name)
-        driftwm msg focus --json 2>/dev/null | jq -r '.Ok.Focused.app_id // empty' 2>/dev/null || true ;;
-    esac ;;
 esac

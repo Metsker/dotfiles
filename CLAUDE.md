@@ -60,7 +60,6 @@ One file per domain, not per app - a new program joins the file its domain alrea
 | `theming.nix` | GTK/Qt/cursor/icons, fonts |
 | `desktop/session.nix` | noctalia, uwsm, greetd, portals, screencast, voxtype, the wayland tool scripts |
 | `desktop/mango.nix` | desktop profile: mango |
-| `desktop/driftwm.nix` | desktop profile: driftwm |
 | `desktop/umbriel.nix` | desktop profile: umbriel |
 | `shell.nix` | fish, monstar, foot, yazi, neovim, git |
 | `dev.nix` | toolchain, playwright browsers, herdr, remote host bootstrap |
@@ -105,7 +104,7 @@ window queries are the exception to that silence - they exit nonzero when the IP
 a caller can tell that from an empty desktop. `float-rule` is the one query that writes: it edits
 the compositor's own rule file and reloads it, because a float rule has to survive the window it
 was read off.
-Supporting a fourth compositor is one more case block there.
+Supporting a third compositor is one more case block there.
 
 `screenshot` and `textpicker` grab the whole screen the moment they start and crop that grab to the
 selected region afterwards, rather than capturing once the region is drawn. On the NVIDIA blob an
@@ -122,37 +121,23 @@ condition becomes permanent.
 
 ## Desktop stack
 
-Three **desktop profiles**, one compositor each, all installed at once. Boot autologins into
+Two **desktop profiles**, one compositor each, both installed at once. Boot autologins into
 umbriel through greetd's `initial_session` (in `session.nix`, next to the greeter it skips); the
 greeter is reached by logging out, which is also how a profile gets swapped.
 
-**noctalia is the shell on all three**, so it is not part of any profile - it lives in
+**noctalia is the shell on both**, so it is not part of any profile - it lives in
 `modules/desktop/session.nix` on `graphical-session.target`, the one target every profile reaches.
 A profile's file therefore holds only its compositor: packages, overlays, portal config, its config
-symlink. Adding a fourth compositor means adding one file and nothing else.
+symlink. Adding a third compositor means adding one file and nothing else.
 
-The three reach that target by different routes. Only mango is **uwsm**-managed: uwsm publishes a
+The two reach that target by different routes. Only mango is **uwsm**-managed: uwsm publishes a
 `wayland-session@<compositor>.target` per session, whose instance name must match the entry
-`programs.uwsm.waylandCompositors` registers. driftwm ships its own `driftwm-session` and
-`driftwm.service`, and umbriel its own `start-umbriel`, `umbriel.service` and
-`umbriel-session.target`; both pull `graphical-session.target` up behind them. Nothing needs gating
-any more, because there is only one shell and every profile wants it.
+`programs.uwsm.waylandCompositors` registers. umbriel ships its own `start-umbriel`,
+`umbriel.service` and `umbriel-session.target`, which pull `graphical-session.target` up behind
+them. Nothing needs gating any more, because there is only one shell and every profile wants it.
 
 - **mango** (`modules/desktop/mango.nix`). `config/mango/config.conf` sources the other `.conf`
   files. Master layout with the master area on the right (`right_tile`), and per-monitor tags 1-9.
-- **driftwm** (`modules/desktop/driftwm.nix`). An infinite-canvas compositor: windows keep their
-  native size on a 2D canvas and the display is a camera over it, so there are no workspaces and
-  mango's per-monitor tags have no analogue - `Mod+1-4` are camera bookmarks. `config/driftwm/config.toml`
-  hot-reloads on save; every default is documented in the package's own `config.reference.toml`.
-  Ported from mango: the launcher set, the input setup, the monitor layout and the silent-open rules.
-  `Mod+C`/`Mod+V` are the clipboard script, which displaces `center-window` onto `Mod+Ctrl+C`.
-  Its NixOS module sets the portal config, portal list and gnome-keyring with `mkDefault`, and a
-  list option takes only its highest-priority definitions - so the module's portal defaults are
-  dropped wholesale by the other modules' plain assignments and have to be repeated in the file.
-  `wminfo` has no boxes or cursor query for driftwm's IPC, so screenshots there do not snap to
-  windows. The canvas background is a GLSL shader from the package's own
-  `share/driftwm/wallpapers/`, named through `/run/current-system/sw` rather than a store path that
-  moves; `environment.pathsToLink` is what puts that directory in the system profile at all.
 - **umbriel** (`modules/desktop/umbriel.nix`). noctalia's own compositor, so the pairing needs no
   glue: its example config already carries noctalia's window and layer rules, and noctalia's
   `umbriel` theme template renders `~/.config/umbriel/noctalia.toml`, which `config.toml` pulls in
@@ -171,11 +156,12 @@ any more, because there is only one shell and every profile wants it.
   Edit the template (`config/noctalia/templates/`) or the noctalia settings, never the generated file.
   `config/mango/noctalia.conf`, `config/umbriel/noctalia.toml` and `config/monstar/themes/noctalia`
   are all generated. Its per-compositor features come from runtime detection, not from Nix: mango and
-  umbriel have workspace backends, driftwm falls to the `Unknown` path and shows no workspace module.
+  umbriel both have workspace backends, and a compositor it does not know falls to the `Unknown`
+  path and shows no workspace module.
 - **monstar** is the terminal, built from a flake input. `modules/shell.nix` names it exactly
   once, in a file-level `terminal` binding, and spends that on `$TERMINAL` in
   `environment.sessionVariables` and on the two KDE keys - swapping terminals is that one edit.
-  All three compositors' keybinds spawn `$TERMINAL`, which works because their `spawn`/`exec` go
+  Both compositors' keybinds spawn `$TERMINAL`, which works because their `spawn`/`exec` go
   through `sh`; noctalia reads it too, its own discovery list ending at foot. KIO's launcher
   reads `kdeglobals` rather than the environment, so an activation script writes
   `TerminalApplication` and `TerminalService` there - unset, dolphin's "Open Terminal Here"

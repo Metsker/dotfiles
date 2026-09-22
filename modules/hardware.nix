@@ -9,7 +9,7 @@
     # Pulls in hardware.logitech.wireless.enable (udev rules) by default.
     programs.solaar = {
       enable = true;
-      # The module's own user service, rather than an autostart line in all three compositors:
+      # The module's own user service, rather than an autostart line in every compositor:
       # it restarts on failure and stops with the session, which a spawned process does not.
       userService.enable = true;
     };

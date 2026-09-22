@@ -163,8 +163,8 @@ function update()
 		if result.exitCode ~= 0 then
 			return
 		end
-		-- An answer at all is what says the compositor has an IPC to watch: driftwm answers
-		-- nothing, and the restart loop would respawn a command that exits at once, forever.
+		-- An answer at all is what says the compositor has an IPC to watch: where one answers
+		-- nothing, the restart loop would respawn a command that exits at once, forever.
 		if noctalia.string.trim(result.stdout) == "" then
 			return
 		end

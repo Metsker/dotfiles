@@ -8,7 +8,7 @@
 # carries noctalia's window and layer rules, and noctalia renders a palette into
 # ~/.config/umbriel/noctalia.toml, which config.toml includes.
 #
-# Like driftwm it is not uwsm-managed - start-umbriel runs umbriel.service, which brings up
+# It is not uwsm-managed - start-umbriel runs umbriel.service, which brings up
 # umbriel-session.target and graphical-session.target behind it.
 #
 # It is also the profile boot autologins into, which session.nix sets up.
@@ -26,7 +26,6 @@
       # lands on it - so every Steam dropdown dies. Source is PR 494, which never focuses an
       # override-redirect window and hands WM_TAKE_FOCUS clients the choice, as Hyprland's XWM
       # does. Drop when https://github.com/Supreeeme/xwayland-satellite/pull/494 reaches nixpkgs.
-      # driftwm's X11 goes through the same package, so it is patched here too.
       (final: prev: {
         xwayland-satellite = prev.xwayland-satellite.overrideAttrs (old:
           let

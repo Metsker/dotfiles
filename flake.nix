@@ -19,10 +19,6 @@
       url = "github:mangowm/mango";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    driftwm = {
-      url = "github:malbiruk/driftwm";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     umbriel = {
       url = "github:noctalia-dev/umbriel";
       inputs.nixpkgs.follows = "nixpkgs";
