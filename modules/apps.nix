@@ -20,14 +20,28 @@
       btop
     ];
 
-    # Telegram's miniapp webview dies with "Error 71 (Protocol error)" on NVIDIA - webkitgtk's
-    # dmabuf renderer cannot import NVIDIA's buffers into this wlroots session.
-    # Drop once that renderer survives an NVIDIA wlroots session.
     nixpkgs.overlays = [
       (final: prev: {
+        # Telegram's miniapp webview dies with "Error 71 (Protocol error)" on NVIDIA - webkitgtk's
+        # dmabuf renderer cannot import NVIDIA's buffers into this wlroots session.
+        # Drop once that renderer survives an NVIDIA wlroots session.
         telegram-desktop = prev.telegram-desktop.overrideAttrs (old: {
           qtWrapperArgs = old.qtWrapperArgs ++ [ "--set" "WEBKIT_DISABLE_DMABUF_RENDERER" "1" ];
         });
+
+        # Discord reads its VA surfaces without syncing, so nvidia-vaapi-driver 0.0.18 hands it stale
+        # frames and streams stutter; software decode here only. Drop on elFarto/nvidia-vaapi-driver#455.
+        discord = final.symlinkJoin {
+          name = "discord-${prev.discord.version}";
+          paths = [ prev.discord ];
+          nativeBuildInputs = [ final.makeWrapper ];
+          postBuild = ''
+            rm $out/bin/Discord $out/bin/discord
+            makeWrapper ${prev.discord}/bin/Discord $out/bin/Discord --set LIBVA_DRIVER_NAME none
+            ln -s $out/bin/Discord $out/bin/discord
+          '';
+          inherit (prev.discord) meta;
+        };
       })
     ];
   };
