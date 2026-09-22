@@ -225,8 +225,8 @@ enabled = [
     "metsker/voxtype",
     "metsker/nixos-update",
     "metsker/vpn",
-    "metsker/window-info",
-    "jrohland/claudecode"
+    "jrohland/claudecode",
+    "metsker/window-info"
 ]
 
     [[plugins.source]]
@@ -286,23 +286,20 @@ wallpaper_scheme = "m3-content"
 [wallpaper]
 directory = "~/Pictures/Wallpapers"
 
-    [wallpaper.automation]
-    enabled = true
-
     [wallpaper.default]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
     [wallpaper.last]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
     [wallpaper.monitors.DP-1]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
     [wallpaper.monitors.HDMI-A-2]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
     [wallpaper.monitors.HDMI-A-3]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
 
     [[wallpaper.favorite]]
     palette_source = "wallpaper"
