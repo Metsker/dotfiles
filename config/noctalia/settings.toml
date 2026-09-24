@@ -6,7 +6,7 @@ capsule_radius = 8
 capsule_thickness = 0.89999998360872269
 center = [ "clock", "weather", "dictation", "update", "recorder" ]
 concave_edge_corners = false
-end = [ "tray", "audio_visualizer", "media", "volume", "cpu", "pill", "vpn", "bluetooth", "keyboard_layout", "widget" ]
+end = [ "tray", "audio_visualizer", "media", "volume", "cpu", "pill", "vpn", "bluetooth", "bar", "keyboard_layout" ]
 margin_edge = 4
 margin_ends = 4
 radius = 16
@@ -320,6 +320,10 @@ min_length = 0
 [widget.audio_visualizer]
 mirrored = false
 width = 48
+
+[widget.bar]
+show_idle_on_horizontal = false
+type = "noctalia/timer:bar"
 
 [widget.bluetooth]
 hide_when_adapter_off = true
