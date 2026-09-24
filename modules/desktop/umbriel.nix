@@ -22,27 +22,26 @@
     # Exposes the flake input under pkgs so the shared tool wrappers can list it in runtimeInputs.
     nixpkgs.overlays = [
       inputs.umbriel.overlays.default
-      # Satellite focuses override-redirect windows, and Steam closes a menu the moment focus
-      # lands on it - so every Steam dropdown dies. Source is PR 494, which never focuses an
-      # override-redirect window and hands WM_TAKE_FOCUS clients the choice, as Hyprland's XWM
-      # does. Drop when https://github.com/Supreeeme/xwayland-satellite/pull/494 reaches nixpkgs.
+      # 0.8.2 focuses override-redirect windows, and Steam closes a menu the moment focus lands
+      # on it - so every Steam dropdown dies. 0.8.3 carries the fix (PR 494).
+      # Drop when nixpkgs ships xwayland-satellite >= 0.8.3.
       (final: prev: {
         xwayland-satellite = prev.xwayland-satellite.overrideAttrs (old:
           let
+            version = "0.8.3";
             src = final.fetchFromGitHub {
-              owner = "3akev";
+              owner = "Supreeeme";
               repo = "xwayland-satellite";
-              rev = "9d51b59ff3c38464e7654096c9b10a8052a26b25";
-              hash = "sha256-hJWNd9MqNzKEDV59E45jeqtbSz/+xrg/Comg6GjAKDo=";
+              rev = "v${version}";
+              hash = "sha256-eFEjCCniMCKeWU0PcZNv+tDYe08SLFPjRplyPY8OFt4=";
             };
           in
           {
-            version = "${old.version}-pr494";
-            inherit src;
+            inherit version src;
             # buildRustPackage derives cargoDeps from the original src, so it has to be rebuilt too.
             cargoDeps = final.rustPlatform.fetchCargoVendor {
               inherit src;
-              hash = "sha256-s1gl9eR6Mt2QLrhfcowstPFjzwE/lz4PJhJzWYHoIHg=";
+              hash = "sha256-gMGFvnbxM3hD5fmkSimaFd87GEf6BXFe/MGjoS6VNVU=";
             };
           });
       })
