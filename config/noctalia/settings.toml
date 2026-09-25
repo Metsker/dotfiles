@@ -6,7 +6,7 @@ capsule_radius = 8
 capsule_thickness = 0.89999998360872269
 center = [ "clock", "weather", "dictation", "update", "recorder" ]
 concave_edge_corners = false
-end = [ "tray", "audio_visualizer", "media", "volume", "cpu", "pill", "vpn", "bluetooth", "bar", "keyboard_layout" ]
+end = [ "tray", "audio_visualizer", "media", "volume", "cpu", "pill", "bar", "bluetooth", "keyboard_layout" ]
 margin_edge = 4
 margin_ends = 4
 radius = 16
@@ -384,9 +384,6 @@ type = "metsker/nixos-update:update"
 [widget.volume.actions]
 scroll_down = "volume-down 1"
 scroll_up = "volume-up 1"
-
-[widget.vpn]
-type = "metsker/vpn:vpn"
 
 [widget.weather]
 show_condition = false

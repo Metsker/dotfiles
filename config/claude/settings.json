@@ -98,5 +98,10 @@
   "awaySummaryEnabled": false,
   "skipWorkflowUsageWarning": true,
   "theme": "auto",
-  "editorMode": "normal"
+  "editorMode": "normal",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "xhigh"
+    }
+  }
 }
