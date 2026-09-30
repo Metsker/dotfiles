@@ -41,6 +41,10 @@
       # Nothing it could download would run, so fail fast on a version mismatch
       # rather than spending the bandwidth to fail later.
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
+      # `npx hyperframes` would download a chrome-headless-shell that cannot launch here; this one keeps BeginFrame capture.
+      HYPERFRAMES_BROWSER_PATH =
+        let rev = pkgs.playwright-driver.browsersJSON.chromium-headless-shell.revision;
+        in "${pkgs.playwright-driver.browsers}/chromium_headless_shell-${rev}/chrome-headless-shell-linux64/chrome-headless-shell";
     };
   };
 
