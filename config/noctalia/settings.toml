@@ -16,6 +16,9 @@ start = [ "launcher", "workspaces", "window" ]
 [battery.device."/org/freedesktop/UPower/devices/battery_hidpp_battery_0"]
 warning_threshold = 10
 
+[battery.device."/org/freedesktop/UPower/devices/battery_ps_controller_battery_4cob9o9bo83obco46"]
+warning_threshold = 10
+
 [brightness]
 enable_ddcutil = true
 sync_all_monitors = true
@@ -287,19 +290,19 @@ wallpaper_scheme = "m3-content"
 directory = "~/Pictures/Wallpapers"
 
     [wallpaper.default]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-6lekex.jpg"
 
     [wallpaper.last]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-6lekex.jpg"
 
     [wallpaper.monitors.DP-1]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-6lekex.jpg"
 
     [wallpaper.monitors.HDMI-A-2]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-6lekex.jpg"
 
     [wallpaper.monitors.HDMI-A-3]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-6lekex.jpg"
 
     [[wallpaper.favorite]]
     palette_source = "wallpaper"
@@ -398,6 +401,7 @@ type = "metsker/window-info:window"
 enabled = true
 focused_output_only = true
 show_labels = false
+show_tooltip = false
 urgent_color = "secondary"
 
     [widget.workspaces.actions]
