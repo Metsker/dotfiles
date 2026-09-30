@@ -14,14 +14,22 @@
           url = "https://tldraw.com/";
           name = "tldraw";
         };
-        youtube-music = {
-          url = "https://music.youtube.com/";
-          name = "YouTube Music";
+        brain = {
+          url = "https://notes.metsker.dev/brain";
+          name = "Brain";
         };
-        soundcloud = {
-          url = "https://soundcloud.com/";
-          name = "SoundCloud";
+        gamedev = {
+          url = "https://notes.metsker.dev/gamedev";
+          name = "Gamedev";
         };
+        # youtube-music = {
+        #   url = "https://music.youtube.com/";
+        #   name = "YouTube Music";
+        # };
+        # soundcloud = {
+        #   url = "https://soundcloud.com/";
+        #   name = "SoundCloud";
+        # };
       };
 
       # Icon source per app: explicit iconUrl wins, else best-effort favicon.
