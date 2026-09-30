@@ -143,14 +143,17 @@ them. Nothing needs gating any more, because there is only one shell and every p
   `umbriel` theme template renders `~/.config/umbriel/noctalia.toml`, which `config.toml` pulls in
   through `[include]`. The config is split like mango's: `config.toml` carries the include list,
   `[general]` and the odds and ends, and `outputs.toml`, `appearance.toml`, `input.toml`,
-  `layout.toml`, `rules.toml` and `keybinds.toml` carry the rest. Includes are applied in list
-  order and the main file last, so every section lives in exactly one file rather than relying on
-  how umbriel merges a table defined twice. Scrolling, dwindle and master layouts; ported from
-  `config/mango/*.conf`, down to mango's per-monitor tag binds - nine static workspaces per output,
-  reached as `workspace-switch:<n>/<output>`. Umbriel has no touchscreen
-  mapping yet, so mango's `touch_map_to_mon` has no equivalent. `input.cursor.hide_when_typing` is
-  on because HDMI-A-2 gets no cursor plane from the NVIDIA blob - without it the composited pointer
-  lands in every screenshot of that output.
+  `layout.toml`, `rules.toml` and `keybinds.toml` carry the rest. `autostart.toml` pairs
+  `general.autostart` with the `at_startup` rules that place those apps - the one key living
+  outside its section's file, which works because tables merge by key and rule lists collect.
+  `float-rules.toml` is written by `wminfo float-rule` and gitignored. Scrolling, dwindle and
+  master layouts; ported from `config/mango/*.conf`, down to mango's per-monitor tag binds - nine
+  static workspaces per output, reached as `workspace-switch:<n>/<output>`, and the touchscreen
+  pinned to HDMI-A-3 (`input.touch.map_to_output`). `umbriel config validate` checks the
+  config against the installed binary, and a rebuild only reaches the compositor after a
+  re-login - until then its reload banner can flag keys the new binary accepts.
+  `input.cursor.hide_when_typing` is on because HDMI-A-2 gets no cursor plane from the NVIDIA
+  blob - without it the composited pointer lands in every screenshot of that output.
 - noctalia owns theming on every profile: its templates render color palettes into app configs at
   theme-switch time, and the rendered outputs are gitignored (`**/noctalia.*`, `**/themes/noctalia`).
   Edit the template (`config/noctalia/templates/`) or the noctalia settings, never the generated file.
