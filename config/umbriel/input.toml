@@ -13,9 +13,9 @@ disable_while_typing = true
 [input.mouse]
 natural_scroll = false
 
-# # The touchscreen reports no output of its own, so unmapped touches span the whole layout.
-# [input.touch]
-# map_to_output = "HDMI-A-3"
+# The touchscreen reports no output of its own, so unmapped touches span the whole layout.
+[input.touch]
+map_to_output = "HDMI-A-3"
 
 [input.cursor]
 follows_focus = true
