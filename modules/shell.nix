@@ -131,6 +131,15 @@ in
         mimeType = [ "text/plain" ];
       };
 
+      xdg.desktopEntries.disk-usage = {
+        name = "Disk Usage";
+        # Names the terminal rather than setting terminal = true: only an app-id lets the compositors float it.
+        exec = "${terminal.binary} --app-id dua -e dua i /";
+        type = "Application";
+        icon = "disk-usage-analyzer";
+        categories = [ "System" "Utility" ];
+      };
+
       xdg.mimeApps.defaultApplications = {
         "text/plain" = "nvim.desktop";
         "text/markdown" = "nvim.desktop";
