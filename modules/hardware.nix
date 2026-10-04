@@ -58,23 +58,48 @@
     hardware.i2c.enable = true;
   };
 
-  flake.modules.homeManager.metsker = { pkgs, dotfile, ... }: {
-    # A whole directory, not `recursive`: OpenRGB rewrites OpenRGB.json and drops a detection log
-    # per start into this directory, which per-file store symlinks would make read-only.
-    xdg.configFile.OpenRGB.source = dotfile "openrgb";
-
-    # Noctalia loads effect presets over $XDG_RUNTIME_DIR/EasyEffectsServer, so the daemon has to be up.
-    services.easyeffects.enable = true;
-
-    home.packages = [
+  flake.modules.homeManager.metsker = { pkgs, dotfile, ... }:
+    let
       # No backlight class on a desktop, so monitor brightness goes over DDC/CI. The wrapper
       # shadows ddcutil itself; everything but `detect` is passed straight through.
-      (pkgs.writeShellApplication {
+      ddcutil = pkgs.writeShellApplication {
         name = "ddcutil";
         runtimeInputs = [ pkgs.coreutils pkgs.gawk pkgs.gnugrep ];
         runtimeEnv.DDCUTIL_REAL = "${pkgs.ddcutil}/bin/ddcutil";
         text = builtins.readFile ../scripts/ddcutil-connector-fix.sh;
-      })
-    ];
-  };
+      };
+
+      ddc-brightness = pkgs.writeShellApplication {
+        name = "ddc-brightness";
+        runtimeInputs = [ ddcutil pkgs.coreutils pkgs.gawk ];
+        text = builtins.readFile ../scripts/ddc-brightness.sh;
+      };
+    in
+    {
+      # A whole directory, not `recursive`: OpenRGB rewrites OpenRGB.json and drops a detection log
+      # per start into this directory, which per-file store symlinks would make read-only.
+      xdg.configFile.OpenRGB.source = dotfile "openrgb";
+
+      # Noctalia loads effect presets over $XDG_RUNTIME_DIR/EasyEffectsServer, so the daemon has to be up.
+      services.easyeffects.enable = true;
+
+      home.packages = [ ddcutil ddc-brightness ];
+
+      # Before noctalia, so its brightness service reads the restored values and never races us on i2c.
+      systemd.user.services.ddc-brightness = {
+        Unit = {
+          Description = "Carry DDC monitor brightness across power cycles";
+          PartOf = [ "graphical-session.target" ];
+          After = [ "graphical-session.target" ];
+          Before = [ "noctalia.service" ];
+        };
+        Service = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart = "${ddc-brightness}/bin/ddc-brightness restore";
+          ExecStop = "${ddc-brightness}/bin/ddc-brightness save";
+        };
+        Install.WantedBy = [ "graphical-session.target" ];
+      };
+    };
 }
