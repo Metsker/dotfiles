@@ -97,6 +97,7 @@ in
         pkgs.lazygit
         pkgs.jrnl
         pkgs.fastfetch
+        pkgs.dua
       ];
 
       # KIO's terminal launcher reads kdeglobals, not the environment, and falls through to
