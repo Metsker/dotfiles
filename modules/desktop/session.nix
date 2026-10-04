@@ -69,8 +69,6 @@
   };
 
   flake.modules.homeManager.metsker = { config, pkgs, dotfile, ... }: {
-    imports = [ inputs.noctalia.homeModules.default ];
-
     xdg.configFile.voxtype = { source = dotfile "voxtype"; recursive = true; };
 
     # The module's own graphical-session.target is right here: every profile reaches it, and every
