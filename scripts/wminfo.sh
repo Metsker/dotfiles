@@ -125,6 +125,9 @@ case "${XDG_CURRENT_DESKTOP:-}" in
         if [ "$(printf '%s' "$focused" | jq -r --arg a "$appid" --arg t "$title" '((.app_id // "") == $a) and ((.title // "") == $t)')" = "true" ] \
           && [ "$(printf '%s' "$focused" | jq -r '.floating')" != "$covered" ]; then
           umbriel msg window-toggle-floating > /dev/null
+          if [ "$covered" = "true" ]; then
+            umbriel msg window-center > /dev/null
+          fi
         fi ;;
     esac ;;
 esac
