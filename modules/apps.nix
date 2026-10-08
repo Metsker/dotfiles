@@ -65,7 +65,6 @@
 
     home.packages = with pkgs; [
       inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
-      floorp-bin
       engrampa
       imv
       mpv
