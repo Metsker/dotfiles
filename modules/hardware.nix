@@ -56,6 +56,8 @@
     # ddcutil talks to the monitors over the GPU's i2c buses; this loads i2c-dev and
     # grants the seat user access, instead of leaning on OpenRGB's udev rules for it.
     hardware.i2c.enable = true;
+    # The seat ACL is revoked before the session stops, and ddc-brightness saves on the way out.
+    users.users.metsker.extraGroups = [ "i2c" ];
   };
 
   flake.modules.homeManager.metsker = { pkgs, dotfile, ... }:
