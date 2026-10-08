@@ -21,7 +21,6 @@ warning_threshold = 10
 
 [brightness]
 enable_ddcutil = true
-sync_all_monitors = true
 
 [calendar]
 
@@ -210,7 +209,7 @@ corner_roundness = 0.0
 picker_placement = "floating"
 
 [plugin_settings."noctalia/screen_recorder"]
-audio_source = "default_output"
+audio_source = "none"
 hide_inactive = true
 video_source = "portal"
 
@@ -290,19 +289,19 @@ wallpaper_scheme = "m3-content"
 directory = "~/Pictures/Wallpapers"
 
     [wallpaper.default]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
     [wallpaper.last]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
     [wallpaper.monitors.DP-1]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
     [wallpaper.monitors.HDMI-A-2]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
     [wallpaper.monitors.HDMI-A-3]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-2em38y.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
     [[wallpaper.favorite]]
     palette_source = "wallpaper"
