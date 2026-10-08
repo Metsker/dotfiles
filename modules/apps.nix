@@ -73,7 +73,6 @@
       discord
       krita
       spotify
-      obsidian
     ];
 
     xdg.mimeApps.defaultApplications = {
