@@ -36,7 +36,7 @@ wayfreeze --hide-cursor --after-freeze-cmd "slurp -o < '$boxes' > '$geo'; kill \
 
 read -r geometry < "$geo" || exit 0
 
-# ponytail: the crop assumes the output layout starts at 0,0, which is where grim's full-screen
+# The crop assumes the output layout starts at 0,0, which is where grim's full-screen
 # capture begins; a monitor placed left of or above the origin wants an origin query in wminfo.
 offset="${geometry%% *}"
 magick "$full" -crop "${geometry#* }+${offset%,*}+${offset#*,}" +repage "$tmp"

@@ -25,7 +25,7 @@ wayfreeze --hide-cursor --after-freeze-cmd "slurp > '$geo'; kill \$PPID" || true
 
 read -r geometry < "$geo" || exit 0
 
-# ponytail: same 0,0 layout-origin assumption as screenshot.sh.
+# Same 0,0 layout-origin assumption as screenshot.sh.
 offset="${geometry%% *}"
 magick "$full" -crop "${geometry#* }+${offset%,*}+${offset#*,}" +repage "$tmp"
 

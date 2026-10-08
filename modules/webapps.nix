@@ -68,7 +68,7 @@
 
       # Icons can't be fetched in pure Nix (fetchers need a pinned hash), so grab
       # them at activation time. Cached: only downloads a missing icon.
-      # ponytail: to refresh after changing url/iconUrl, delete its .png and re-switch.
+      # To refresh after changing url/iconUrl, delete its .png and re-switch.
       home.activation.webappIcons = lib.hm.dag.entryAfter [ "writeBoundary" ] (
         lib.concatStringsSep "\n" (lib.mapAttrsToList
           (id: app: lib.optionalString (!(app ? icon)) ''

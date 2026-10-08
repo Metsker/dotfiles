@@ -2,7 +2,7 @@
 # with over i2c against the connector's EDID in sysfs, byte for byte. NVIDIA rewrites the
 # product code in the copy it publishes for DisplayPort, so a DP monitor leaves `detect`
 # with no connector line and noctalia's brightness service drops it.
-# ponytail: when exactly one detected display and one connected output are left unpaired the
+# When exactly one detected display and one connected output are left unpaired the
 # pairing is forced, so fill it in. Drop once ddcutil stops demanding an exact byte match.
 
 is_detect=false
