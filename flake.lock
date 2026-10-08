@@ -275,22 +275,6 @@
         "type": "github"
       }
     },
-    "obsidian-skills": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1789483437,
-        "narHash": "sha256-kyH07EVmwIEC/q6i91Kz8mPE78j9ITga2NZUpU1+nHU=",
-        "owner": "kepano",
-        "repo": "obsidian-skills",
-        "rev": "3ccff5338ea700537839b21900aa5358a0402c98",
-        "type": "github"
-      },
-      "original": {
-        "owner": "kepano",
-        "repo": "obsidian-skills",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "claude-code": "claude-code",
@@ -301,7 +285,6 @@
         "monstar": "monstar",
         "nixpkgs": "nixpkgs_3",
         "noctalia-greeter": "noctalia-greeter",
-        "obsidian-skills": "obsidian-skills",
         "umbriel": "umbriel",
         "zen-browser": "zen-browser"
       }

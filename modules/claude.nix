@@ -71,21 +71,11 @@
         };
       });
 
-      # ~/.claude/skills merges two sources, so it is linked one skill at a time rather than as
-      # a single directory. The hand-written ones stay out-of-store symlinks, so editing a
-      # SKILL.md still takes effect without a rebuild; kepano/obsidian-skills is pinned by the
-      # flake input and read-only in the store. Only adding or removing a skill needs a rebuild.
-      skillsIn = src:
-        builtins.attrNames (lib.filterAttrs (_: type: type == "directory") (builtins.readDir src));
-      skillLinks = mkSource: names:
-        map (name: lib.nameValuePair ".claude/skills/${name}" { source = mkSource name; }) names;
-      # Own skills come last, so a name they share with an upstream one resolves to ours.
-      vendoredSkills = skillLinks
-        (name: "${inputs.obsidian-skills}/skills/${name}")
-        (skillsIn "${inputs.obsidian-skills}/skills");
-      ownSkills = skillLinks
-        (name: dotfile "claude/skills/${name}")
-        (skillsIn ../config/claude/skills);
+      # Linked one skill at a time, not as one directory, because other installers write into ~/.claude/skills too.
+      ownSkills = map
+        (name: lib.nameValuePair ".claude/skills/${name}" { source = dotfile "claude/skills/${name}"; })
+        (builtins.attrNames
+          (lib.filterAttrs (_: type: type == "directory") (builtins.readDir ../config/claude/skills)));
 
       # Wrap claude so every launch loads the Nix-managed servers; merges with project .mcp.json.
       # =form is required: --mcp-config is variadic and the space form swallows the subcommand.
@@ -132,7 +122,7 @@
         fi
       '';
 
-      home.file = lib.listToAttrs (vendoredSkills ++ ownSkills) // {
+      home.file = lib.listToAttrs ownSkills // {
         ".claude/CLAUDE.md".source = dotfile "claude/CLAUDE.md";
         ".claude/keybindings.json".source = dotfile "claude/keybindings.json";
       };

@@ -31,12 +31,6 @@
     monstar.url = "github:Metsker/monstar-nix";
     # No nixpkgs.follows: keep the flake's pin so the claude-code.cachix.org cache hits.
     claude-code.url = "github:sadjow/claude-code-nix";
-    # Agent Skills for Obsidian. Not a flake - it is a plain tree of SKILL.md directories,
-    # so it is consumed as a source and symlinked into ~/.claude/skills by claude.nix.
-    obsidian-skills = {
-      url = "github:kepano/obsidian-skills";
-      flake = false;
-    };
   };
 
   # Dendritic: every .nix file under modules/ is a flake-parts module, imported automatically.
