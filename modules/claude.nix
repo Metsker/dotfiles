@@ -55,7 +55,7 @@
 
           # Playwright answers what the DOM says, which for a game drawing into one canvas
           # is nothing at all. This one answers why a frame took 40ms: performance traces,
-          # CPU throttling, console and network. Chromium is passed explicitly because the
+          # CPU throttling, console and network. Playwright's patched Chrome is passed because the
           # Chrome puppeteer would otherwise fetch is dynamically linked against libraries
           # on no path here - the same trap dev.nix documents for Playwright's browsers.
           chrome-devtools = {
@@ -63,7 +63,7 @@
             args = [
               "--headless"
               "--isolated"
-              "--executablePath=${pkgs.chromium}/bin/chromium"
+              "--executablePath=${pkgs.playwright-driver.browsers}/chromium-${pkgs.playwright-driver.browsersJSON.chromium.revision}/chrome-linux64/chrome"
               "--viewport=1440x900"
               "--usageStatistics=false"
             ];
