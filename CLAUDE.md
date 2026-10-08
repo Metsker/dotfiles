@@ -197,4 +197,3 @@ so the same `env` sets `CLAUDE_CODE_FORCE_TERMINAL_IMAGES=1`.
   open, and **no `Co-Authored-By` or attribution trailer**
   (this repo's rule overrides the default).
 - Comments explain *why* a non-obvious workaround exists, and stay to one line per block.
-- `ponytail:` prefixes a deliberate shortcut with a known ceiling and its upgrade path.
