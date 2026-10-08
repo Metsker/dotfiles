@@ -1,3 +1,3 @@
-# Launch a url as a standalone chromium app window.
+# Launch a url as a standalone helium app window.
 url=${1:?usage: webapp <url>}
-exec chromium --app="$url" --ozone-platform-hint=auto
+exec helium --app="$url" --ozone-platform-hint=auto

@@ -1,6 +1,6 @@
 {
-  # Declarative browser web apps: each becomes a standalone chromium --app window.
-  # mango window-rules them by their chrome-<host>__-Default app-id (see rules.conf).
+  # Declarative browser web apps: each becomes a standalone helium --app window.
+  # Helium keeps Chromium's chrome-<host>__<path>-Default app-id, which window rules match on.
   flake.modules.homeManager.metsker = { config, lib, pkgs, ... }:
     let
       iconDir = "${config.xdg.dataHome}/icons/webapps";
@@ -38,22 +38,11 @@
         else "https://www.google.com/s2/favicons?domain=${app.url}&sz=128";
     in
     {
-      # uBlock Origin Lite (MV3) for the chromium profile the webapps share; Chromium
-      # auto-installs and updates it from the Web Store. Classic uBlock Origin is MV2 -
-      # dead on Chromium 150.
-      programs.chromium = {
-        enable = true;
-        package = pkgs.chromium;
-        extensions = [
-          "ddkjiahejlhfcafbddmgiahcphecmpfh" # uBlock Origin Lite
-        ];
-      };
-
-      # Launches URLs as standalone chromium --app windows.
+      # Launches URLs as standalone helium --app windows, in the main Helium profile.
       home.packages = [
         (pkgs.writeShellApplication {
           name = "webapp";
-          runtimeInputs = [ pkgs.chromium ];
+          runtimeInputs = [ pkgs.helium ];
           text = builtins.readFile ../scripts/webapp.sh;
         })
       ];

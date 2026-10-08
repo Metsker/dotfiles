@@ -21,6 +21,9 @@
     ];
 
     nixpkgs.overlays = [
+      # Not in nixpkgs; pkgs.helium for both the browser below and webapps.nix.
+      inputs.helium.overlays.default
+
       (final: prev: {
         # Telegram's miniapp webview dies with "Error 71 (Protocol error)" on NVIDIA - webkitgtk's
         # dmabuf renderer cannot import NVIDIA's buffers into this wlroots session.
@@ -64,7 +67,7 @@
     };
 
     home.packages = with pkgs; [
-      inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
+      helium
       engrampa
       imv
       mpv
