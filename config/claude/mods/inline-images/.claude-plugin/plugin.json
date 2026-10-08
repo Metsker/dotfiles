@@ -1,0 +1,13 @@
+{
+  "name": "inline-images",
+  "version": "0.1.0",
+  "description": "Draw ![alt](/abs/path) image lines of a reply as kitty graphics inline in the transcript",
+  "userConfig": {
+    "cellAspect": {
+      "type": "number",
+      "title": "Cell aspect",
+      "description": "Terminal cell height over width in pixels (CSI 16 t answers both); keeps pictures unstretched",
+      "default": 2
+    }
+  }
+}

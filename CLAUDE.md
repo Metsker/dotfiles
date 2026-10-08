@@ -182,6 +182,14 @@ wrapper (`--mcp-config=...`); do not add servers to `~/.claude.json`. `settings.
 `ln -sf` in an activation script rather than `home.file`, because Claude Code rewrites it at runtime and
 a read-only store symlink would break that. The tracked files live in `config/claude/`.
 
+Mods (function-hook plugins) live in `config/claude/mods/`, one folder each, and are loaded by
+`CLAUDE_CODE_PLUGIN_DIRS` in `settings.json`'s `env`, not by Nix, so they work on any machine and
+hot-reload on save. `inline-images` draws a reply's `![alt](/abs/path)` lines as kitty graphics,
+converting non-PNG files with `magick` from PATH; its `cellAspect` option (`pluginConfigs`) is the
+terminal cell's height over width, since the mod API exposes no cell size. Claude Code only enables
+those graphics when the terminal answers XTVERSION as kitty 0.28+ or Ghostty, which herdr does not,
+so the same `env` sets `CLAUDE_CODE_FORCE_TERMINAL_IMAGES=1`.
+
 ## Conventions
 
 - Commit messages follow `config/claude/skills/writing-commit-messages/SKILL.md`: kernel style,

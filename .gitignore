@@ -9,3 +9,7 @@ result
 
 # OpenRGB writes its detection log here on every start; the profiles next to it are tracked.
 config/openrgb/logs/
+
+# Claude Code lays its API typings and a tsconfig extending them beside every mod it loads.
+config/claude/mods/*/.claude-plugin/types/
+config/claude/mods/*/tsconfig.json

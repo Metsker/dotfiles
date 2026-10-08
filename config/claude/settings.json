@@ -1,6 +1,15 @@
 {
   "env": {
-    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+    "CLAUDE_CODE_PLUGIN_DIRS": "~/dotfiles/config/claude/mods",
+    "CLAUDE_CODE_FORCE_TERMINAL_IMAGES": "1"
+  },
+  "pluginConfigs": {
+    "inline-images": {
+      "options": {
+        "cellAspect": 2.25
+      }
+    }
   },
   "permissions": {
     "allow": [
