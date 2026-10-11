@@ -253,15 +253,22 @@ enabled = [
 
 [shell]
 avatar_path = "/home/metsker/Chest/Media/pics/a staff/4444.jpg"
-corner_radius_scale = 0.0
+button_borders = false
+card_borders = false
 font_family = "JetBrainsMono Nerd Font"
+input_borders = false
 launch_apps_as_systemd_services = true
 polkit_agent = true
+popup_borders = false
+
+    [shell.greeter_sync]
+    auto_sync = true
 
     [shell.launcher]
     categories = false
 
     [shell.panel]
+    borders = false
     control_center_placement = "floating"
     open_near_click_control_center = true
     session_placement = "floating"
