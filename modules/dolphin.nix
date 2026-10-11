@@ -5,6 +5,9 @@
     # kio-admin registers its polkit action and system-bus helper only from the system profile; the
     # home copy below is the one that lands on QT_PLUGIN_PATH, so it is listed in both.
     environment.systemPackages = [ pkgs.kdePackages.kio-admin ];
+
+    # Solid mounts removable drives through udisks2, which only Plasma and GNOME switch on themselves.
+    services.udisks2.enable = true;
   };
 
   flake.modules.homeManager.metsker = { pkgs, ... }: {
