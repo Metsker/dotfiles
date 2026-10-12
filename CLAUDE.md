@@ -150,17 +150,23 @@ them. Nothing needs gating any more, because there is only one shell and every p
   glue: its example config already carries noctalia's window and layer rules, and noctalia's
   `umbriel` theme template renders `~/.config/umbriel/noctalia.toml`, which `config.toml` pulls in
   through `[include]`. The config is split like mango's: `config.toml` carries the include list,
-  `[general]` and the odds and ends, and `outputs.toml`, `appearance.toml`, `input.toml`,
-  `layout.toml`, `rules.toml` and `keybinds.toml` carry the rest. `autostart.toml` pairs
-  `general.autostart` with the `at_startup` rules that place those apps - the one key living
-  outside its section's file, which works because tables merge by key and rule lists collect.
-  `float-rules.toml` is written by `wminfo float-rule` and gitignored. Scrolling, dwindle and
-  master layouts; ported from `config/mango/*.conf`, down to mango's per-monitor tag binds - nine
-  static workspaces per output, reached as `workspace-switch:<n>/<output>`, and the touchscreen
-  pinned to HDMI-A-3 (`input.touch.map_to_output`). `umbriel config validate` checks the
+  `[general]` and the odds and ends, and `input.toml`, `appearance.toml`, `layout.toml`,
+  `rules.toml` and `keybinds.toml` carry the rest. `float-rules.toml` is written by
+  `wminfo float-rule` and gitignored. Scrolling, dwindle and master layouts; ported from
+  `config/mango/*.conf`, down to mango's per-monitor tag binds - nine static workspaces per
+  output, reached as `workspace-switch:<n>/<output>`. `umbriel config validate` checks the
   config against the installed binary, and a rebuild only reaches the compositor after a
   re-login - until then its reload banner can flag keys the new binary accepts.
-  `input.cursor.hide_when_typing` is on because HDMI-A-2 gets no cursor plane from the NVIDIA
+- **Per-host umbriel config.** Everything that names an output lives in
+  `config/umbriel/hosts/<hostname>.toml`, included last by `config.toml` as `hosts/${HOSTNAME}.toml`:
+  the `[output.*]` sections, the workspace binds, `general.autostart` with the `at_startup` rules
+  that place those apps, and pc's touchscreen mapping (`input.touch.map_to_output`). `HOSTNAME` is
+  a session variable `umbriel.nix` sets from `networking.hostName`, so it reaches umbriel's
+  environment only after a re-login, and a host without a file fails to load loudly.
+  `HOSTNAME=t490 umbriel config validate` checks another host's file. Connector names collide
+  across hosts (the laptop has a DP-1 and HDMI-A-2 too), which is why none of this is shared.
+  pc pins plain Mod to HDMI-A-2, Alt to DP-1 and Ctrl to HDMI-A-3; t490 pins Mod to eDP-1.
+  `input.cursor.hide_when_typing` is on because pc's HDMI-A-2 gets no cursor plane from the NVIDIA
   blob - without it the composited pointer lands in every screenshot of that output.
 - noctalia owns theming on every profile: its templates render color palettes into app configs at
   theme-switch time, and the rendered outputs are gitignored (`**/noctalia.*`, `**/themes/noctalia`).

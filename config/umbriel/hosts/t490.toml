@@ -1,0 +1,70 @@
+# The laptop: the built-in panel. Everything that names an output lives in this file.
+[output.eDP-1]
+workspaces = 9
+
+# Workspaces stay on the panel even while an external monitor holds focus.
+[keybinds]
+"Mod+1" = "workspace-switch:1/eDP-1"
+"Mod+2" = "workspace-switch:2/eDP-1"
+"Mod+3" = "workspace-switch:3/eDP-1"
+"Mod+4" = "workspace-switch:4/eDP-1"
+"Mod+5" = "workspace-switch:5/eDP-1"
+"Mod+6" = "workspace-switch:6/eDP-1"
+"Mod+7" = "workspace-switch:7/eDP-1"
+"Mod+8" = "workspace-switch:8/eDP-1"
+"Mod+9" = "workspace-switch:9/eDP-1"
+
+"Mod+Shift+1" = "window-move-to-workspace:1/eDP-1"
+"Mod+Shift+2" = "window-move-to-workspace:2/eDP-1"
+"Mod+Shift+3" = "window-move-to-workspace:3/eDP-1"
+"Mod+Shift+4" = "window-move-to-workspace:4/eDP-1"
+"Mod+Shift+5" = "window-move-to-workspace:5/eDP-1"
+"Mod+Shift+6" = "window-move-to-workspace:6/eDP-1"
+"Mod+Shift+7" = "window-move-to-workspace:7/eDP-1"
+"Mod+Shift+8" = "window-move-to-workspace:8/eDP-1"
+"Mod+Shift+9" = "window-move-to-workspace:9/eDP-1"
+
+# Autostart and the at_startup rules that place those apps, kept together so they cannot drift.
+[general]
+autostart = [
+  "$TERMINAL --app-id herdr -e herdr",
+  "Telegram",
+  "discord",
+  "spotify",
+  "webapp https://notes.metsker.dev/brain",
+]
+
+[[window_rule]]
+match.app_id = "^herdr$"
+match.at_startup = true
+default_output = "eDP-1"
+default_workspace = 1
+default_focused = false
+
+[[window_rule]]
+match.app_id = "^org[.]telegram[.]desktop$"
+match.at_startup = true
+default_output = "eDP-1"
+default_workspace = 2
+default_focused = false
+
+[[window_rule]]
+match.app_id = "^discord$"
+match.at_startup = true
+default_output = "eDP-1"
+default_workspace = 2
+default_focused = false
+
+[[window_rule]]
+match.app_id = "^spotify$"
+match.at_startup = true
+default_output = "eDP-1"
+default_workspace = 3
+default_focused = false
+
+[[window_rule]]
+match.app_id = "^chrome-notes[.]metsker[.]dev__brain-Default$"
+match.at_startup = true
+default_output = "eDP-1"
+default_workspace = 4
+default_focused = false

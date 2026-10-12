@@ -13,11 +13,14 @@
 #
 # It is also the profile boot autologins into, which session.nix sets up.
 {
-  flake.modules.nixos.base = { pkgs, ... }: {
+  flake.modules.nixos.base = { config, pkgs, ... }: {
     imports = [ inputs.umbriel.nixosModules.default ];
 
     programs.umbriel.enable = true;
     programs.umbriel.package = pkgs.umbriel;
+
+    # config.toml includes hosts/$HOSTNAME.toml, which holds every setting that names an output.
+    environment.sessionVariables.HOSTNAME = config.networking.hostName;
 
     # Exposes the flake input under pkgs so the shared tool wrappers can list it in runtimeInputs.
     nixpkgs.overlays = [ inputs.umbriel.overlays.default ];

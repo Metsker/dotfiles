@@ -1,14 +1,15 @@
 # Umbriel - noctalia's own wlroots compositor. Every option is documented in the upstream
 # examples/config.toml and at https://docs.noctalia.dev/umbriel/.
+
+# Everything that names an output lives in the host file; HOSTNAME comes from modules/desktop/umbriel.nix.
 [include]
 files = [
-  "outputs.toml",
   "input.toml",
   "keybinds.toml",
   "layout.toml",
   "appearance.toml",
   "rules.toml",
-  "autostart.toml",
+  "hosts/${HOSTNAME}.toml",
   ]
 
 [include.optional]
