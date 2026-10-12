@@ -4,6 +4,8 @@
   flake.modules.nixos.t490 = { pkgs, ... }: {
     imports = [ ./_t490-hardware.nix ];
 
+    boot.initrd.luks.devices."luks-62513f04-f29b-486a-8e0b-649665d6c067".device = "/dev/disk/by-uuid/62513f04-f29b-486a-8e0b-649665d6c067";
+
     networking.hostName = "t490";
 
     # VA-API on the UHD 620 needs the iHD driver; Mesa alone gives no hardware video decode.
