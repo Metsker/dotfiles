@@ -1,6 +1,5 @@
-# Layout modes; the active one is per workspace, set with workspace-set-layout.
+# Layout modes; the active one is per workspace, set with workspace-set-layout. The default mode is per host.
 [layout]
-mode = "master"
 gap = 4
 
 [layout.scrolling]

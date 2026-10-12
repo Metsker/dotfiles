@@ -2,6 +2,9 @@
 [output.eDP-1]
 workspaces = 9
 
+[layout]
+mode = "scrolling"
+
 # Workspaces stay on the panel even while an external monitor holds focus.
 [keybinds]
 "Mod+1" = "workspace-switch:1/eDP-1"

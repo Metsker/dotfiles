@@ -18,6 +18,9 @@ workspaces = 9
 [input.touch]
 map_to_output = "HDMI-A-3"
 
+[layout]
+mode = "master"
+
 # Per-monitor workspaces: plain Mod is HDMI-A-2, Alt is DP-1, Ctrl is HDMI-A-3.
 [keybinds]
 "Mod+1" = "workspace-switch:1/HDMI-A-2"
