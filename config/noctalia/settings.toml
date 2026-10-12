@@ -6,7 +6,19 @@ capsule_radius = 8
 capsule_thickness = 0.89999998360872269
 center = [ "clock", "weather", "dictation", "update", "recorder" ]
 concave_edge_corners = false
-end = [ "tray", "audio_visualizer", "media", "volume", "cpu", "pill", "bar", "battery", "bluetooth", "keyboard_layout" ]
+end = [
+    "tray",
+    "audio_visualizer",
+    "media",
+    "volume",
+    "cpu",
+    "pill",
+    "bar",
+    "battery",
+    "network",
+    "bluetooth",
+    "keyboard_layout"
+]
 margin_edge = 4
 margin_ends = 4
 radius = 16
