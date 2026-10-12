@@ -358,6 +358,10 @@ width = 48
 show_idle_on_horizontal = false
 type = "noctalia/timer:bar"
 
+[widget.battery]
+hide_when_full = true
+hide_when_plugged = true
+
 [widget.bluetooth]
 hide_when_adapter_off = true
 
