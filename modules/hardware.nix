@@ -37,9 +37,17 @@
       # settings.General.Experimental = true; # battery reporting + better BLE
     };
 
-    # Noctalia's battery readouts come over UPower; on this desktop that is the wireless peripherals.
+    # Noctalia's battery readouts come over UPower: the laptop battery and the wireless peripherals.
     services.upower.enable = true;
+  };
 
+  flake.modules.homeManager.metsker = {
+    # Noctalia loads effect presets over $XDG_RUNTIME_DIR/EasyEffectsServer, so the daemon has to be up.
+    services.easyeffects.enable = true;
+  };
+
+  # The desktop's RGB RAM and its DDC monitors; the laptop has neither.
+  flake.modules.nixos.pc = {
     services.hardware.openrgb = {
       enable = true;
       # The server applies the profile itself once its own ~20s of device detection finishes -
@@ -60,7 +68,7 @@
     users.users.metsker.extraGroups = [ "i2c" ];
   };
 
-  flake.modules.homeManager.metsker = { pkgs, dotfile, ... }:
+  flake.modules.homeManager.pc = { pkgs, dotfile, ... }:
     let
       # No backlight class on a desktop, so monitor brightness goes over DDC/CI. The wrapper
       # shadows ddcutil itself; everything but `detect` is passed straight through.
@@ -81,9 +89,6 @@
       # A whole directory, not `recursive`: OpenRGB rewrites OpenRGB.json and drops a detection log
       # per start into this directory, which per-file store symlinks would make read-only.
       xdg.configFile.OpenRGB.source = dotfile "openrgb";
-
-      # Noctalia loads effect presets over $XDG_RUNTIME_DIR/EasyEffectsServer, so the daemon has to be up.
-      services.easyeffects.enable = true;
 
       home.packages = [ ddcutil ddc-brightness ];
 

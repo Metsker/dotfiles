@@ -4,7 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A NixOS flake configuring a single host (`pc`), plus the plain-text dotfiles it symlinks into `~/.config`.
+A NixOS flake configuring two hosts - `pc` (the desktop) and `t490` (the laptop) - plus the plain-text
+dotfiles it symlinks into `~/.config`.
 No build system, no tests - the rebuild is the test.
 
 ## Commands
@@ -24,6 +25,7 @@ files, so import-tree simply will not see it.
 
 ```sh
 nix eval .#nixosConfigurations.pc.config.system.build.toplevel.drvPath
+nix eval .#nixosConfigurations.t490.config.system.build.toplevel.drvPath
 ```
 
 ## Two-layer architecture
@@ -70,11 +72,17 @@ One file per domain, not per app - a new program joins the file its domain alrea
 Nesting is cosmetic - import-tree walks the whole tree, so `modules/hosts/` groups files without
 changing anything.
 
-Modules are stored under three names and assembled in `modules/hosts/pc.nix`:
+Modules are stored under these names and assembled in `modules/hosts/<host>.nix`:
 
 - `flake.modules.nixos.base` - host-agnostic NixOS
-- `flake.modules.nixos.pc` - this machine's hardware (NVIDIA, LUKS, hostname)
-- `flake.modules.homeManager.metsker` - the user's home, wired in by `modules/user.nix`
+- `flake.modules.nixos.<host>` - one machine's hardware (pc: NVIDIA, OpenRGB, DDC; t490: Intel, power)
+- `flake.modules.homeManager.metsker` - the user's home on every host, wired in by `modules/user.nix`
+- `flake.modules.homeManager.pc` - home config only the desktop wants (DDC brightness, OpenRGB),
+  wired in by `modules/hosts/pc.nix`
+
+A domain file may contribute to a host's names too - `hardware.nix` puts OpenRGB and DDC under
+`nixos.pc` and `homeManager.pc`, and `session.nix` its NVIDIA-only gpu-screen-recorder overlay under
+`nixos.pc`, rather than in a host file, because they belong to that file's domain.
 
 Conventions that follow from this:
 
@@ -83,7 +91,7 @@ Conventions that follow from this:
   out-of-store symlink to `config/mango`.
 - A cachix substituter lives next to the input that needs it, not in one central list.
 - Files whose path contains `_` are skipped by import-tree - that is why the generated
-  `modules/hosts/_pc-hardware.nix` is not a module of its own.
+  `modules/hosts/_<host>-hardware.nix` files are not modules of their own.
 - `patches/` - out-of-tree patches, applied by an overlay in the feature's own module.
 
 ### Scripts

@@ -29,6 +29,7 @@
     modules = [
       config.flake.modules.nixos.base
       config.flake.modules.nixos.pc
+      { home-manager.users.metsker.imports = [ config.flake.modules.homeManager.pc ]; }
     ];
   };
 }
