@@ -4,13 +4,6 @@
     "CLAUDE_CODE_PLUGIN_DIRS": "~/dotfiles/config/claude/mods",
     "CLAUDE_CODE_FORCE_TERMINAL_IMAGES": "1"
   },
-  "pluginConfigs": {
-    "inline-images": {
-      "options": {
-        "cellAspect": 2.25
-      }
-    }
-  },
   "permissions": {
     "allow": [
       "mcp__playwright__browser_navigate",
@@ -104,13 +97,20 @@
   },
   "spinnerTipsEnabled": false,
   "effortLevel": "xhigh",
-  "awaySummaryEnabled": false,
-  "skipWorkflowUsageWarning": true,
-  "theme": "auto",
-  "editorMode": "normal",
   "modelSettings": {
     "claude-opus-5-5": {
       "effortLevel": "xhigh"
     }
-  }
+  },
+  "awaySummaryEnabled": false,
+  "pluginConfigs": {
+    "inline-images": {
+      "options": {
+        "cellAspect": 2.25
+      }
+    }
+  },
+  "skipWorkflowUsageWarning": true,
+  "theme": "auto",
+  "editorMode": "normal"
 }
