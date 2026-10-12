@@ -13,7 +13,7 @@ No build system, no tests - the rebuild is the test.
 ```sh
 nh os switch          # rebuild + activate (nh is pinned to this flake in modules/system.nix)
 nh os boot            # activate on next boot
-nix flake update mango  # update one input; `nix flake update` updates all
+nix flake update umbriel  # update one input; `nix flake update` updates all
 nixpkgs-fmt modules/  # formatter; `nil` is the LSP
 git submodule update --init  # config/nvim is a submodule (github.com/Metsker/nvim)
 ```
@@ -49,8 +49,8 @@ outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.imp
 
 Every `.nix` file under `modules/` is therefore a **flake-parts module**, auto-imported. No file
 imports another by path, so files can be renamed and moved freely. Each one owns a **domain**
-*across every layer it touches* - `modules/desktop/mango-noctalia.nix` carries the compositor's NixOS
-options, its overlays, the portal config and the `~/.config/mango` symlink together.
+*across every layer it touches* - `modules/desktop/umbriel.nix` carries the compositor's NixOS
+options, its overlay, the portal config and the `~/.config/umbriel` symlink together.
 
 One file per domain, not per app - a new program joins the file its domain already owns:
 
@@ -60,9 +60,8 @@ One file per domain, not per app - a new program joins the file its domain alrea
 | `hardware.nix` | GPU, firmware, audio, bluetooth, peripherals |
 | `user.nix` | the account, home-manager wiring, the `dotfile` argument |
 | `theming.nix` | GTK/Qt/cursor/icons, fonts |
-| `desktop/session.nix` | noctalia, uwsm, greetd, portals, screencast, voxtype, the wayland tool scripts |
-| `desktop/mango.nix` | desktop profile: mango |
-| `desktop/umbriel.nix` | desktop profile: umbriel |
+| `desktop/session.nix` | noctalia, greetd, portals, screencast, voxtype, the wayland tool scripts |
+| `desktop/umbriel.nix` | the compositor: umbriel |
 | `shell.nix` | fish, monstar, foot, yazi, neovim, git |
 | `dev.nix` | toolchain, playwright browsers, herdr, remote host bootstrap |
 | `apps.nix` | browser, file manager, media, chat, art, notes |
@@ -87,8 +86,8 @@ A domain file may contribute to a host's names too - `hardware.nix` puts OpenRGB
 Conventions that follow from this:
 
 - `inputs` is in scope in every file; nothing is threaded through `specialArgs`.
-- Home modules take a `dotfile` argument (`modules/user.nix`): `dotfile "mango"` is the
-  out-of-store symlink to `config/mango`.
+- Home modules take a `dotfile` argument (`modules/user.nix`): `dotfile "umbriel"` is the
+  out-of-store symlink to `config/umbriel`.
 - A cachix substituter lives next to the input that needs it, not in one central list.
 - Files whose path contains `_` are skipped by import-tree - that is why the generated
   `modules/hosts/_<host>-hardware.nix` files are not modules of their own.
@@ -100,26 +99,26 @@ Conventions that follow from this:
 in `runtimeInputs`. A script must never assume a binary is on PATH - add it to `runtimeInputs` instead.
 `set -euo pipefail` and shellcheck are applied by the wrapper.
 
-`scripts/wminfo.sh` is the only script that names a compositor. It answers seven questions -
-`boxes` (window rectangles for slurp), `cursorpos`, `focused-name`, `focused-window`,
+`scripts/wminfo.sh` is the only script that names a compositor. It answers six questions -
+`boxes` (window rectangles for slurp), `focused-name`, `focused-window`,
 `watch-focused-window`, `float-rules` and `float-rule` - and the wayland tools (`screenshot`,
 `textpicker`, `clipboard`) plus noctalia's `window-info` plugin ask it instead of branching on
 `XDG_CURRENT_DESKTOP` themselves.
 A query the running compositor cannot answer returns nothing, and the caller decides what that
-means: no boxes is no window snapping, no cursor position is no pointer parking, no focused window
-is a hidden bar widget, no float rules is a right-click that reports it changed nothing. The two
-window queries are the exception to that silence - they exit nonzero when the IPC itself fails, so
+means: no boxes is no window snapping, no focused window is a hidden bar widget, no float rules is
+a right-click that reports it changed nothing. The two window queries are the exception to that
+silence - they exit nonzero when the IPC itself fails, so
 a caller can tell that from an empty desktop. `float-rule` is the one query that writes: it edits
 the compositor's own rule file and reloads it, because a float rule has to survive the window it
 was read off.
-Supporting a third compositor is one more case block there.
+Supporting another compositor is one more case block there.
 
 `screenshot` and `textpicker` grab the whole screen the moment they start and crop that grab to the
 selected region afterwards, rather than capturing once the region is drawn. On the NVIDIA blob an
 output can end up without a cursor plane, and the compositor then composites the pointer into the
-framebuffer, so every screencopy of that output carries it - mango parks the pointer for the grab,
-umbriel hides it on the keypress (`input.cursor.hide_when_typing`), and neither lasts past the mouse
-moving to select. wayfreeze is only the still backdrop the region is drawn against.
+framebuffer, so every screencopy of that output carries it - umbriel hides it on the keypress
+(`input.cursor.hide_when_typing`), which does not last past the mouse moving to select. wayfreeze is
+only the still backdrop the region is drawn against.
 
 ### Overlays
 
@@ -129,34 +128,24 @@ condition becomes permanent.
 
 ## Desktop stack
 
-Two **desktop profiles**, one compositor each, both installed at once. Boot autologins into
-umbriel through greetd's `initial_session` (in `session.nix`, next to the greeter it skips); the
-greeter is reached by logging out, which is also how a profile gets swapped.
+One compositor, **umbriel**, with **noctalia** as the shell. Boot autologins into umbriel through
+greetd's `initial_session` (in `session.nix`, next to the greeter it skips); the greeter is reached
+by logging out.
 
-**noctalia is the shell on both**, so it is not part of any profile - it lives in
-`modules/desktop/session.nix` on `graphical-session.target`, the one target every profile reaches.
-A profile's file therefore holds only its compositor: packages, overlays, portal config, its config
-symlink. Adding a third compositor means adding one file and nothing else.
+noctalia is not part of the compositor's file - it lives in `modules/desktop/session.nix` on
+`graphical-session.target`, which `start-umbriel`'s `umbriel.service` and `umbriel-session.target`
+pull up. Adding another compositor means adding one file next to `umbriel.nix`.
 
-The two reach that target by different routes. Only mango is **uwsm**-managed: uwsm publishes a
-`wayland-session@<compositor>.target` per session, whose instance name must match the entry
-`programs.uwsm.waylandCompositors` registers. umbriel ships its own `start-umbriel`,
-`umbriel.service` and `umbriel-session.target`, which pull `graphical-session.target` up behind
-them. Nothing needs gating any more, because there is only one shell and every profile wants it.
-
-- **mango** (`modules/desktop/mango.nix`). `config/mango/config.conf` sources the other `.conf`
-  files. Master layout with the master area on the right (`right_tile`), and per-monitor tags 1-9.
 - **umbriel** (`modules/desktop/umbriel.nix`). noctalia's own compositor, so the pairing needs no
   glue: its example config already carries noctalia's window and layer rules, and noctalia's
   `umbriel` theme template renders `~/.config/umbriel/noctalia.toml`, which `config.toml` pulls in
-  through `[include]`. The config is split like mango's: `config.toml` carries the include list,
-  `[general]` and the odds and ends, and `input.toml`, `appearance.toml`, `layout.toml`,
-  `rules.toml` and `keybinds.toml` carry the rest. `float-rules.toml` is written by
-  `wminfo float-rule` and gitignored. Scrolling, dwindle and master layouts; ported from
-  `config/mango/*.conf`, down to mango's per-monitor tag binds - nine static workspaces per
-  output, reached as `workspace-switch:<n>/<output>`. `umbriel config validate` checks the
-  config against the installed binary, and a rebuild only reaches the compositor after a
-  re-login - until then its reload banner can flag keys the new binary accepts.
+  through `[include]`. `config.toml` carries the include list, `[general]` and the odds and ends,
+  and `input.toml`, `appearance.toml`, `layout.toml`, `rules.toml` and `keybinds.toml` carry the
+  rest. `float-rules.toml` is written by `wminfo float-rule` and gitignored. Scrolling, dwindle and
+  master layouts; nine static workspaces per output, reached as `workspace-switch:<n>/<output>`.
+  `umbriel config validate` checks the config against the installed binary, and a rebuild only
+  reaches the compositor after a re-login - until then its reload banner can flag keys the new
+  binary accepts.
 - **Per-host umbriel config.** Everything that names an output lives in
   `config/umbriel/hosts/<hostname>.toml`, included last by `config.toml` as `hosts/${HOSTNAME}.toml`:
   the `[output.*]` sections, the workspace binds, `general.autostart` with the `at_startup` rules
@@ -168,13 +157,15 @@ them. Nothing needs gating any more, because there is only one shell and every p
   pc pins plain Mod to HDMI-A-2, Alt to DP-1 and Ctrl to HDMI-A-3; t490 pins Mod to eDP-1.
   `input.cursor.hide_when_typing` is on because pc's HDMI-A-2 gets no cursor plane from the NVIDIA
   blob - without it the composited pointer lands in every screenshot of that output.
-- noctalia owns theming on every profile: its templates render color palettes into app configs at
+- noctalia owns theming: its templates render color palettes into app configs at
   theme-switch time, and the rendered outputs are gitignored (`**/noctalia.*`, `**/themes/noctalia`).
   Edit the template (`config/noctalia/templates/`) or the noctalia settings, never the generated file.
-  `config/mango/noctalia.conf`, `config/umbriel/noctalia.toml` and `config/monstar/themes/noctalia`
-  are all generated. Its per-compositor features come from runtime detection, not from Nix: mango and
-  umbriel both have workspace backends, and a compositor it does not know falls to the `Unknown`
-  path and shows no workspace module.
+  `config/umbriel/noctalia.toml` and `config/monstar/themes/noctalia` are generated. Its
+  per-compositor features come from runtime detection, not from Nix: umbriel has a workspace
+  backend, and a compositor it does not know falls to the `Unknown` path and shows no workspace
+  module. `config/noctalia/settings.toml` is one file for both hosts - noctalia rewrites it at
+  runtime, so it cannot be split; its per-output keys (lockscreen widgets, wallpapers) are inert on
+  a host without that output.
 - **monstar** is the terminal, built from a flake input. `modules/shell.nix` names it exactly
   once, in a file-level `terminal` binding, and spends that on `$TERMINAL` in
   `environment.sessionVariables` and on the two KDE keys - swapping terminals is that one edit.
@@ -186,8 +177,9 @@ them. Nothing needs gating any more, because there is only one shell and every p
   shell-expanded, so entries needing a terminal set `Terminal=true` and let the launcher supply
   one instead of naming it. `SNACKS_GHOSTTY` is a session variable for the same reason: `-e nvim`
   starts no shell, and libghostty does not answer to the XTVERSION probe snacks.nvim gates on.
-- `config/niri/` is an inactive leftover - niri is not installed, and
-  `patches/hyprland-scrolling-clamp-camera.diff` is unused. Do not treat them as live config.
+- `config/niri/` and `config/mango/` are inactive leftovers - neither compositor is installed,
+  and `patches/hyprland-scrolling-clamp-camera.diff` is unused. Do not treat them as live config
+  or keep them in sync.
 
 ## Claude Code config
 

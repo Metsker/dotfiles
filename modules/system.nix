@@ -6,7 +6,7 @@
     boot.loader.efi.canTouchEfiVariables = true;
     boot.initrd.systemd.enable = true;
 
-    # Boot to black: plymouth cannot hand the display to mango without a visible repaint.
+    # Boot to black: plymouth cannot hand the display to the compositor without a visible repaint.
     boot.kernelParams = [ "quiet" ];
 
     # Console prints only emerg/alert/crit, so a fatal boot still says something.

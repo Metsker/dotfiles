@@ -16,21 +16,10 @@ wminfo boxes > "$boxes"
 
 # Take the picture now, not after the region is drawn. The NVIDIA blob leaves some outputs without a
 # cursor plane, so the compositor composites the pointer into the framebuffer and every screencopy
-# carries it: mango parks the pointer for this shot, umbriel hides it on the keypress that spawned
-# the script (input.cursor.hide_when_typing). Neither survives the pointer moving to select, so
-# wayfreeze is only the still backdrop and the saved pixels come from here, cropped. ppm skips the
-# png encode, which keeps the grab near 70ms.
-pos="$(wminfo cursorpos)"
-if [ -n "$pos" ]; then
-  # Park the pointer bottom-right, where the arrow renders off-screen, then put it back.
-  wlrctl pointer move 20000 20000
-  sleep 0.1
-  grim -t ppm "$full"
-  wlrctl pointer move -20000 -20000
-  wlrctl pointer move "${pos% *}" "${pos#* }"
-else
-  grim -t ppm "$full"
-fi
+# carries it; umbriel hides it on the keypress that spawned the script (input.cursor.hide_when_typing).
+# That does not survive the pointer moving to select, so wayfreeze is only the still backdrop and
+# the saved pixels come from here, cropped. ppm skips the png encode, which keeps the grab near 70ms.
+grim -t ppm "$full"
 
 wayfreeze --hide-cursor --after-freeze-cmd "slurp -o < '$boxes' > '$geo'; kill \$PPID" || true
 

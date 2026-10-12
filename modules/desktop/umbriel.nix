@@ -1,17 +1,14 @@
 { inputs, ... }:
 
-# Desktop profile: umbriel as the compositor. noctalia is the shell on every profile, so it lives in
+# The compositor: umbriel. noctalia is the shell whatever the compositor, so it lives in
 # session.nix; this file holds only what umbriel itself needs.
-# Picked in the greeter as "Umbriel".
 #
 # Umbriel is noctalia's own compositor, so the pairing needs no glue: its example config already
 # carries noctalia's window and layer rules, and noctalia renders a palette into
 # ~/.config/umbriel/noctalia.toml, which config.toml includes.
 #
-# It is not uwsm-managed - start-umbriel runs umbriel.service, which brings up
-# umbriel-session.target and graphical-session.target behind it.
-#
-# It is also the profile boot autologins into, which session.nix sets up.
+# start-umbriel runs umbriel.service, which brings up umbriel-session.target and
+# graphical-session.target behind it. Boot autologins into it, which session.nix sets up.
 {
   flake.modules.nixos.base = { config, pkgs, ... }: {
     imports = [ inputs.umbriel.nixosModules.default ];

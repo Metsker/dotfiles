@@ -5,7 +5,7 @@ engine = "parakeet"
 state_file = "auto"
 
 [hotkey]
-# Mango has no key-release bind, so voxtype reads the key from evdev itself (needs the input group).
+# umbriel binds fire on press only, so voxtype reads the key from evdev itself (needs the input group).
 enabled = true
 key = "PAUSE"
 modifiers = []

@@ -7,18 +7,9 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# Same order as screenshot.sh: grab while the pointer is still parked or hidden, freeze afterwards.
+# Same order as screenshot.sh: grab while the pointer is still hidden, freeze afterwards.
 # An arrow sitting on the text is one more thing for tesseract to misread.
-pos="$(wminfo cursorpos)"
-if [ -n "$pos" ]; then
-  wlrctl pointer move 20000 20000
-  sleep 0.1
-  grim -t ppm "$full"
-  wlrctl pointer move -20000 -20000
-  wlrctl pointer move "${pos% *}" "${pos#* }"
-else
-  grim -t ppm "$full"
-fi
+grim -t ppm "$full"
 
 # The freeze keeps content still while the region is drawn.
 wayfreeze --hide-cursor --after-freeze-cmd "slurp > '$geo'; kill \$PPID" || true

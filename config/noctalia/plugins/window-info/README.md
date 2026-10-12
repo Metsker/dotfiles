@@ -41,8 +41,8 @@ gives the script no way to notice: a compositor restart costs a couple of second
 rest of the session. The loop only starts once `focused-window` has answered at all, so the
 compositor that answers nothing gets no command respawned at it forever.
 
-Umbriel is the only compositor wminfo writes rules for today. MangoWC keeps its rules in its own
-config language, which nothing writes yet, so a right-click there reports that it changed nothing.
+Umbriel is the only compositor wminfo writes rules for today; on any other, a right-click reports
+that it changed nothing.
 
 ## Usage
 

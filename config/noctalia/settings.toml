@@ -194,19 +194,8 @@ privacy = false
 [plugin_settings."avivbintangaringga/nix-monitor"]
 panel_placement = "floating"
 
-[plugin_settings."blackbartblues/keymap"]
-compositor = "mangowc"
-mangowc_config = "/home/metsker/dotfiles/config/mango/config.conf"
-
-[plugin_settings."ezequiel/mango_layouts"]
-panel_position = "auto"
-
 [plugin_settings."jrohland/claudecode"]
 popout_placement = "floating"
-
-[plugin_settings."metsker/mango-layout"]
-corner_roundness = 0.0
-picker_placement = "floating"
 
 [plugin_settings."noctalia/screen_recorder"]
 audio_source = "none"
@@ -284,7 +273,7 @@ source = "wallpaper"
 wallpaper_scheme = "m3-content"
 
     [theme.templates]
-    builtin_ids = [ "btop", "foot", "gtk3", "gtk4", "kcolorscheme", "mango", "umbriel" ]
+    builtin_ids = [ "btop", "foot", "gtk3", "gtk4", "kcolorscheme", "umbriel" ]
     community_ids = [ "zen-browser", "neovim", "papirus-icons", "yazi" ]
 
         [theme.templates.user.monstar]

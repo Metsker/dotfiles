@@ -1,12 +1,10 @@
 { inputs, ... }:
 
-# The half of the graphical session every desktop profile shares: noctalia, the one shell, the uwsm
-# plumbing, the greeter that picks between the compositors, the portals, and the wayland tools that
-# do not care which compositor is up.
+# The half of the graphical session that does not care which compositor is up: noctalia, the
+# greeter, the portals, and the wayland tools.
 #
-# A profile is one compositor, one file each (mango.nix, umbriel.nix). Both are always installed;
-# swapping means logging out and picking another entry in the greeter. noctalia is the shell on
-# both of them, so it binds to graphical-session.target - the one target every profile reaches.
+# The compositor gets a file of its own (umbriel.nix), so adding another is one more file. noctalia
+# binds to graphical-session.target, the one target any compositor reaches.
 {
   flake.modules.nixos.base = { pkgs, ... }: {
     imports = [ inputs.noctalia-greeter.nixosModules.default ];
@@ -16,17 +14,11 @@
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
     ];
 
-    # Runs the compositor under systemd user units: app scopes tear down cleanly, and uwsm
-    # publishes a wayland-session@<compositor>.target that each profile hangs its shell off.
-    programs.uwsm.enable = true;
-
-    # Where a profile gets picked, and it remembers the last choice.
     services.displayManager.noctalia-greeter.enable = true;
 
     # Boot goes straight into umbriel instead of drawing the greeter. initial_session fires once
-    # per greetd start, so logging out lands back in the greeter and the other profile stays
-    # one logout away; changing the default profile is the command below. The LUKS passphrase is
-    # what actually gates the machine at boot, and greetd still waits on the VPN either way.
+    # per greetd start, so logging out lands back in the greeter. The LUKS passphrase is what
+    # actually gates the machine at boot, and greetd still waits on the VPN either way.
     services.greetd.settings.initial_session = {
       command = "${pkgs.umbriel}/bin/start-umbriel";
       user = "metsker";
@@ -37,21 +29,16 @@
 
     # Read by the nixpkgs wrappers around chromium and electron, not by the apps themselves: set,
     # they pass --ozone-platform-hint=auto and run as wayland clients instead of through XWayland.
-    # A package flag rather than a compositor setting, so it belongs to the session, not a profile.
+    # A package flag rather than a compositor setting, so it belongs to the session.
     environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
-    xdg.portal.wlr.settings.screencast = {
-      chooser_type = "simple";
-      chooser_cmd = "${pkgs.slurp}/bin/slurp -f 'Monitor: %o' -or";
-    };
-
     # Qt apps open this dialog natively already, so the portal's picker now matches them.
-    # Each profile points its own compositor's portal config at it.
+    # The compositor's own file points its portal config at it.
     xdg.portal.extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
 
     programs.gpu-screen-recorder.enable = true;
 
-    # voxtype grabs its push-to-talk key straight from /dev/input, because mango has no key-release bind.
+    # voxtype grabs its push-to-talk key straight from /dev/input, because umbriel binds fire on press only.
     users.users.metsker.extraGroups = [ "input" ];
 
     nixpkgs.overlays = [
@@ -76,8 +63,8 @@
   flake.modules.homeManager.metsker = { config, pkgs, dotfile, ... }: {
     xdg.configFile.voxtype = { source = dotfile "voxtype"; recursive = true; };
 
-    # The module's own graphical-session.target is right here: every profile reaches it, and every
-    # profile wants noctalia. Its per-compositor features come from runtime detection, not from Nix.
+    # The module's own graphical-session.target is right here: any compositor reaches it.
+    # Its per-compositor features come from runtime detection, not from Nix.
     programs.noctalia = {
       enable = true;
       systemd.enable = true;
@@ -104,7 +91,7 @@
       # The one place a compositor is named: the tools below query it instead of branching.
       wminfo = writeShellApplication {
         name = "wminfo";
-        runtimeInputs = [ jq gnused gnugrep coreutils mangowm umbriel ];
+        runtimeInputs = [ jq gnused gnugrep coreutils umbriel ];
         text = builtins.readFile ../../scripts/wminfo.sh;
       };
     in
@@ -115,7 +102,7 @@
 
       (writeShellApplication {
         name = "screenshot";
-        runtimeInputs = [ grim slurp satty wayfreeze wlrctl libnotify imagemagick wminfo ];
+        runtimeInputs = [ grim slurp satty wayfreeze libnotify imagemagick wminfo ];
         text = builtins.readFile ../../scripts/screenshot.sh;
       })
       # wayfreeze gives the instant freeze; hyprpicker picks with its zoom lens.
@@ -127,7 +114,7 @@
       # Freeze, slurp a region, OCR it with tesseract, copy the text to the clipboard.
       (writeShellApplication {
         name = "textpicker";
-        runtimeInputs = [ wayfreeze slurp grim wlrctl tesseract wl-clipboard libnotify imagemagick wminfo ];
+        runtimeInputs = [ wayfreeze slurp grim tesseract wl-clipboard libnotify imagemagick wminfo ];
         text = builtins.readFile ../../scripts/textpicker.sh;
       })
       # Super+C/V copy/paste: asks wminfo for the focused window, then wtype injects
