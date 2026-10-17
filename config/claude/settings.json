@@ -112,5 +112,6 @@
   },
   "skipWorkflowUsageWarning": true,
   "theme": "auto",
-  "editorMode": "normal"
+  "editorMode": "normal",
+  "autoCompactEnabled": false
 }
