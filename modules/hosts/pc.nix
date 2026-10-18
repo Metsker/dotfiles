@@ -18,9 +18,9 @@
 
     hardware.nvidia = {
       modesetting.enable = true;
-      open = false;
-      nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
+      # Blackwell (the RTX 5060) runs only on the open kernel modules.
+      open = true;
+      package = config.boot.kernelPackages.nvidiaPackages.latest;
     };
   };
 
