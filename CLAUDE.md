@@ -149,13 +149,14 @@ pull up. Adding another compositor means adding one file next to `umbriel.nix`.
 - **Per-host umbriel config.** Everything that names an output lives in
   `config/umbriel/hosts/<hostname>.toml`, included last by `config.toml` as `hosts/${HOSTNAME}.toml`:
   the `[output.*]` sections, the workspace binds, `general.autostart` with the `at_startup` rules
-  that place those apps, and pc's touchscreen mapping (`input.touch.map_to_output`). The default
+  that place those apps. The default
   `layout.mode` lives there too, though it names no output: master on pc, scrolling on t490. `HOSTNAME` is
   a session variable `umbriel.nix` sets from `networking.hostName`, so it reaches umbriel's
   environment only after a re-login, and a host without a file fails to load loudly.
   `HOSTNAME=t490 umbriel config validate` checks another host's file. Connector names collide
   across hosts (the laptop has a DP-1 and HDMI-A-2 too), which is why none of this is shared.
-  pc pins plain Mod to HDMI-A-2, Alt to DP-1 and Ctrl to HDMI-A-3; t490 pins Mod to eDP-1.
+  pc names its one monitor by identity (`"GWD ARZOPA 0000001761630"`) rather than connector, so
+  moving it from HDMI to USB-C keeps its settings and binds; t490 pins Mod to eDP-1.
   `input.cursor.hide_when_typing` is on because pc's HDMI-A-2 gets no cursor plane from the NVIDIA
   blob - without it the composited pointer lands in every screenshot of that output.
 - noctalia owns theming: its templates render color palettes into app configs at

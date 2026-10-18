@@ -1,83 +1,34 @@
-# The desktop: three monitors. Everything that names an output lives in this file.
-[output.HDMI-A-2]
-mode = "1920x1080@144"
-position = [0, 0]
+# The desktop: one ARZOPA panel. Everything that names an output lives in this file.
+# Keyed by monitor identity rather than connector, so the settings follow it between HDMI and USB-C.
+[output."GWD ARZOPA 0000001761630"]
+# Its HDMI input tops out at 144 Hz (600 MHz TMDS); 180 Hz needs the USB-C (DisplayPort) input.
+mode = "2560x1440@144"
+scale = 1.25
 workspaces = 9
-
-[output.DP-1]
-mode = "1920x1080@75"
-position = [1920, 0]
-workspaces = 9
-
-[output.HDMI-A-3]
-mode = "1920x1080@60"
-position = [1920, 1080]
-workspaces = 9
-
-# The touchscreen reports no output of its own, so unmapped touches span the whole layout.
-[input.touch]
-map_to_output = "HDMI-A-3"
 
 [layout]
 mode = "master"
 
-# Per-monitor workspaces: plain Mod is HDMI-A-2, Alt is DP-1, Ctrl is HDMI-A-3.
 [keybinds]
-"Mod+1" = "workspace-switch:1/HDMI-A-2"
-"Mod+2" = "workspace-switch:2/HDMI-A-2"
-"Mod+3" = "workspace-switch:3/HDMI-A-2"
-"Mod+4" = "workspace-switch:4/HDMI-A-2"
-"Mod+5" = "workspace-switch:5/HDMI-A-2"
-"Mod+6" = "workspace-switch:6/HDMI-A-2"
-"Mod+7" = "workspace-switch:7/HDMI-A-2"
-"Mod+8" = "workspace-switch:8/HDMI-A-2"
-"Mod+9" = "workspace-switch:9/HDMI-A-2"
-"Mod+Alt+1" = "workspace-switch:1/DP-1"
-"Mod+Alt+2" = "workspace-switch:2/DP-1"
-"Mod+Alt+3" = "workspace-switch:3/DP-1"
-"Mod+Alt+4" = "workspace-switch:4/DP-1"
-"Mod+Alt+5" = "workspace-switch:5/DP-1"
-"Mod+Alt+6" = "workspace-switch:6/DP-1"
-"Mod+Alt+7" = "workspace-switch:7/DP-1"
-"Mod+Alt+8" = "workspace-switch:8/DP-1"
-"Mod+Alt+9" = "workspace-switch:9/DP-1"
-"Mod+Ctrl+1" = "workspace-switch:1/HDMI-A-3"
-"Mod+Ctrl+2" = "workspace-switch:2/HDMI-A-3"
-"Mod+Ctrl+3" = "workspace-switch:3/HDMI-A-3"
-"Mod+Ctrl+4" = "workspace-switch:4/HDMI-A-3"
-"Mod+Ctrl+5" = "workspace-switch:5/HDMI-A-3"
-"Mod+Ctrl+6" = "workspace-switch:6/HDMI-A-3"
-"Mod+Ctrl+7" = "workspace-switch:7/HDMI-A-3"
-"Mod+Ctrl+8" = "workspace-switch:8/HDMI-A-3"
-"Mod+Ctrl+9" = "workspace-switch:9/HDMI-A-3"
+"Mod+1" = "workspace-switch:1/GWD ARZOPA 0000001761630"
+"Mod+2" = "workspace-switch:2/GWD ARZOPA 0000001761630"
+"Mod+3" = "workspace-switch:3/GWD ARZOPA 0000001761630"
+"Mod+4" = "workspace-switch:4/GWD ARZOPA 0000001761630"
+"Mod+5" = "workspace-switch:5/GWD ARZOPA 0000001761630"
+"Mod+6" = "workspace-switch:6/GWD ARZOPA 0000001761630"
+"Mod+7" = "workspace-switch:7/GWD ARZOPA 0000001761630"
+"Mod+8" = "workspace-switch:8/GWD ARZOPA 0000001761630"
+"Mod+9" = "workspace-switch:9/GWD ARZOPA 0000001761630"
 
-"Mod+Shift+1" = "window-move-to-workspace:1/HDMI-A-2"
-"Mod+Shift+2" = "window-move-to-workspace:2/HDMI-A-2"
-"Mod+Shift+3" = "window-move-to-workspace:3/HDMI-A-2"
-"Mod+Shift+4" = "window-move-to-workspace:4/HDMI-A-2"
-"Mod+Shift+5" = "window-move-to-workspace:5/HDMI-A-2"
-"Mod+Shift+6" = "window-move-to-workspace:6/HDMI-A-2"
-"Mod+Shift+7" = "window-move-to-workspace:7/HDMI-A-2"
-"Mod+Shift+8" = "window-move-to-workspace:8/HDMI-A-2"
-"Mod+Shift+9" = "window-move-to-workspace:9/HDMI-A-2"
-"Mod+Alt+Shift+1" = "window-move-to-workspace:1/DP-1"
-"Mod+Alt+Shift+2" = "window-move-to-workspace:2/DP-1"
-"Mod+Alt+Shift+3" = "window-move-to-workspace:3/DP-1"
-"Mod+Alt+Shift+4" = "window-move-to-workspace:4/DP-1"
-"Mod+Alt+Shift+5" = "window-move-to-workspace:5/DP-1"
-"Mod+Alt+Shift+6" = "window-move-to-workspace:6/DP-1"
-"Mod+Alt+Shift+7" = "window-move-to-workspace:7/DP-1"
-"Mod+Alt+Shift+8" = "window-move-to-workspace:8/DP-1"
-"Mod+Alt+Shift+9" = "window-move-to-workspace:9/DP-1"
-"Mod+Ctrl+Shift+1" = "window-move-to-workspace:1/HDMI-A-3"
-"Mod+Ctrl+Shift+2" = "window-move-to-workspace:2/HDMI-A-3"
-"Mod+Ctrl+Shift+3" = "window-move-to-workspace:3/HDMI-A-3"
-"Mod+Ctrl+Shift+4" = "window-move-to-workspace:4/HDMI-A-3"
-"Mod+Ctrl+Shift+5" = "window-move-to-workspace:5/HDMI-A-3"
-"Mod+Ctrl+Shift+6" = "window-move-to-workspace:6/HDMI-A-3"
-"Mod+Ctrl+Shift+7" = "window-move-to-workspace:7/HDMI-A-3"
-"Mod+Ctrl+Shift+8" = "window-move-to-workspace:8/HDMI-A-3"
-"Mod+Ctrl+Shift+9" = "window-move-to-workspace:9/HDMI-A-3"
+"Mod+Shift+1" = "window-move-to-workspace:1/GWD ARZOPA 0000001761630"
+"Mod+Shift+2" = "window-move-to-workspace:2/GWD ARZOPA 0000001761630"
+"Mod+Shift+3" = "window-move-to-workspace:3/GWD ARZOPA 0000001761630"
+"Mod+Shift+4" = "window-move-to-workspace:4/GWD ARZOPA 0000001761630"
+"Mod+Shift+5" = "window-move-to-workspace:5/GWD ARZOPA 0000001761630"
+"Mod+Shift+6" = "window-move-to-workspace:6/GWD ARZOPA 0000001761630"
+"Mod+Shift+7" = "window-move-to-workspace:7/GWD ARZOPA 0000001761630"
+"Mod+Shift+8" = "window-move-to-workspace:8/GWD ARZOPA 0000001761630"
+"Mod+Shift+9" = "window-move-to-workspace:9/GWD ARZOPA 0000001761630"
 
 # Autostart and the at_startup rules that place those apps, kept together so they cannot drift.
 [general]
@@ -90,36 +41,36 @@ autostart = [
 ]
 
 [[window_rule]]
+match.app_id = "^herdr$"
+match.at_startup = true
+default_output = "GWD ARZOPA 0000001761630"
+default_workspace = 1
+default_focused = false
+
+[[window_rule]]
 match.app_id = "^org[.]telegram[.]desktop$"
 match.at_startup = true
-default_output = "DP-1"
+default_output = "GWD ARZOPA 0000001761630"
 default_workspace = 2
 default_focused = false
 
 [[window_rule]]
 match.app_id = "^discord$"
 match.at_startup = true
-default_output = "DP-1"
+default_output = "GWD ARZOPA 0000001761630"
 default_workspace = 2
 default_focused = false
 
 [[window_rule]]
 match.app_id = "^spotify$"
 match.at_startup = true
-default_output = "DP-1"
+default_output = "GWD ARZOPA 0000001761630"
 default_workspace = 3
-default_focused = false
-
-[[window_rule]]
-match.app_id = "^herdr$"
-match.at_startup = true
-default_output = "DP-1"
-default_workspace = 1
 default_focused = false
 
 [[window_rule]]
 match.app_id = "^chrome-notes[.]metsker[.]dev__brain-Default$"
 match.at_startup = true
-default_output = "HDMI-A-3"
-default_workspace = 1
+default_output = "GWD ARZOPA 0000001761630"
+default_workspace = 4
 default_focused = false
