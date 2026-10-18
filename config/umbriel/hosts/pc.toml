@@ -1,8 +1,8 @@
 # The desktop: one ARZOPA panel. Everything that names an output lives in this file.
-# Keyed by monitor identity rather than connector, so the settings follow it between HDMI and USB-C.
-[output."GWD ARZOPA 0000001761630"]
-# Its HDMI input tops out at 144 Hz (600 MHz TMDS); 180 Hz needs the USB-C (DisplayPort) input.
-mode = "2560x1440@144"
+# Keyed by monitor identity rather than connector, so the settings follow it between DisplayPort ports.
+# The serial is the DisplayPort input's EDID - the HDMI input reports 0000001761630 and tops out at 144 Hz.
+[output."GWD ARZOPA 2022110200001"]
+mode = "2560x1440@180"
 scale = 1.25
 workspaces = 9
 
@@ -10,25 +10,25 @@ workspaces = 9
 mode = "master"
 
 [keybinds]
-"Mod+1" = "workspace-switch:1/GWD ARZOPA 0000001761630"
-"Mod+2" = "workspace-switch:2/GWD ARZOPA 0000001761630"
-"Mod+3" = "workspace-switch:3/GWD ARZOPA 0000001761630"
-"Mod+4" = "workspace-switch:4/GWD ARZOPA 0000001761630"
-"Mod+5" = "workspace-switch:5/GWD ARZOPA 0000001761630"
-"Mod+6" = "workspace-switch:6/GWD ARZOPA 0000001761630"
-"Mod+7" = "workspace-switch:7/GWD ARZOPA 0000001761630"
-"Mod+8" = "workspace-switch:8/GWD ARZOPA 0000001761630"
-"Mod+9" = "workspace-switch:9/GWD ARZOPA 0000001761630"
+"Mod+1" = "workspace-switch:1/GWD ARZOPA 2022110200001"
+"Mod+2" = "workspace-switch:2/GWD ARZOPA 2022110200001"
+"Mod+3" = "workspace-switch:3/GWD ARZOPA 2022110200001"
+"Mod+4" = "workspace-switch:4/GWD ARZOPA 2022110200001"
+"Mod+5" = "workspace-switch:5/GWD ARZOPA 2022110200001"
+"Mod+6" = "workspace-switch:6/GWD ARZOPA 2022110200001"
+"Mod+7" = "workspace-switch:7/GWD ARZOPA 2022110200001"
+"Mod+8" = "workspace-switch:8/GWD ARZOPA 2022110200001"
+"Mod+9" = "workspace-switch:9/GWD ARZOPA 2022110200001"
 
-"Mod+Shift+1" = "window-move-to-workspace:1/GWD ARZOPA 0000001761630"
-"Mod+Shift+2" = "window-move-to-workspace:2/GWD ARZOPA 0000001761630"
-"Mod+Shift+3" = "window-move-to-workspace:3/GWD ARZOPA 0000001761630"
-"Mod+Shift+4" = "window-move-to-workspace:4/GWD ARZOPA 0000001761630"
-"Mod+Shift+5" = "window-move-to-workspace:5/GWD ARZOPA 0000001761630"
-"Mod+Shift+6" = "window-move-to-workspace:6/GWD ARZOPA 0000001761630"
-"Mod+Shift+7" = "window-move-to-workspace:7/GWD ARZOPA 0000001761630"
-"Mod+Shift+8" = "window-move-to-workspace:8/GWD ARZOPA 0000001761630"
-"Mod+Shift+9" = "window-move-to-workspace:9/GWD ARZOPA 0000001761630"
+"Mod+Shift+1" = "window-move-to-workspace:1/GWD ARZOPA 2022110200001"
+"Mod+Shift+2" = "window-move-to-workspace:2/GWD ARZOPA 2022110200001"
+"Mod+Shift+3" = "window-move-to-workspace:3/GWD ARZOPA 2022110200001"
+"Mod+Shift+4" = "window-move-to-workspace:4/GWD ARZOPA 2022110200001"
+"Mod+Shift+5" = "window-move-to-workspace:5/GWD ARZOPA 2022110200001"
+"Mod+Shift+6" = "window-move-to-workspace:6/GWD ARZOPA 2022110200001"
+"Mod+Shift+7" = "window-move-to-workspace:7/GWD ARZOPA 2022110200001"
+"Mod+Shift+8" = "window-move-to-workspace:8/GWD ARZOPA 2022110200001"
+"Mod+Shift+9" = "window-move-to-workspace:9/GWD ARZOPA 2022110200001"
 
 # Autostart and the at_startup rules that place those apps, kept together so they cannot drift.
 [general]
@@ -43,34 +43,34 @@ autostart = [
 [[window_rule]]
 match.app_id = "^herdr$"
 match.at_startup = true
-default_output = "GWD ARZOPA 0000001761630"
+default_output = "GWD ARZOPA 2022110200001"
 default_workspace = 1
 default_focused = false
 
 [[window_rule]]
 match.app_id = "^org[.]telegram[.]desktop$"
 match.at_startup = true
-default_output = "GWD ARZOPA 0000001761630"
+default_output = "GWD ARZOPA 2022110200001"
 default_workspace = 2
 default_focused = false
 
 [[window_rule]]
 match.app_id = "^discord$"
 match.at_startup = true
-default_output = "GWD ARZOPA 0000001761630"
+default_output = "GWD ARZOPA 2022110200001"
 default_workspace = 2
 default_focused = false
 
 [[window_rule]]
 match.app_id = "^spotify$"
 match.at_startup = true
-default_output = "GWD ARZOPA 0000001761630"
+default_output = "GWD ARZOPA 2022110200001"
 default_workspace = 3
 default_focused = false
 
 [[window_rule]]
 match.app_id = "^chrome-notes[.]metsker[.]dev__brain-Default$"
 match.at_startup = true
-default_output = "GWD ARZOPA 0000001761630"
+default_output = "GWD ARZOPA 2022110200001"
 default_workspace = 4
 default_focused = false

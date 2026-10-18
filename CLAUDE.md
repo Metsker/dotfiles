@@ -156,8 +156,9 @@ pull up. Adding another compositor means adding one file next to `umbriel.nix`.
   environment only after a re-login, and a host without a file fails to load loudly.
   `HOSTNAME=t490 umbriel config validate` checks another host's file. Connector names collide
   across hosts (the laptop has a DP-1 and HDMI-A-2 too), which is why none of this is shared.
-  pc names its one monitor by identity (`"GWD ARZOPA 0000001761630"`) rather than connector, so
-  moving it from HDMI to USB-C keeps its settings and binds; t490 pins Mod to eDP-1.
+  pc names its one monitor by identity (`"GWD ARZOPA 2022110200001"`) rather than connector, so
+  moving it between DisplayPort ports keeps its settings and binds - the identity is per input,
+  though: its HDMI input reports serial `0000001761630`; t490 pins Mod to eDP-1.
   `input.cursor.hide_when_typing` is on because pc's HDMI-A-2 gets no cursor plane from the NVIDIA
   blob - without it the composited pointer lands in every screenshot of that output.
 - noctalia owns theming: its templates render color palettes into app configs at
