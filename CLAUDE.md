@@ -80,8 +80,9 @@ Modules are stored under these names and assembled in `modules/hosts/<host>.nix`
   wired in by `modules/hosts/pc.nix`
 
 A domain file may contribute to a host's names too - `hardware.nix` puts OpenRGB and DDC under
-`nixos.pc` and `homeManager.pc`, and `session.nix` its NVIDIA-only gpu-screen-recorder overlay under
-`nixos.pc`, rather than in a host file, because they belong to that file's domain.
+`nixos.pc` and `homeManager.pc` and the LACT GPU undervolt under `nixos.pc`, and `session.nix` its
+NVIDIA-only gpu-screen-recorder overlay under `nixos.pc`, rather than in a host file, because they
+belong to that file's domain.
 
 Conventions that follow from this:
 

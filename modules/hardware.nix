@@ -46,8 +46,31 @@
     services.easyeffects.enable = true;
   };
 
-  # The desktop's RGB RAM and its DDC monitors; the laptop has neither.
+  # The desktop's RGB RAM, its DDC monitors and its GPU undervolt; the laptop has none of them.
   flake.modules.nixos.pc = {
+    # 2700 MHz at ~915 mV instead of ~1005 mV, under the 123 W floor of the cap; the GUI can no longer save.
+    services.lact = {
+      enable = true;
+      settings = {
+        version = 7;
+        daemon = {
+          log_level = "info";
+          admin_group = "wheel";
+          disable_clocks_cleanup = false;
+        };
+        apply_settings_timer = 5;
+        gpus."10DE:2D05-19DA:1780-0000:07:00.0" = {
+          fan_control_enabled = false;
+          power_cap = 123.0;
+          min_core_clock = 180;
+          max_core_clock = 2700;
+          gpu_clock_offsets."0" = 300;
+        };
+        current_profile = null;
+        auto_switch_profiles = false;
+      };
+    };
+
     services.hardware.openrgb = {
       enable = true;
       # The server applies the profile itself once its own ~20s of device detection finishes -
