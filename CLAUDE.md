@@ -178,9 +178,8 @@ pull up. Adding another compositor means adding one file next to `umbriel.nix`.
   shell-expanded, so entries needing a terminal set `Terminal=true` and let the launcher supply
   one instead of naming it. `SNACKS_GHOSTTY` is a session variable for the same reason: `-e nvim`
   starts no shell, and libghostty does not answer to the XTVERSION probe snacks.nvim gates on.
-- `config/niri/` and `config/mango/` are inactive leftovers - neither compositor is installed,
-  and `patches/hyprland-scrolling-clamp-camera.diff` is unused. Do not treat them as live config
-  or keep them in sync.
+- `config/niri/` and `config/mango/` are inactive leftovers - neither compositor is installed.
+  Do not treat them as live config or keep them in sync.
 
 ## Claude Code config
 
