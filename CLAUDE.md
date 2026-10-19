@@ -151,7 +151,7 @@ pull up. Adding another compositor means adding one file next to `umbriel.nix`.
   `config/umbriel/hosts/<hostname>.toml`, included last by `config.toml` as `hosts/${HOSTNAME}.toml`:
   the `[output.*]` sections, the workspace binds, `general.autostart` with the `at_startup` rules
   that place those apps. The default
-  `layout.mode` lives there too, though it names no output: master on pc, scrolling on t490. `HOSTNAME` is
+  `layout.mode` lives there too, though it names no output: scrolling on both hosts for now. `HOSTNAME` is
   a session variable `umbriel.nix` sets from `networking.hostName`, so it reaches umbriel's
   environment only after a re-login, and a host without a file fails to load loudly.
   `HOSTNAME=t490 umbriel config validate` checks another host's file. Connector names collide

@@ -7,7 +7,7 @@ scale = 1.25
 workspaces = 9
 
 [layout]
-mode = "master"
+mode = "scrolling"
 
 [keybinds]
 "Mod+1" = "workspace-switch:1/GWD ARZOPA 2022110200001"
