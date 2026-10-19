@@ -60,5 +60,11 @@
 "Mod+Shift+P" = "window-move-to-workspace-previous"
 "Mod+Shift+N" = "window-move-to-workspace-next"
 
+"Mod+WheelUp" = "window-focus-left"
+"Mod+WheelDown" = "window-focus-right"
+"Mod+MouseMiddle" = "layout-scroll-drag"
+"Mod+MouseBack" = "workspace-previous"
+"Mod+MouseForward" = "workspace-next"
+
 "XF86AudioRaiseVolume" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+"
 "XF86AudioLowerVolume" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-"
