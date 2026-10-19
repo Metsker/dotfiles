@@ -46,8 +46,18 @@
     services.easyeffects.enable = true;
   };
 
-  # The desktop's RGB RAM, its DDC monitors and its GPU undervolt; the laptop has none of them.
-  flake.modules.nixos.pc = {
+  # The desktop's RGB RAM, its DDC monitors, its GPU undervolt and its fan sensors; the laptop has none of them.
+  flake.modules.nixos.pc = { config, lib, ... }: {
+    # Fan speeds and Vcore come from the IT8689E, only in the out-of-tree it87; pc.nix's acpi_enforce_resources=lax lets it bind.
+    boot.extraModulePackages = [
+      # nixpkgs installs it beside the in-tree it87, which depmod prefers; updates/ outranks the in-tree one.
+      (config.boot.kernelPackages.it87.overrideAttrs (old: {
+        makeFlags = lib.filter (f: !lib.hasPrefix "MODDESTDIR=" f) old.makeFlags
+          ++ [ "MODDESTDIR=$(out)/lib/modules/${config.boot.kernelPackages.kernel.modDirVersion}/updates" ];
+      }))
+    ];
+    boot.kernelModules = [ "it87" ];
+
     # 2700 MHz at ~915 mV instead of ~1005 mV, under the 123 W floor of the cap; the GUI can no longer save.
     services.lact = {
       enable = true;
