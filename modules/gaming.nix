@@ -5,10 +5,13 @@
     programs.steam.enable = true;
 
     environment.sessionVariables.PROTON_ENABLE_WAYLAND = "1";
+    # Every Vulkan app gets the HUD; desktop apps opt out via `blacklist` in MangoHud.conf.
+    environment.sessionVariables.MANGOHUD = "1";
   };
 
-  flake.modules.homeManager.metsker = { pkgs, ... }: {
+  flake.modules.homeManager.metsker = { pkgs, dotfile, ... }: {
     home.packages = with pkgs; [
+      mangohud
       openmw
       prismlauncher
       lutris
@@ -20,5 +23,7 @@
     # Both steam and lutris scan compatibilitytools.d, so one link serves both.
     home.file.".local/share/Steam/compatibilitytools.d/${pkgs.proton-ge-bin.version}".source =
       pkgs.proton-ge-bin.steamcompattool;
+
+    xdg.configFile.MangoHud.source = dotfile "MangoHud";
   };
 }
