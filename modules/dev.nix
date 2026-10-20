@@ -161,6 +161,15 @@
     xdg.configFile."herdr/plugins/config/cloudmanic.herdr-plus".source =
       dotfile "herdr/plugins/config/cloudmanic.herdr-plus";
 
+    # Hidden, it only names an icon for the herdr app id; without one, noctalia's lookup walks every theme dir.
+    xdg.desktopEntries.herdr = {
+      name = "herdr";
+      exec = "herdr";
+      terminal = true;
+      icon = "utilities-terminal";
+      noDisplay = true;
+    };
+
     # DELETE once nixpkgs has herdr > 0.8.2 - herdrdev/herdr#3415 is fixed on master
     # and queued for the next release.
     #
