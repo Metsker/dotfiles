@@ -102,7 +102,7 @@
 
       (writeShellApplication {
         name = "screenshot";
-        runtimeInputs = [ grim slurp satty wayfreeze libnotify imagemagick wminfo ];
+        runtimeInputs = [ grim slurp satty wayfreeze libnotify imagemagick wlr-randr jq wminfo ];
         text = builtins.readFile ../../scripts/screenshot.sh;
       })
       # wayfreeze gives the instant freeze; hyprpicker picks with its zoom lens.
@@ -114,7 +114,7 @@
       # Freeze, slurp a region, OCR it with tesseract, copy the text to the clipboard.
       (writeShellApplication {
         name = "textpicker";
-        runtimeInputs = [ wayfreeze slurp grim tesseract wl-clipboard libnotify imagemagick wminfo ];
+        runtimeInputs = [ wayfreeze slurp grim tesseract wl-clipboard libnotify imagemagick wlr-randr jq wminfo ];
         text = builtins.readFile ../../scripts/textpicker.sh;
       })
       # Super+C/V copy/paste: asks wminfo for the focused window, then wtype injects

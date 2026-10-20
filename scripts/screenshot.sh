@@ -25,10 +25,14 @@ wayfreeze --hide-cursor --after-freeze-cmd "slurp -o < '$boxes' > '$geo'; kill \
 
 read -r geometry < "$geo" || exit 0
 
-# The crop assumes the output layout starts at 0,0, which is where grim's full-screen
-# capture begins; a monitor placed left of or above the origin wants an origin query in wminfo.
-offset="${geometry%% *}"
-magick "$full" -crop "${geometry#* }+${offset%,*}+${offset#*,}" +repage "$tmp"
+# slurp speaks logical coordinates; grim's grab is pixels at the largest output scale from the layout's corner.
+crop="$(wlr-randr --json | jq -r --arg g "$geometry" '
+  map(select(.enabled)) as $o | ($o | map(.scale) | max) as $s
+  | ($g | [scan("-?[0-9]+") | tonumber]) as [$x, $y, $w, $h]
+  | [$x - ($o | map(.position.x) | min), $y - ($o | map(.position.y) | min)] as [$l, $t]
+  | [$l, $t, $l + $w, $t + $h] | map(. * $s | round) as [$x0, $y0, $x1, $y1]
+  | "\($x1 - $x0)x\($y1 - $y0)+\($x0)+\($y0)"')"
+magick "$full" -crop "$crop" +repage "$tmp"
 
 [ -s "$tmp" ] || exit 0
 
