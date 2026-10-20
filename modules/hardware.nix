@@ -85,7 +85,7 @@
       enable = true;
       # The server applies the profile itself once its own ~20s of device detection finishes -
       # which is all the old poll-then-launch script was doing from the outside.
-      startupProfile = "carrot";
+      startupProfile = "off";
     };
 
     # The server reads profiles from its own state dir while the GUI writes them to the user's
