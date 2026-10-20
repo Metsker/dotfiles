@@ -43,10 +43,10 @@
 "Mod+V" = "spawn:clipboard paste"
 "Mod+Shift+V" = "spawn:noctalia msg panel-toggle clipboard"
 
-"Print" = "spawn:screenshot"
-"Mod+Print" = "spawn:colorpicker"
-"Mod+Ctrl+Print" = "spawn:textpicker"
-"Mod+Alt+Print" = "spawn:record"
+"Print" = { action = "spawn:screenshot", repeat = false }
+"Mod+Print" = { action = "spawn:colorpicker", repeat = false }
+"Mod+Ctrl+Print" = { action = "spawn:textpicker", repeat = false }
+"Mod+Alt+Print" = { action = "spawn:record", repeat = false }
 
 "Mod+Y" = { action = "spawn:voxtype record toggle", repeat = false }
 
