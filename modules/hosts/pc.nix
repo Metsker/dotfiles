@@ -1,7 +1,7 @@
 { config, inputs, ... }:
 
 {
-  flake.modules.nixos.pc = { config, ... }: {
+  flake.modules.nixos.pc = { config, pkgs, ... }: {
     imports = [ ./_pc-hardware.nix ];
 
     networking.hostName = "pc";
@@ -20,7 +20,19 @@
       modesetting.enable = true;
       # Blackwell (the RTX 5060) runs only on the open kernel modules.
       open = true;
-      package = config.boot.kernelPackages.nvidiaPackages.latest;
+      # patchelf 0.19.2 overlaps nvidia-smi's first two load segments and ld.so segfaults on it; drop once a newer patchelf lays it out cleanly.
+      package = config.boot.kernelPackages.nvidiaPackages.latest.overrideAttrs (old: {
+        nativeBuildInputs = [
+          (pkgs.patchelf.overrideAttrs {
+            version = "0.15.2";
+            src = pkgs.fetchurl {
+              url = "https://github.com/NixOS/patchelf/releases/download/0.15.2/patchelf-0.15.2.tar.bz2";
+              hash = "sha256-F3RfVkFZyOIo/EEtplogSLhGxLa0Igt3y/IkFuAvLXw=";
+            };
+            doCheck = false;
+          })
+        ] ++ old.nativeBuildInputs;
+      });
     };
   };
 
