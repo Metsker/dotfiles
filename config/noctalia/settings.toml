@@ -383,6 +383,7 @@ popup_borders = false
 
     [shell.launcher]
     categories = false
+    layout = "simple"
 
     [shell.panel]
     borders = false
