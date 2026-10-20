@@ -36,6 +36,14 @@
       iconSrc = app:
         if app ? iconUrl then app.iconUrl
         else "https://www.google.com/s2/favicons?domain=${app.url}&sz=128";
+
+      # The window's app id: Chromium joins host and path with "_" and then turns every "/" into "_" too.
+      appId = url:
+        let
+          rest = lib.removePrefix "https://" url;
+          host = builtins.head (lib.splitString "/" rest);
+        in
+        "chrome-${host}__${lib.replaceStrings [ "/" ] [ "_" ] (lib.removePrefix "${host}/" rest)}-Default";
     in
     {
       # Launches URLs as standalone helium --app windows, in the main Helium profile.
@@ -52,6 +60,8 @@
           name = app.name or id;
           exec = "webapp ${app.url}";
           icon = app.icon or "${iconDir}/${id}.png";
+          # Without it nothing ties the window to this entry, so a window's icon lookup misses and walks every theme dir.
+          settings.StartupWMClass = appId app.url;
         })
         apps;
 
