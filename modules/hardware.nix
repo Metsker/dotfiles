@@ -1,6 +1,6 @@
 {
   # Everything that exists because of the metal: GPU, firmware, audio, bluetooth, peripherals.
-  flake.modules.nixos.base = {
+  flake.modules.nixos.base = { pkgs, ... }: {
     hardware.graphics.enable = true;
 
     # Redistributable firmware blobs for BT/Wi-Fi/GPU hardware.
@@ -19,6 +19,13 @@
       MatchName=Logitech MX Anywhere 3S
       AttrEventCode=-REL_WHEEL_HI_RES;-REL_HWHEEL_HI_RES;
     '';
+
+    # WebHID for the XVX MU68 keyboard's web driver; a 70- file, since extraRules lands in 99-local.rules, after uaccess is applied.
+    services.udev.packages = [
+      (pkgs.writeTextDir "lib/udev/rules.d/70-xvx-mu68.rules" ''
+        SUBSYSTEM=="hidraw", ATTRS{idVendor}=="fffe", ATTRS{idProduct}=="00ae", TAG+="uaccess"
+      '')
+    ];
 
     # PipeWire (ALSA + Pulse compat + Bluetooth A2DP); rtkit grants realtime priority.
     security.rtkit.enable = true;
