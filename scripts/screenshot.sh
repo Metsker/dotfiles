@@ -38,14 +38,21 @@ magick "$full" -crop "$crop" +repage "$tmp"
 
 wl-copy --type image/png < "$tmp"
 
-# noctalia advertises the "actions" capability, so notify-send blocks and prints
-# the action key when the Edit button is clicked; only then do we open satty.
+# noctalia advertises the "actions" capability, so notify-send blocks and prints the clicked action's key.
 action="$(notify-send -a screenshot -i "$tmp" -t 10000 \
-  "Screenshot copied to clipboard" "Click Edit to annotate / save" -A "edit=Edit")"
+  "Screenshot copied to clipboard" "Edit to annotate, or save it as is" -A "edit=Edit" -A "save=Save")"
 
-# Capture lives only in $tmp; satty writes $outfile solely via its save / save-as.
-[ "$action" = "edit" ] && satty \
-  --filename "$tmp" \
-  --output-filename "$outfile" \
-  --early-exit \
-  --copy-command 'wl-copy --type image/png'
+# Capture lives only in $tmp; $outfile is written only by Save or by satty's save / save-as.
+case "$action" in
+  save)
+    cp "$tmp" "$outfile"
+    notify-send -a screenshot -i "$outfile" "Screenshot saved" "$outfile"
+    ;;
+  edit)
+    satty \
+      --filename "$tmp" \
+      --output-filename "$outfile" \
+      --early-exit \
+      --copy-command 'wl-copy --type image/png'
+    ;;
+esac
