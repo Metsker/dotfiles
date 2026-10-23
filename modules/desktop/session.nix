@@ -102,7 +102,7 @@
 
       (writeShellApplication {
         name = "screenshot";
-        runtimeInputs = [ grim slurp satty wayfreeze libnotify imagemagick wlr-randr jq wminfo ];
+        runtimeInputs = [ grim slurp satty wayfreeze wl-clipboard libnotify imagemagick wlr-randr jq wminfo ];
         text = builtins.readFile ../../scripts/screenshot.sh;
       })
       # wayfreeze gives the instant freeze; hyprpicker picks with its zoom lens.
