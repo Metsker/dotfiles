@@ -4,7 +4,6 @@
     boot.loader.systemd-boot.enable = true;
     boot.loader.systemd-boot.configurationLimit = 5;
     boot.loader.efi.canTouchEfiVariables = true;
-    boot.initrd.systemd.enable = true;
 
     # Boot to black: plymouth cannot hand the display to the compositor without a visible repaint.
     boot.kernelParams = [ "quiet" ];
