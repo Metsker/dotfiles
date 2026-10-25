@@ -2,9 +2,45 @@
 
 {
   flake.modules.nixos.t490 = { pkgs, ... }: {
-    imports = [ ./_t490-hardware.nix ];
+    imports = [ ./_t490-hardware.nix inputs.disko.nixosModules.disko ];
 
-    boot.initrd.luks.devices."luks-62513f04-f29b-486a-8e0b-649665d6c067".device = "/dev/disk/by-uuid/62513f04-f29b-486a-8e0b-649665d6c067";
+    # nixos-anywhere formats this layout; the LUKS passphrase is read from passwordFile only at install time.
+    disko.devices.disk.main = {
+      type = "disk";
+      device = "/dev/nvme0n1";
+      content = {
+        type = "gpt";
+        partitions = {
+          ESP = {
+            size = "1G";
+            type = "EF00";
+            content = {
+              type = "filesystem";
+              format = "vfat";
+              mountpoint = "/boot";
+              mountOptions = [ "umask=0077" ];
+            };
+          };
+          luks = {
+            size = "100%";
+            content = {
+              type = "luks";
+              name = "crypted";
+              passwordFile = "/tmp/secret.key";
+              settings.allowDiscards = true;
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/";
+              };
+            };
+          };
+        };
+      };
+    };
+
+    # No swap partition: zram covers memory pressure without a second LUKS container.
+    zramSwap.enable = true;
 
     networking.hostName = "t490";
 

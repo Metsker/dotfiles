@@ -92,6 +92,8 @@ Conventions that follow from this:
 - A cachix substituter lives next to the input that needs it, not in one central list.
 - Files whose path contains `_` are skipped by import-tree - that is why the generated
   `modules/hosts/_<host>-hardware.nix` files are not modules of their own.
+- t490's disk layout is declared with disko in `modules/hosts/t490.nix`, so its hardware file
+  carries no filesystems; nixos-anywhere `--generate-hardware-config` rewrites it on a reinstall.
 - `patches/` - out-of-tree patches, applied by an overlay in the feature's own module.
 
 ### Scripts
