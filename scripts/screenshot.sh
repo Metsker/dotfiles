@@ -49,7 +49,8 @@ case "$action" in
     notify-send -a screenshot -i "$outfile" "Screenshot saved" "$outfile"
     ;;
   edit)
-    satty \
+    # GTK4's Vulkan probe costs about 150ms of startup on the NVIDIA blob, and satty draws through GL anyway.
+    GDK_DISABLE=vulkan satty \
       --filename "$tmp" \
       --output-filename "$outfile" \
       --early-exit \
