@@ -1,6 +1,8 @@
 {
   flake.modules.nixos.base = { pkgs, ... }: {
     programs.dconf.enable = true;
+    # Defaults to the X server's switch; uncached, every GTK app stats hicolor and breeze on start.
+    gtk.iconCache.enable = true;
 
     fonts.packages = with pkgs; [
       nerd-fonts.jetbrains-mono
@@ -10,7 +12,7 @@
     ];
   };
 
-  flake.modules.homeManager.metsker = { config, lib, pkgs, ... }: {
+  flake.modules.homeManager.metsker = { lib, pkgs, ... }: {
     home.file.".local/share/fonts/JetBrainsMono".source =
       "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono";
 
@@ -34,10 +36,8 @@
         name = "adw-gtk3-dark";
         package = pkgs.adw-gtk3;
       };
-      iconTheme = {
-        name = "Papirus-Dark";
-        package = pkgs.papirus-icon-theme;
-      };
+      # No package: GTK4 indexes every Papirus copy on each app start, so the writable one below is the only one.
+      iconTheme.name = "Papirus-Dark";
       # Repeat the import noctalia's apply.sh looks for: seeing it there, the script leaves this
       # read-only store symlink alone instead of rewriting it.
       gtk3.extraCss = ''
@@ -50,7 +50,7 @@
     # comes along because Papirus-Dark is a shell - every size >= 32px symlinks into ../Papirus.
     home.activation.papirusWritable = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       icons="$HOME/.local/share/icons"
-      src="${config.gtk.iconTheme.package}/share/icons"
+      src="${pkgs.papirus-icon-theme}/share/icons"
       if [ "$(cat "$icons/.papirus-source" 2>/dev/null)" != "$src" ]; then
         run mkdir -p "$icons"
         run rm -rf "$icons/Papirus" "$icons/Papirus-Dark"
