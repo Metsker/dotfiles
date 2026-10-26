@@ -65,6 +65,9 @@
     ];
     boot.kernelModules = [ "it87" ];
 
+    # The SMU mailbox, so per-core Curve Optimizer offsets can be read and tried at runtime instead of per BIOS visit.
+    hardware.cpu.amd.ryzen-smu.enable = true;
+
     # 2700 MHz at ~915 mV instead of ~1005 mV, under the 123 W floor of the cap; the GUI can no longer save.
     services.lact = {
       enable = true;
