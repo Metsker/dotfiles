@@ -68,6 +68,13 @@
     # The SMU mailbox, so per-core Curve Optimizer offsets can be read and tried at runtime instead of per BIOS visit.
     hardware.cpu.amd.ryzen-smu.enable = true;
 
+    # Cores 3 and 7 (CPUs 3/11, 7/15) throw Prime95 errors at full single-core boost even in Eco mode; these caps passed 11/11.
+    systemd.tmpfiles.settings."10-cpu-boost-cap" = lib.mapAttrs'
+      (cpu: mhz: lib.nameValuePair "/sys/devices/system/cpu/cpu${cpu}/cpufreq/scaling_max_freq" {
+        w.argument = "${toString mhz}000";
+      })
+      { "3" = 4700; "11" = 4700; "7" = 4600; "15" = 4600; };
+
     # 2700 MHz at ~915 mV instead of ~1005 mV, under the 123 W floor of the cap; the GUI can no longer save.
     services.lact = {
       enable = true;
