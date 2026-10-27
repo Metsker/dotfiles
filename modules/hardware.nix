@@ -54,7 +54,7 @@
   };
 
   # The desktop's RGB RAM, its DDC monitors, its GPU undervolt and its fan sensors; the laptop has none of them.
-  flake.modules.nixos.pc = { config, lib, ... }: {
+  flake.modules.nixos.pc = { config, lib, pkgs, ... }: {
     # Fan speeds and Vcore come from the IT8689E, only in the out-of-tree it87; pc.nix's acpi_enforce_resources=lax lets it bind.
     boot.extraModulePackages = [
       # nixpkgs installs it beside the in-tree it87, which depmod prefers; updates/ outranks the in-tree one.
@@ -74,6 +74,24 @@
         w.argument = "${toString mhz}000";
       })
       { "3" = 4700; "11" = 4700; "7" = 4600; "15" = 4600; };
+
+    # Cores 0-7 at their per-core Prime95 search result plus 2; the BIOS keeps CO 0 as the fallback.
+    systemd.services.curve-optimizer = {
+      description = "Per-core Curve Optimizer offsets";
+      wantedBy = [ "multi-user.target" ];
+      after = [ "systemd-modules-load.service" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = "${lib.getExe (pkgs.writeShellApplication {
+          name = "curve-optimizer";
+          runtimeInputs = [ pkgs.coreutils ];
+          text = builtins.readFile ../scripts/curve-optimizer.sh;
+        })} ${lib.concatMapStringsSep " " toString [ (-1) (-18) (-17) 0 (-18) (-14) (-14) 0 ]}";
+      };
+    };
+    # Runtime SMU settings may not survive a suspend.
+    powerManagement.resumeCommands = "${config.systemd.package}/bin/systemctl restart curve-optimizer.service";
 
     # 2700 MHz at ~915 mV instead of ~1005 mV, under the 123 W floor of the cap; the GUI can no longer save.
     services.lact = {
