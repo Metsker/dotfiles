@@ -471,7 +471,7 @@ hide_when_adapter_off = true
 
 [widget.clock]
 anchor = true
-format = "{:%b %d, %H:%M}"
+format = "{:%a %d %b %H:%M}"
 
 [widget.cpu]
 show_glyph = false
