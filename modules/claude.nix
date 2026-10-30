@@ -90,38 +90,6 @@
         run ln -sf "${dotfiles}/claude/settings.json" "$HOME/.claude/settings.json"
       '';
 
-      # ~/.claude/skills used to be one symlink to the dotfiles directory. It is now a real
-      # directory holding one symlink per skill, so that generation's link has to go first:
-      # left in place, home-manager writes the per-skill links *through* it, straight into
-      # the source directory, where each one then points back at itself. Runs before
-      # checkLinkTargets so the file phase sees a clean path.
-      home.activation.claudeSkillsLegacyLink = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
-        if [ -L "$HOME/.claude/skills" ]; then
-          run rm "$HOME/.claude/skills"
-        fi
-      '';
-
-      # One-time: drop the stale user-scope MCP entries the old activation wrote; MCP now comes from --mcp-config.
-      home.activation.claudeMcpCleanup = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        cfg="$HOME/.claude.json"
-        if [ -e "$cfg" ]; then
-          ${pkgs.jq}/bin/jq 'del(.mcpServers.playwright, .mcpServers.context7)' "$cfg" > "$cfg.new"
-          run mv "$cfg.new" "$cfg"
-        fi
-      '';
-
-      # context7/playwright ship no version in the official marketplace, so their install
-      # records nag "Plugins updated" forever. Both now run via --mcp-config; drop the stale installs.
-      home.activation.claudePluginCleanup = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        reg="$HOME/.claude/plugins/installed_plugins.json"
-        if [ -e "$reg" ]; then
-          ${pkgs.jq}/bin/jq \
-            'del(.plugins["context7@claude-plugins-official"], .plugins["playwright@claude-plugins-official"])' \
-            "$reg" > "$reg.new"
-          run mv "$reg.new" "$reg"
-        fi
-      '';
-
       home.file = lib.listToAttrs ownSkills // {
         ".claude/CLAUDE.md".source = dotfile "claude/CLAUDE.md";
         ".claude/keybindings.json".source = dotfile "claude/keybindings.json";
