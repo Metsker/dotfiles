@@ -49,17 +49,6 @@
     ];
   };
 
-  flake.modules.nixos.pc = {
-    nixpkgs.overlays = [
-      # gsr disables nvenc when built against libavcodec >= 63 unless the driver offers nvenc API 13.1;
-      # 580 is the last branch for this Pascal card and caps out at 13.0. Drop when gsr stops gating on
-      # the ffmpeg major, or when the card is replaced.
-      (final: prev: {
-        gpu-screen-recorder = prev.gpu-screen-recorder.override { ffmpeg = prev.ffmpeg_8; };
-      })
-    ];
-  };
-
   flake.modules.homeManager.metsker = { config, pkgs, dotfile, ... }: {
     xdg.configFile.voxtype = { source = dotfile "voxtype"; recursive = true; };
 
