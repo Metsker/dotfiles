@@ -138,18 +138,10 @@
 
   flake.modules.homeManager.pc = { pkgs, dotfile, ... }:
     let
-      # No backlight class on a desktop, so monitor brightness goes over DDC/CI. The wrapper
-      # shadows ddcutil itself; everything but `detect` is passed straight through.
-      ddcutil = pkgs.writeShellApplication {
-        name = "ddcutil";
-        runtimeInputs = [ pkgs.coreutils pkgs.gawk pkgs.gnugrep ];
-        runtimeEnv.DDCUTIL_REAL = "${pkgs.ddcutil}/bin/ddcutil";
-        text = builtins.readFile ../scripts/ddcutil-connector-fix.sh;
-      };
-
+      # No backlight class on a desktop, so monitor brightness goes over DDC/CI.
       ddc-brightness = pkgs.writeShellApplication {
         name = "ddc-brightness";
-        runtimeInputs = [ ddcutil pkgs.coreutils pkgs.gawk ];
+        runtimeInputs = [ pkgs.ddcutil pkgs.coreutils pkgs.gawk ];
         text = builtins.readFile ../scripts/ddc-brightness.sh;
       };
     in
@@ -158,7 +150,7 @@
       # per start into this directory, which per-file store symlinks would make read-only.
       xdg.configFile.OpenRGB.source = dotfile "openrgb";
 
-      home.packages = [ ddcutil ddc-brightness ];
+      home.packages = [ pkgs.ddcutil ddc-brightness ];
 
       # Before noctalia, so its brightness service reads the restored values and never races us on i2c.
       systemd.user.services.ddc-brightness = {
