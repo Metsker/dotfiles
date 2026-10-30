@@ -27,6 +27,9 @@
       '')
     ];
 
+    # ALWAYS_POLL for the MU68's 2.4G dongle: its raw-HID endpoints go unread without it, and once they fill up the radio stalls.
+    boot.kernelParams = [ "usbhid.quirks=0x0c45:0xfefe:0x400" ];
+
     # PipeWire (ALSA + Pulse compat + Bluetooth A2DP); rtkit grants realtime priority.
     security.rtkit.enable = true;
     services.pipewire = {
