@@ -33,7 +33,7 @@
         });
 
         # Discord reads its VA surfaces without syncing, so nvidia-vaapi-driver 0.0.18 hands it stale
-        # frames and streams stutter; software decode here only. Drop on elFarto/nvidia-vaapi-driver#455.
+        # frames and streams stutter; software decode here only. Drop once nixpkgs ships nvidia-vaapi-driver > 0.0.18 (#455 fix).
         discord = final.symlinkJoin {
           name = "discord-${prev.discord.version}";
           paths = [ prev.discord ];
