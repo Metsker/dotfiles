@@ -1,4 +1,7 @@
-config_version = 15
+config_version = 16
+
+[audio]
+enable_volume_sounds = false
 
 [bar.default]
 background_opacity = 0.74999998323619366
