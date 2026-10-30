@@ -87,7 +87,7 @@
       # adb/fastboot; systemd 258 handles the uaccess rules, so no udev package is needed.
       android-tools
 
-      # godot fails to build (harfbuzz-vector); add it back once nixos-unstable has nixpkgs#575619.
+      godot
       tiled
       oxipng
       gifski
