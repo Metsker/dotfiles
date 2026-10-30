@@ -65,7 +65,7 @@ autostart = [
   "Telegram",
   "discord",
   "spotify",
-  "webapp https://notes.metsker.dev/brain",
+  # "webapp https://notes.metsker.dev/brain",
 ]
 
 [[window_rule]]
