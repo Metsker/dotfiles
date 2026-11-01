@@ -38,6 +38,7 @@
 "Mod+Alt+Shift+F" = "spawn:dolphin"
 "Mod+Space" = "spawn:noctalia msg panel-toggle launcher"
 "Mod+Escape" = "spawn:noctalia msg panel-toggle session"
+"Mod+Ctrl+Escape" = "spawn:$TERMINAL --app-id btop -e btop"
 
 "Mod+C" = "spawn:clipboard copy"
 "Mod+V" = "spawn:clipboard paste"

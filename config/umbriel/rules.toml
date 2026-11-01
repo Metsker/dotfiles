@@ -21,7 +21,7 @@ default_floating = true
 default_floating_size_px = { width = 800, height = 600 }
 
 [[window_rule]]
-match.app_id = "^(com[.]gabm[.]satty|mpv|imv|engrampa|dua)$"
+match.app_id = "^(com[.]gabm[.]satty|mpv|imv|engrampa|dua|btop)$"
 default_floating = true
 default_floating_size = { width = 0.75, height = 0.75 }
 
