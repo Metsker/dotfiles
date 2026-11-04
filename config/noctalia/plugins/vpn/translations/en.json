@@ -5,8 +5,7 @@
 		"busy": "Waiting for authorization to change {interface}"
 	},
 	"shortcut": {
-		"up": "VPN on",
-		"down": "VPN off",
+		"label": "VPN",
 		"busy": "Authorizing"
 	},
 	"notify": {

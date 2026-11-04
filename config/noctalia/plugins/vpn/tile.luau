@@ -8,9 +8,9 @@ local function render()
 	local up = tunnel ~= nil and tunnel.up
 	local busy = tunnel ~= nil and tunnel.busy
 	shortcut.setLabel(
+		-- The highlight already says up or down, so only the dialog wait gets its own label.
 		if busy then noctalia.tr("shortcut.busy")
-		elseif up then noctalia.tr("shortcut.up")
-		else noctalia.tr("shortcut.down")
+		else noctalia.tr("shortcut.label")
 	)
 	shortcut.setIcon(noctalia.getConfig("up_glyph"), noctalia.getConfig("down_glyph"))
 	shortcut.setActive(up)
