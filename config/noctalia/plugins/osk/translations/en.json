@@ -1,0 +1,18 @@
+{
+	"shortcut": {
+		"label": "OSK"
+	},
+	"notify": {
+		"missing": "{program} is not on PATH"
+	},
+	"settings": {
+		"program": {
+			"label": "Program",
+			"description": "The keyboard to start, by name on PATH or as an absolute path. The tile closes only the instance it started itself."
+		},
+		"arguments": {
+			"label": "Arguments",
+			"description": "Passed to the program through a shell, so a value with spaces can be quoted."
+		}
+	}
+}

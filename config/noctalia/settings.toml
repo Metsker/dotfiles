@@ -49,19 +49,19 @@ sidebar_section = "none"
     type = "metsker/vpn:toggle"
 
     [[control_center.shortcuts]]
-    type = "bluetooth"
+    type = "caffeine"
 
     [[control_center.shortcuts]]
-    type = "caffeine"
+    type = "metsker/osk:toggle"
 
     [[control_center.shortcuts]]
     type = "notification"
 
     [[control_center.shortcuts]]
-    type = "noctalia/wallhaven:shortcut"
+    type = "wallpaper"
 
     [[control_center.shortcuts]]
-    type = "wallpaper"
+    type = "noctalia/wallhaven:shortcut"
 
 [desktop_widgets]
 schema_version = 2
@@ -355,7 +355,8 @@ enabled = [
     "metsker/nixos-update",
     "metsker/vpn",
     "jrohland/claudecode",
-    "metsker/window-info"
+    "metsker/window-info",
+    "metsker/osk"
 ]
 
     [[plugins.source]]

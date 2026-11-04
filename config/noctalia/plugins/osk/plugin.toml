@@ -1,0 +1,36 @@
+id = "metsker/osk"
+name = "On-screen keyboard"
+version = "1.0.0"
+plugin_api = 24
+author = "metsker"
+license = "MIT"
+dependencies = ["wvkbd-deskintl"]
+icon = "keyboard"
+description = "Opens and closes an on-screen keyboard from a control-center tile, and shows whether it is up."
+tags = ["accessibility", "input"]
+
+# wvkbd reads no config file, so its flags have to live somewhere; here they are
+# editable under Settings → Plugins without a rebuild.
+[[setting]]
+key             = "program"
+type            = "string"
+label_key       = "settings.program.label"
+description_key = "settings.program.description"
+default         = "wvkbd-deskintl"
+
+[[setting]]
+key             = "arguments"
+type            = "string"
+label_key       = "settings.arguments.label"
+description_key = "settings.arguments.description"
+default         = "-l full,cyrillic,special --landscape-layers full,cyrillic,special -H 280 -L 280"
+
+# The state and the command that changes it live here, not in the tile: a
+# shortcut gets no update() tick and so cannot poll for the keyboard.
+[[service]]
+id = "watcher"
+entry = "watcher.luau"
+
+[[shortcut]]
+id = "toggle"
+entry = "tile.luau"
