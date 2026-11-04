@@ -82,6 +82,13 @@
       claude = pkgs.writeShellScriptBin "claude" ''
         exec ${claude-code}/bin/claude --mcp-config=${mcpConfig} "$@"
       '';
+
+      # Notification hook in settings.json: pings Telegram when Claude goes idle or asks for permission.
+      claude-notify = pkgs.writeShellApplication {
+        name = "claude-notify";
+        runtimeInputs = [ pkgs.curl pkgs.jq pkgs.coreutils ];
+        text = builtins.readFile ../scripts/claude-notify.sh;
+      };
     in
     {
       # ln -sf tolerates Claude Code overwriting settings.json at runtime; home.file would collide.
@@ -97,6 +104,7 @@
 
       home.packages = [
         claude # wrapped claude-code with --mcp-config
+        claude-notify
         pkgs.playwright-mcp # bundles its own NixOS chromium
         pkgs.context7-mcp
         chrome-devtools-mcp

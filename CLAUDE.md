@@ -200,6 +200,13 @@ terminal cell's height over width, since the mod API exposes no cell size. Claud
 those graphics when the terminal answers XTVERSION as kitty 0.28+ or Ghostty, which herdr does not,
 so the same `env` sets `CLAUDE_CODE_FORCE_TERMINAL_IMAGES=1`.
 
+Telegram pings are off by default and opt-in per session: the `notify` mod's `/notify` (it runs
+mid-turn too) leaves a flag at `$XDG_RUNTIME_DIR/claude-notify/<session id>`, and the
+`Notification` hook `claude-notify` (`scripts/claude-notify.sh`, on `idle_prompt` and
+`permission_prompt`) sends only for a session with that flag. The mod deletes the flag when the
+session ends, `/clear` included. The bot token and chat id live in `~/.claude/telegram-notify.env`,
+outside the repo.
+
 ## Conventions
 
 - Commit messages follow `config/claude/skills/writing-commit-messages/SKILL.md`: kernel style,

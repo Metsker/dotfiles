@@ -1,0 +1,6 @@
+{
+  "name": "notify",
+  "version": "0.1.0",
+  "description": "/notify toggles Telegram notifications (idle and permission prompts) for this session",
+  "types": "./types/index.d.ts"
+}

@@ -52,6 +52,19 @@
           }
         ]
       }
+    ],
+    "Notification": [
+      {
+        "matcher": "idle_prompt|permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claude-notify",
+            "timeout": 15,
+            "async": true
+          }
+        ]
+      }
     ]
   },
   "worktree": {
