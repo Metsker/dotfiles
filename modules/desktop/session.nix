@@ -83,6 +83,15 @@
         runtimeInputs = [ jq gnused gnugrep coreutils umbriel ];
         text = builtins.readFile ../../scripts/wminfo.sh;
       };
+      # nixpkgs builds only the phone layout; deskintl is the one sized for a monitor, Cyrillic included.
+      wvkbd-deskintl = wvkbd.overrideAttrs {
+        makeFlags = [ "LAYOUT=deskintl" ];
+        # 0.21 binds wl_compositor at 6 regardless of what is offered, and umbriel offers 5; drop once upstream clamps it.
+        postPatch = ''
+          substituteInPlace main.c --replace-fail \
+            '&wl_compositor_interface, 6)' '&wl_compositor_interface, version < 6 ? version : 6)'
+        '';
+      };
     in
     [
       wminfo
@@ -125,6 +134,8 @@
         runtimeInputs = [ ];
         text = builtins.readFile ../../scripts/voxtype-postprocess.sh;
       })
+      # Started and stopped by the noctalia osk plugin's control-center tile, which also holds its flags.
+      wvkbd-deskintl
 
       hyprpicker
       slurp
