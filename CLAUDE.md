@@ -144,7 +144,7 @@ pull up. Adding another compositor means adding one file next to `umbriel.nix`.
   through `[include]`. `config.toml` carries the include list, `[general]` and the odds and ends,
   and `input.toml`, `appearance.toml`, `layout.toml`, `rules.toml` and `keybinds.toml` carry the
   rest. `float-rules.toml` is written by `wminfo float-rule` and gitignored. Scrolling, dwindle and
-  master layouts; nine static workspaces per output, reached as `workspace-switch:<n>/<output>`.
+  master layouts; nine static workspaces per output, reached as `workspace-switch <n> --output <output>`.
   `umbriel config validate` checks the config against the installed binary, and a rebuild only
   reaches the compositor after a re-login - until then its reload banner can flag keys the new
   binary accepts.
