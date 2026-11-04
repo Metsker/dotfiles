@@ -7,6 +7,9 @@
     environment.sessionVariables.PROTON_ENABLE_WAYLAND = "1";
     # Every Vulkan app gets the HUD; desktop apps opt out via `blacklist` in MangoHud.conf.
     environment.sessionVariables.MANGOHUD = "1";
+
+    # lutris's FHS env still lists gtk2, now marked broken (NixOS/nixpkgs#410814); drop once lutris stops pulling it.
+    nixpkgs.config.problems.handlers."gtk+".broken = "warn";
   };
 
   flake.modules.homeManager.metsker = { pkgs, dotfile, ... }: {
