@@ -394,6 +394,7 @@ popup_borders = false
     [shell.launcher]
     categories = false
     layout = "simple"
+    sort_by_usage = false
 
     [shell.panel]
     borders = false
