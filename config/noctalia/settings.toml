@@ -426,16 +426,16 @@ wallpaper_scheme = "m3-content"
 directory = "~/Pictures/Wallpapers"
 
     [wallpaper.default]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-mlwdok.png"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qzymr7.jpg"
 
     [wallpaper.last]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-mlwdok.png"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qzymr7.jpg"
 
     [wallpaper.monitors.DP-1]
     path = "/home/metsker/Pictures/Wallpapers/wallhaven-6lekex.jpg"
 
     [wallpaper.monitors.DP-2]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-mlwdok.png"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qzymr7.jpg"
 
     [wallpaper.monitors.HDMI-A-2]
     path = "/home/metsker/Pictures/Wallpapers/wallhaven-6lekex.jpg"
@@ -551,5 +551,6 @@ show_tooltip = false
 urgent_color = "secondary"
 
     [widget.workspaces.actions]
+    right = "exec umbriel msg overview-toggle"
     scroll_down = "none"
     scroll_up = "none"

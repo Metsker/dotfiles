@@ -1,7 +1,7 @@
 { inputs, ... }:
 
 # Everyday desktop applications: browser, media, chat, art, notes.
-# The ones that carry real weight of their own live next door - vpn.nix, claude.nix,
+# The ones that carry real weight of their own live next door - vpn.nix, agents.nix,
 # webapps.nix, gaming.nix, and the file manager in dolphin.nix.
 {
   flake.modules.nixos.base = { pkgs, ... }: {

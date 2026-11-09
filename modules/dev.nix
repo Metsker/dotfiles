@@ -23,7 +23,7 @@
     # PLAYWRIGHT_BROWSERS_PATH is what points a project's playwright at those.
     #
     # Same derivation pkgs.playwright-mcp already bakes into its own wrapper (see
-    # claude.nix), so the browser Claude drives and the browser a test suite drives
+    # agents.nix), so the browser Claude drives and the browser a test suite drives
     # cannot drift apart.
     #
     # The catch is worth writing down, because the error it gives is not obvious: a

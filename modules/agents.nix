@@ -1,7 +1,7 @@
 { inputs, ... }:
 
-# All Claude Code config in one place: config symlink, declarative MCP servers
-# (a read-only --mcp-config file), stale-state pruning, and the packages.
+# Coding agents - Claude Code, pi, opencode - and the declarative MCP servers they share
+# (one read-only JSON file), with each agent's config symlinks and packages.
 {
   # No nixpkgs.follows on the input, so this cache actually hits.
   flake.modules.nixos.base.nix.settings = {
@@ -38,8 +38,9 @@
         '';
       });
 
-      # Single declarative source of truth for MCP servers, loaded via --mcp-config.
-      mcpConfig = pkgs.writeText "claude-mcp.json" (builtins.toJSON {
+      # Single declarative source of truth for MCP servers: Claude loads it via --mcp-config,
+      # pi reads it as its user-level mcp.json - both take the same mcpServers shape.
+      mcpConfig = pkgs.writeText "mcp.json" (builtins.toJSON {
         mcpServers = {
           # --isolated keeps Playwright's profile out of the read-only store.
           # --viewport-size so a screenshot comes out the same size in every
@@ -100,6 +101,14 @@
       home.file = lib.listToAttrs ownSkills // {
         ".claude/CLAUDE.md".source = dotfile "claude/CLAUDE.md";
         ".claude/keybindings.json".source = dotfile "claude/keybindings.json";
+
+        # pi writes settings.json through the link, so the out-of-store symlink survives its rewrites.
+        ".pi/agent/settings.json".source = dotfile "pi/settings.json";
+        ".pi/agent/keybindings.json".source = dotfile "pi/keybindings.json";
+        ".pi/agent/AGENTS.md".source = dotfile "pi/AGENTS.md";
+        ".pi/agent/extensions".source = dotfile "pi/extensions";
+        # Read-only, so `pi mcp add` and /mcp's saved toggles fail - add servers to mcpConfig instead.
+        ".pi/agent/mcp.json".source = mcpConfig;
       };
 
       home.packages = [
@@ -108,6 +117,9 @@
         pkgs.playwright-mcp # bundles its own NixOS chromium
         pkgs.context7-mcp
         chrome-devtools-mcp
+
+        pkgs.pi-coding-agent
+        pkgs.opencode
       ];
 
       programs.fish.shellAliases.c = "claude";

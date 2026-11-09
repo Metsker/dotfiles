@@ -1,0 +1,19 @@
+{
+  "lastChangelogVersion": "1.4.0",
+  "defaultThinkingLevel": "high",
+  "packages": [
+    "npm:pi-subagents",
+    "npm:pi-ask-user",
+    "npm:pi-web-access",
+    "npm:pi-manage-todo-list",
+    "npm:pi-btw"
+  ],
+  "extensions": [
+    "extensions/raw-paste.ts"
+  ],
+  "hideThinkingBlock": true,
+  "showHardwareCursor": true,
+  "enableInstallTelemetry": false,
+  "quietStartup": true,
+  "collapseChangelog": false
+}

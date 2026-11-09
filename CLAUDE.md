@@ -66,7 +66,8 @@ One file per domain, not per app - a new program joins the file its domain alrea
 | `dev.nix` | toolchain, playwright browsers, herdr, remote host bootstrap |
 | `apps.nix` | browser, file manager, media, chat, art, notes |
 | `vpn.nix` | the AmneziaVPN client, the boot-time tunnel, the greeter gate |
-| `claude.nix`, `webapps.nix`, `gaming.nix` | each big enough to stand alone |
+| `agents.nix` | Claude Code, pi, opencode, and the MCP servers they share |
+| `webapps.nix`, `gaming.nix` | each big enough to stand alone |
 
 Nesting is cosmetic - import-tree walks the whole tree, so `modules/hosts/` groups files without
 changing anything.
@@ -185,12 +186,23 @@ pull up. Adding another compositor means adding one file next to `umbriel.nix`.
 - `config/niri/` and `config/mango/` are inactive leftovers - neither compositor is installed.
   Do not treat them as live config or keep them in sync.
 
-## Claude Code config
+## Coding agents
 
-`modules/claude.nix` owns it all. MCP servers are declared in one `writeText` JSON and passed via a `claude`
-wrapper (`--mcp-config=...`); do not add servers to `~/.claude.json`. `settings.json` is linked with
-`ln -sf` in an activation script rather than `home.file`, because Claude Code rewrites it at runtime and
-a read-only store symlink would break that. The tracked files live in `config/claude/`.
+`modules/agents.nix` owns Claude Code, pi and opencode. MCP servers are declared in one `writeText` JSON
+that both Claude and pi read; do not add servers to `~/.claude.json` or with `pi mcp add`.
+
+pi's tracked files live in `config/pi/` and are linked into `~/.pi/agent` one by one; `auth.json`,
+`sessions/` and the `npm/` tree its packages install into stay local. pi writes `settings.json` with a
+plain `writeFileSync`, which follows the out-of-store symlink. Its `mcp.json` is the shared store file
+and read-only, so `/mcp` cannot save exposure or enabled-state changes to a user-level server - a
+project's `.pi/mcp.json` override still works. MCP is built into pi since 1.0; `pi-mcp-adapter` would
+replace that built-in support and stop pi reading `mcp.json`.
+
+### Claude Code
+
+The MCP JSON reaches Claude through a `claude` wrapper (`--mcp-config=...`). `settings.json` is linked
+with `ln -sf` in an activation script rather than `home.file`, because Claude Code rewrites it at
+runtime and a read-only store symlink would break that. The tracked files live in `config/claude/`.
 
 Mods (function-hook plugins) live in `config/claude/mods/`, one folder each, and are loaded by
 `CLAUDE_CODE_PLUGIN_DIRS` in `settings.json`'s `env`, not by Nix, so they work on any machine and
