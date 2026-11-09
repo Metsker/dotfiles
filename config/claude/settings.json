@@ -23,21 +23,21 @@
         ]
       },
       {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash '/home/metsker/.claude/hooks/herdr-agent-state.sh' session",
-            "timeout": 10
-          }
-        ]
-      },
-      {
         "hooks": [
           {
             "type": "command",
             "command": "bash ~/dotfiles/config/claude/hooks/terse-mode.sh session",
             "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "^(startup|resume|clear|compact|fork)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/home/metsker/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
           }
         ]
       }
