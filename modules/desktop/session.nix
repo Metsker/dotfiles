@@ -44,7 +44,10 @@
     nixpkgs.overlays = [
       # Carries the parakeet engine, which beats vulkan whisper on this card and leaves the GPU alone.
       (final: prev: {
-        voxtype = prev.voxtype.override { onnxSupport = true; };
+        voxtype = (prev.voxtype.override { onnxSupport = true; }).overrideAttrs (old: {
+          # Backports nixpkgs 6abc6ca74; drop once nixos-unstable contains it.
+          buildInputs = old.buildInputs ++ [ final.oniguruma final.sqlite ];
+        });
       })
     ];
   };
