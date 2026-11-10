@@ -93,6 +93,7 @@
       gifski
 
       herdr
+      termius
 
       # Installs a version-matched herdr and neovim on a Debian host over SSH, so
       # `herdr --remote <host>` has a server to attach to. See the script's header.

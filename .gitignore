@@ -13,3 +13,6 @@ config/openrgb/logs/
 # Claude Code lays its API typings and a tsconfig extending them beside every mod it loads.
 config/claude/mods/*/.claude-plugin/types/
 config/claude/mods/*/tsconfig.json
+
+# dae's config carries the node password; vpn.nix reads it from disk, never from the store.
+config/dae/
