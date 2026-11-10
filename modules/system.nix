@@ -48,6 +48,12 @@
 
     environment.systemPackages = [ pkgs.wget ];
 
+    # v2rayN manages its own cores: it downloads upstream sing-box/xray/mihomo builds into
+    # ~/.local/share/v2rayN/bin, and those are linked against a generic glibc. The stub loader
+    # refuses them otherwise ("Could not start dynamically linked executable"), so let the
+    # normal loader resolve their libs from the store.
+    programs.nix-ld.enable = true;
+
     programs.ssh.startAgent = true;
 
     system.stateVersion = "26.05";

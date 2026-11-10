@@ -35,6 +35,11 @@
     monstar.url = "github:Metsker/monstar-nix";
     # No nixpkgs.follows: keep the flake's pin so the claude-code.cachix.org cache hits.
     claude-code.url = "github:sadjow/claude-code-nix";
+    # Built from source (no binary cache), so follow our nixpkgs to share the Rust toolchain.
+    zapret-rust = {
+      url = "github:Sergeydigl3/zapret-discord-youtube-rust";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # Dendritic: every .nix file under modules/ is a flake-parts module, imported automatically.

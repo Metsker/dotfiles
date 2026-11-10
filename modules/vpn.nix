@@ -40,10 +40,14 @@
       after = [ "amneziawg-amn0.service" ];
     };
 
-    # The client's "launch at startup" entry must exist (it gates launch-minimized), but the
-    # tunnel is up before login now and a second manager would fight amn0; mask the XDG unit.
-    systemd.user.units."app-AmneziaVPN@autostart.service".enable = false;
+    # systemd.user.units."app-AmneziaVPN@autostart.service".enable = false;
+		
+    services.v2raya = {
+      enable = true;
+      cliPackage = pkgs.sing-box;
+    };
 
-    environment.systemPackages = [ pkgs.amneziawg-tools ];
+
+    environment.systemPackages = with pkgs; [ amneziawg-tools termius v2rayn ];
   };
 }
