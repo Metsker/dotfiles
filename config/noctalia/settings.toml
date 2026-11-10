@@ -46,9 +46,6 @@ sidebar_section = "none"
     show_events_card = false
 
     [[control_center.shortcuts]]
-    type = "metsker/vpn:toggle"
-
-    [[control_center.shortcuts]]
     type = "caffeine"
 
     [[control_center.shortcuts]]
@@ -353,7 +350,6 @@ enabled = [
     "noctalia/timer",
     "metsker/voxtype",
     "metsker/nixos-update",
-    "metsker/vpn",
     "jrohland/claudecode",
     "metsker/window-info",
     "metsker/osk"

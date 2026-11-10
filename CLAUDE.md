@@ -65,7 +65,7 @@ One file per domain, not per app - a new program joins the file its domain alrea
 | `shell.nix` | fish, monstar, foot, yazi, neovim, git |
 | `dev.nix` | toolchain, playwright browsers, herdr, remote host bootstrap |
 | `apps.nix` | browser, file manager, media, chat, art, notes |
-| `vpn.nix` | the AmneziaVPN client, the boot-time tunnel, the greeter gate |
+| `vpn.nix` | the Hiddify client and its root VPN service, v2rayA |
 | `agents.nix` | Claude Code, pi, opencode, and the MCP servers they share |
 | `webapps.nix`, `gaming.nix` | each big enough to stand alone |
 

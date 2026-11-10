@@ -26,10 +26,6 @@ default_floating = true
 default_floating_size = { width = 0.75, height = 0.75 }
 
 [[window_rule]]
-match.app_id = "^AmneziaVPN$"
-default_floating = true
-
-[[window_rule]]
 match.app_id = "^org[.]telegram[.]desktop$"
 match.title = "^Media viewer$"
 default_floating = true
