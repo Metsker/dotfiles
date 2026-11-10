@@ -1,21 +1,16 @@
 { inputs, ... }:
 
 {
-  # Zapret-Rust bypasses DPI for Discord/YouTube by steering traffic through nfqws in nftables.
-  # The upstream package is the TUI; the flake also ships a NixOS module for running it as a
-  # systemd service. This installs the TUI now - enable services.zapret-rust once autotune has
-  # picked a strategy that works here.
+  # Zapret-Rust DPI bypass, TUI only - enable the flake's services.zapret-rust once autotune picks a strategy.
   flake.modules.nixos.base = { pkgs, ... }:
     let
-      # Two packaging bugs on NixOS: the wrapper prepends pkgs.polkit's pkexec, which is not
-      # setuid and shadows /run/wrappers/bin/pkexec, and it leaves the cache in the read-only
-      # store. Suffix polkit instead, and default the cache to the service's writable state dir.
+      # The binary's own pkexec re-exec skips this wrapper and wipes its env, so elevate here first.
       zapret-rust = inputs.zapret-rust.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs
         (_: {
           postInstall = ''
             wrapProgram $out/bin/zapret-rust \
-              --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.nftables ]} \
-              --suffix PATH : ${pkgs.lib.makeBinPath [ pkgs.polkit ]} \
+              --run 'if [ "$EUID" != 0 ]; then exec /run/wrappers/bin/pkexec "$0" "$@"; fi' \
+              --prefix PATH : ${pkgs.lib.makeBinPath (with pkgs; [ coreutils curl iptables libcap nftables procps systemd which ])} \
               --set ZAPRET_CACHE_DIR /var/lib/zapret-rust
           '';
         });
