@@ -71,6 +71,7 @@
 
       nil
       nixpkgs-fmt
+      nix-search-tv
       lua-language-server
       stylua
 
