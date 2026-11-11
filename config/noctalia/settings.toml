@@ -352,7 +352,8 @@ enabled = [
     "metsker/nixos-update",
     "jrohland/claudecode",
     "metsker/window-info",
-    "metsker/osk"
+    "metsker/osk",
+    "knyrps/nix-search"
 ]
 
     [[plugins.source]]
@@ -377,27 +378,25 @@ enabled = [
 
 [shell]
 avatar_path = "/home/metsker/Chest/Media/pics/a staff/4444.jpg"
-button_borders = false
-card_borders = false
+corner_radius_scale = 0.0
 font_family = "JetBrainsMono Nerd Font"
-input_borders = false
 launch_apps_as_systemd_services = true
 polkit_agent = true
-popup_borders = false
 
     [shell.greeter_sync]
     auto_sync = true
 
     [shell.launcher]
     categories = false
+    compact = true
     layout = "simple"
     sort_by_usage = false
 
     [shell.panel]
-    borders = false
     control_center_placement = "floating"
     open_near_click_control_center = true
     session_placement = "floating"
+    session_position = "center"
     shadow = false
     transparency_mode = "soft"
     wallpaper_placement = "floating"
@@ -422,16 +421,16 @@ wallpaper_scheme = "m3-content"
 directory = "~/Pictures/Wallpapers"
 
     [wallpaper.default]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-mlwdok.png"
 
     [wallpaper.last]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-mlwdok.png"
 
     [wallpaper.monitors.DP-1]
     path = "/home/metsker/Pictures/Wallpapers/wallhaven-6lekex.jpg"
 
     [wallpaper.monitors.DP-2]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-mlwdok.png"
 
     [wallpaper.monitors.HDMI-A-2]
     path = "/home/metsker/Pictures/Wallpapers/wallhaven-6lekex.jpg"
