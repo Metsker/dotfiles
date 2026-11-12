@@ -91,13 +91,13 @@ in
         options.navigate = true;
       };
 
-      home.packages = [
+      home.packages = with pkgs; [
         monstar
-        pkgs.github-cli
-        pkgs.lazygit
-        pkgs.jrnl
-        pkgs.fastfetch
-        pkgs.dua
+        github-cli
+        ghgrab
+        lazygit
+        fastfetch
+        dua
       ];
 
       # KIO's terminal launcher reads kdeglobals, not the environment, and falls through to
