@@ -12,4 +12,42 @@
     # Otherwise a reload re-reads the credential copied at start, not the edited file.
     systemd.services.dae.serviceConfig.RefreshOnReload = "credentials";
   };
+
+  flake.modules.nixos.pc = { lib, pkgs, ... }:
+    let
+      stallmon = pkgs.writeShellApplication {
+        name = "dae-stallmon";
+        runtimeInputs = with pkgs; [ nftables iproute2 gawk curl coreutils findutils getent ];
+        text = builtins.readFile ../scripts/dae-stallmon.sh;
+      };
+    in
+    {
+      # Temporary: per-second tunnel counters in /var/log/dae-stallmon; drop once the stalls are understood.
+      systemd.services.dae-stallmon = {
+        description = "Log per-second dae tunnel counters";
+        after = [ "dae.service" ];
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          ExecStart = lib.getExe stallmon;
+          ExecStopPost = "-${pkgs.nftables}/bin/nft delete table inet dae_stallmon";
+          LogsDirectory = "dae-stallmon";
+          Restart = "on-failure";
+          RestartSec = 10;
+        };
+      };
+
+      # Temporary (stall test): the official hysteria client as a local SOCKS5 node for dae; drop with the test.
+      systemd.services.hysteria-client = {
+        description = "Official hysteria2 client as a SOCKS5 node for dae";
+        before = [ "dae.service" ];
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          ExecStart = "${lib.getExe pkgs.hysteria} client --disable-update-check -c %d/config.yaml";
+          LoadCredential = "config.yaml:/home/metsker/dotfiles/config/dae/hysteria-client.yaml";
+          DynamicUser = true;
+          Restart = "always";
+          RestartSec = 3;
+        };
+      };
+    };
 }
