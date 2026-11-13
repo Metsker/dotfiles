@@ -1,6 +1,6 @@
 {
   # The VPN: dae redirects every flow through eBPF, with no TUN device.
-  flake.modules.nixos.base = {
+  flake.modules.nixos.base = { config, lib, ... }: {
     # The config holds the node's password, so it stays outside git and the store.
     services.dae = {
       enable = true;
@@ -10,7 +10,7 @@
     };
 
     # Otherwise a reload re-reads the credential copied at start, not the edited file.
-    systemd.services.dae.serviceConfig.RefreshOnReload = "credentials";
+    systemd.services.dae = lib.mkIf config.services.dae.enable { serviceConfig.RefreshOnReload = "credentials"; };
 
     # Drop once dae's hysteria2 client survives paused downloads.
     nixpkgs.overlays = [
@@ -34,6 +34,8 @@
 
   flake.modules.nixos.pc = { lib, pkgs, ... }:
     let
+      # Trial: mihomo replaces dae on pc, needing no patches; set this to "dae" and rebuild to go back.
+      tunnel = "mihomo";
       stallmon = pkgs.writeShellApplication {
         name = "dae-stallmon";
         runtimeInputs = with pkgs; [ nftables iproute2 gawk curl coreutils findutils getent ];
@@ -41,6 +43,29 @@
       };
     in
     {
+      services.dae.enable = lib.mkForce (tunnel == "dae");
+
+      # The config holds the node's password, so it stays outside git and the store.
+      services.mihomo = {
+        enable = tunnel == "mihomo";
+        configFile = "/home/metsker/dotfiles/config/mihomo/config.yaml";
+        tunMode = true;
+        # The PROCESS-NAME rule has to see other users' processes.
+        processesInfo = true;
+      };
+
+      # mihomo looks for rule data only in its state directory, so the files dae already uses are linked there.
+      systemd.services.mihomo.serviceConfig.ExecStartPre = lib.mkIf (tunnel == "mihomo") [
+        "${pkgs.coreutils}/bin/ln -sfn ${pkgs.v2ray-geoip}/share/v2ray/geoip.dat /var/lib/private/mihomo/geoip.dat"
+        "${pkgs.coreutils}/bin/ln -sfn ${pkgs.v2ray-domain-list-community}/share/v2ray/geosite.dat /var/lib/private/mihomo/geosite.dat"
+      ];
+
+      # mihomo's TCP stack accepts flows on its tunnel device, and replies to its own sockets fail a strict reverse-path check.
+      networking.firewall = lib.mkIf (tunnel == "mihomo") {
+        trustedInterfaces = [ "mihomo" ];
+        checkReversePath = "loose";
+      };
+
       # Temporary: per-second tunnel counters in /var/log/dae-stallmon; drop once the stalls are understood.
       systemd.services.dae-stallmon = {
         description = "Log per-second dae tunnel counters";

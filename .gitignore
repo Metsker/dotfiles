@@ -16,3 +16,4 @@ config/claude/mods/*/tsconfig.json
 
 # dae's config carries the node password; vpn.nix reads it from disk, never from the store.
 config/dae/
+config/mihomo/
