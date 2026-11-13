@@ -11,6 +11,25 @@
 
     # Otherwise a reload re-reads the credential copied at start, not the edited file.
     systemd.services.dae.serviceConfig.RefreshOnReload = "credentials";
+
+    # Drop once dae's hysteria2 client survives paused downloads.
+    nixpkgs.overlays = [
+      (final: prev: {
+        dae = prev.dae.overrideAttrs (old: {
+          # proxyVendor keeps dependencies as zips, so each module is unpacked, patched and swapped in by a replace.
+          postConfigure = (old.postConfigure or "") + ''
+            patchModule() {
+              go mod download "$1"
+              cp -r "$(go list -m -f '{{.Dir}}' "$1")" "$NIX_BUILD_TOP/$2"
+              chmod -R u+w "$NIX_BUILD_TOP/$2"
+              patch -d "$NIX_BUILD_TOP/$2" -p1 < "$3"
+              go mod edit -replace "$1=$NIX_BUILD_TOP/$2"
+            }
+            patchModule github.com/daeuniverse/outbound outbound ${../patches/dae-hysteria2-conn-window.patch}
+          '';
+        });
+      })
+    ];
   };
 
   flake.modules.nixos.pc = { lib, pkgs, ... }:
