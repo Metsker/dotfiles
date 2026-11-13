@@ -79,19 +79,5 @@
           RestartSec = 10;
         };
       };
-
-      # Temporary (stall test): the official hysteria client as a local SOCKS5 node for dae; drop with the test.
-      systemd.services.hysteria-client = {
-        description = "Official hysteria2 client as a SOCKS5 node for dae";
-        before = [ "dae.service" ];
-        wantedBy = [ "multi-user.target" ];
-        serviceConfig = {
-          ExecStart = "${lib.getExe pkgs.hysteria} client --disable-update-check -c %d/config.yaml";
-          LoadCredential = "config.yaml:/home/metsker/dotfiles/config/dae/hysteria-client.yaml";
-          DynamicUser = true;
-          Restart = "always";
-          RestartSec = 3;
-        };
-      };
     };
 }
