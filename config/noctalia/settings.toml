@@ -418,6 +418,10 @@ wallpaper_scheme = "m3-content"
     builtin_ids = [ "btop", "foot", "gtk3", "gtk4", "kcolorscheme", "umbriel" ]
     community_ids = [ "zen-browser", "neovim", "papirus-icons", "yazi" ]
 
+        [theme.templates.user.glide]
+        input_path = "/home/metsker/dotfiles/config/noctalia/templates/glide.css"
+        output_path = "~/.config/glide/noctalia.css"
+
         [theme.templates.user.monstar]
         input_path = "/home/metsker/dotfiles/config/noctalia/templates/monstar"
         output_path = "~/.config/monstar/themes/noctalia"

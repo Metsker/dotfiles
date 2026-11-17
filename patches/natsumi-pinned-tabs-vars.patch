@@ -1,0 +1,15 @@
+diff --git a/natsumi/modules/injected/pinned-tabs.css b/natsumi/modules/injected/pinned-tabs.css
+index 72ac47f..7d007b1 100644
+--- a/natsumi/modules/injected/pinned-tabs.css
++++ b/natsumi/modules/injected/pinned-tabs.css
+@@ -30,8 +30,8 @@ SOFTWARE.
+   #pinned-tabs-container, #vertical-pinned-tabs-container {
+     &::part(items-wrapper) {
+       grid-template-columns: repeat(auto-fit, minmax(calc(
+-              var(--natsumi-pinned-tab-width, var(--tab-pinned-expanded-background-width)) +
+-              2 * var(--tab-pinned-margin-inline-expanded)
++              var(--natsumi-pinned-tab-width, var(--tab-background-width-pinned-expanded, var(--tab-pinned-expanded-background-width))) +
++              2 * var(--tab-margin-inline-pinned-expanded, var(--tab-pinned-margin-inline-expanded))
+       ), auto)) !important;
+     }
+   }

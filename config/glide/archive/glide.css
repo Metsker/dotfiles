@@ -1,0 +1,249 @@
+/* Glide 0.1.65a skips a hint whose box center is covered, which a long title's center past the sidebar edge is. */
+.tab-label {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* The workspace row already shows the container, so the URL bar's label and the tabs' color stripe go. */
+#userContext-icons,
+.tab-context-line {
+  display: none !important;
+}
+
+/* Zen's layout: toolbar and URL bar above the vertical tabs, workspaces below them.
+   place_toolbox() moves the toolbox into the sidebar; while the sidebar is hidden it floats over the page instead. */
+:root {
+  --urlbar-height: 28px !important;
+}
+#navigator-toolbox {
+  background: none !important;
+  border-bottom: none !important;
+}
+#nav-bar {
+  --toolbarbutton-padding-inner: 4px;
+  --toolbarbutton-padding-outer: 1px;
+}
+#glide-toolbar-mode-button {
+  display: none !important;
+}
+
+/* Sidebar hidden: an island shown only while the URL field is empty or focused, hidden by opacity so Ctrl+L can still focus it. */
+:root:has(#sidebar-container[hidden]) #navigator-toolbox {
+  position: fixed !important;
+  inset: 0 0 auto;
+  z-index: 10;
+  pointer-events: none;
+  & #nav-bar {
+    pointer-events: auto;
+    transition:
+      opacity 120ms,
+      translate 120ms;
+    align-self: center;
+    width: min(900px, 70%);
+    margin: 4px 0 !important;
+    padding-inline: 4px !important;
+    border-radius: 10px;
+    background-color: var(--toolbar-field-background-color) !important;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.35);
+  }
+  & #nav-bar:not(:focus-within, :has(#urlbar[pageproxystate="invalid"])) {
+    opacity: 0;
+    translate: 0 -100%;
+    pointer-events: none !important;
+  }
+  & #urlbar-container {
+    padding-block: 1px !important;
+  }
+}
+
+:root:has(#sidebar-container:not([hidden])) {
+  /* Toolbox, tabs and workspaces fill the sidebar, which pushes Firefox's tools row (in a shadow root no sheet here reaches) past its clipped bottom. */
+  & #vertical-tabs {
+    flex: none;
+    flex-direction: column;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  & #navigator-toolbox {
+    container-type: inline-size;
+  }
+  & #tabbrowser-tabs {
+    /* Firefox places a dragged tab from the tab list's top, which only matches the sidebar's with no toolbox above the list. */
+    position: relative;
+  }
+  & #nav-bar {
+    /* OverflowableToolbar sums the buttons as one line against the toolbar's width; a toolbar wider than the sidebar never overflows them, so they wrap. */
+    width: calc(100cqw + 10000px);
+    margin-inline-end: -10000px;
+    padding: 0 !important;
+    border: none !important;
+    background: none !important;
+    pointer-events: none;
+  }
+  & #nav-bar-customization-target {
+    /* Its flex="1" is an !important UA rule, which only max-width can bound. */
+    flex-wrap: wrap;
+    max-width: 100cqw;
+    box-sizing: border-box;
+    padding: 4px var(--tab-margin-inline-inner);
+    gap: 4px 0;
+    pointer-events: auto;
+    & > :is(:first-child, :last-child) {
+      padding-inline: var(--toolbarbutton-padding-outer) !important;
+    }
+  }
+  & #urlbar-container {
+    order: 3;
+    flex: 1 0 100% !important;
+    height: calc(var(--urlbar-height) + 2 * var(--urlbar-container-padding-block));
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+  }
+
+  /* Until the config moves it in, the toolbox lies over the sidebar's top with its room kept, so the tabs do not move when it lands. */
+  & sidebar-main {
+    anchor-name: --glide-sidebar;
+  }
+  & body > #navigator-toolbox {
+    position: fixed !important;
+    position-anchor: --glide-sidebar;
+    top: anchor(top);
+    left: anchor(left);
+    width: anchor-size(width);
+    z-index: 10;
+  }
+  &:has(body > #navigator-toolbox) {
+    /* One row of buttons and the URL row. */
+    & sidebar-main[expanded] > #vertical-tabs {
+      padding-top: calc(36px + var(--urlbar-height) + 2 * var(--urlbar-container-padding-block));
+    }
+    /* The stacked buttons' height is unknown, so the tabs wait instead. */
+    & sidebar-main:not([expanded]) > #vertical-tabs {
+      visibility: hidden;
+    }
+  }
+
+  &:has(sidebar-main[expanded]) {
+    /* A pseudo-element spring, ordered between the left buttons and the pinned ones, holds them apart whichever of them exist. */
+    & #nav-bar-customization-target::before {
+      content: "";
+      order: 1;
+      flex: 1;
+    }
+    /* Pinned to the sidebar's right edge, as in Zen. */
+    & :is(#back-button, #forward-button, #stop-reload-button, #bookmarks-menu-button) {
+      order: 2;
+    }
+    /* As in Zen, the URL field floats over the page while in use, leaving an empty capsule in its slot. */
+    & #urlbar-container:has(#urlbar:is([focused], [popover-open])) {
+      background: var(--toolbar-field-background-color) content-box;
+      border-radius: var(--urlbar-border-radius);
+    }
+  }
+  &:has(sidebar-main[expanded]) #urlbar:is([focused], [popover-open]),
+  &:has(sidebar-main:not([expanded])) #urlbar-container {
+    position: fixed !important;
+    top: 4px;
+    /* The toolbox, at the window's top left, is the containing block; no translate, as the results view anchors to the untransformed box. */
+    left: calc((100vw - min(900px, 70vw)) / 2);
+    width: min(900px, 70vw) !important;
+  }
+
+  /* Collapsed, the buttons stack and the URL field shows only while in use. */
+  &:has(sidebar-main:not([expanded])) {
+    & #nav-bar-customization-target {
+      flex-direction: column;
+      align-items: center;
+    }
+    & toolbarspring {
+      display: none;
+    }
+    & #urlbar-container:not(:has(#urlbar:is([focused], [popover-open]))) {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+}
+
+/* While it floats, the URL field leaves the sidebar's clip and rises above the content area (z-index 2). */
+#sidebar-container:has(#urlbar:is([focused], [popover-open])) {
+  overflow: visible !important;
+  z-index: 3;
+  & #vertical-tabs {
+    overflow: visible !important;
+  }
+}
+
+/* Workspace row: one dot per workspace, "+" and the mode name. */
+#glide-workspaces,
+#glide-workspace-list {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  sidebar-main:not([expanded]) & {
+    flex-direction: column;
+  }
+}
+#glide-workspaces {
+  padding: 4px var(--tab-margin-inline-inner);
+}
+#glide-workspace-list {
+  flex: 1;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+#glide-mode {
+  flex: none;
+  padding-bottom: 1px;
+  border-bottom: 2px solid var(--glide-current-mode-color);
+  font-size: 0.9em;
+  sidebar-main:not([expanded]) & {
+    width: 16px;
+    height: 0;
+    margin: 6px 0 2px;
+    padding: 0;
+    overflow: hidden;
+    font-size: 0;
+  }
+}
+.glide-workspace {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 6px;
+  border: none;
+  border-radius: var(--tab-border-radius);
+  background: none;
+  color: inherit;
+  font: inherit;
+  &:hover {
+    background-color: var(--tab-hover-background-color, color-mix(in srgb, currentColor 12%, transparent));
+  }
+  &::before {
+    content: "";
+    flex: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--glide-workspace-color, currentColor);
+    opacity: 0.5;
+  }
+  &[current] {
+    background-color: color-mix(in srgb, var(--glide-workspace-color, currentColor) 18%, transparent);
+    &::before {
+      opacity: 1;
+    }
+  }
+}
+#glide-workspace-new::before {
+  content: "+";
+  width: 10px;
+  height: auto;
+  line-height: 10px;
+  text-align: center;
+  background: none;
+  opacity: 0.7;
+}

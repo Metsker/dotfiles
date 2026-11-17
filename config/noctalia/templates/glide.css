@@ -1,0 +1,8 @@
+/* Natsumi derives its whole palette from this accent; only active while natsumi.theme.accent-color is "noctalia". */
+@-moz-document url-prefix("chrome:"), url-prefix("about:") {
+  @media -moz-pref("natsumi.theme.accent-color", "noctalia") {
+    :root {
+      --natsumi-custom-primary-color: {{colors.primary.default.hex}};
+    }
+  }
+}
