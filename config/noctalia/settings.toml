@@ -1,4 +1,7 @@
-config_version = 16
+config_version = 20
+
+[accessibility]
+ui_scale = 1.1000000089406967
 
 [audio]
 enable_volume_sounds = false
@@ -53,6 +56,9 @@ sidebar_section = "none"
 
     [[control_center.shortcuts]]
     type = "notification"
+
+    [[control_center.shortcuts]]
+    type = "noctalia/screen_recorder:toggle"
 
     [[control_center.shortcuts]]
     type = "wallpaper"
@@ -421,16 +427,16 @@ wallpaper_scheme = "m3-content"
 directory = "~/Pictures/Wallpapers"
 
     [wallpaper.default]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-mlwdok.png"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
     [wallpaper.last]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-mlwdok.png"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
     [wallpaper.monitors.DP-1]
     path = "/home/metsker/Pictures/Wallpapers/wallhaven-6lekex.jpg"
 
     [wallpaper.monitors.DP-2]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-mlwdok.png"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
     [wallpaper.monitors.HDMI-A-2]
     path = "/home/metsker/Pictures/Wallpapers/wallhaven-6lekex.jpg"
