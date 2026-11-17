@@ -13,7 +13,7 @@ export const register: Register = on => {
   on('session.start', async ($, e, next) => {
     await $.command.register({
       name: 'notify',
-      description: 'Toggle Telegram notifications for this session',
+      description: 'Send the next idle or permission prompt to Telegram',
       immediate: true,
     })
     const flag = await flagPath($, await $.session.id())
@@ -25,16 +25,30 @@ export const register: Register = on => {
 
   on('command.run', { command: 'notify' }, async $ => {
     const flag = await flagPath($, await $.session.id())
-    if (await $.fs.exists(flag)) {
+    if (await read($, isOn)) {
       await $.process.run(['rm', '-f', flag])
       await update($, isOn, () => false)
 
-      return { text: 'Telegram notifications off.' }
+      return { text: 'Telegram notification off.' }
     }
     await $.fs.write(flag, '')
     await update($, isOn, () => true)
 
-    return { text: 'Telegram notifications on - idle and permission prompts go to Telegram.' }
+    return { text: 'Telegram notification armed - the next idle or permission prompt goes to Telegram, then it turns off.' }
+  })
+
+  // claude-notify spends the flag on its one ping; these mirror its events and its background-agents skip.
+  on('classic.Stop', async ($, e, next) => {
+    const agents = (e.background_tasks ?? []).filter(t => t.type !== 'shell' && t.type !== 'monitor')
+    if (agents.length === 0) await update($, isOn, () => false)
+
+    return next(e)
+  })
+
+  on('classic.PermissionRequest', async ($, e, next) => {
+    await update($, isOn, () => false)
+
+    return next(e)
   })
 
   // A /clear ends the session under a new id, so the flag goes with the old one.

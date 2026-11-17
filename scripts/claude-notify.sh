@@ -1,28 +1,28 @@
-# Claude Code Notification hook: sends idle and permission prompts to a Telegram bot.
+# Claude Code Stop and PermissionRequest hook: sends finished turns and permission prompts to a Telegram bot.
 
 input=$(cat)
-# Off unless the notify mod's /notify left a flag for this session.
+# A turn that ends on running background agents is a pause - they wake the session again.
+agents=$(jq '[.background_tasks[]? | select(.type != "shell" and .type != "monitor")] | length' <<<"$input")
+[ "$agents" = 0 ] || exit 0
+# Off unless the notify mod's /notify left a flag for this session; one ping spends it.
 session=$(jq -r '.session_id // ""' <<<"$input")
-[ -f "${XDG_RUNTIME_DIR:-/tmp}/claude-notify/$session" ] || exit 0
+rm "${XDG_RUNTIME_DIR:-/tmp}/claude-notify/$session" 2>/dev/null || exit 0
 
 env_file="$HOME/.claude/telegram-notify.env"
 [ -r "$env_file" ] || exit 0
 # shellcheck source=/dev/null
 . "$env_file"
 
-kind=$(jq -r '.notification_type // ""' <<<"$input")
+event=$(jq -r '.hook_event_name // ""' <<<"$input")
 cwd=$(jq -r '.cwd // ""' <<<"$input")
-transcript=$(jq -r '.transcript_path // ""' <<<"$input")
 text="$HOSTNAME: ${cwd/#"$HOME"/\~}"
 
-if [ "$kind" = idle_prompt ] && [ -r "$transcript" ]; then
-  # The hook gets no reply text, so the last one comes from the transcript.
-  last=$(tac "$transcript" | jq -rn 'first(inputs | select(.type == "assistant")
-    | .message.content[]? | select(.type == "text") | .text)
-    | if length > 1500 then .[:1500] + "..." else . end' || true)
+if [ "$event" = Stop ]; then
+  last=$(jq -r '.last_assistant_message // ""
+    | if length > 1500 then .[:1500] + "..." else . end' <<<"$input")
   text+=$'\nDone.\n\n'"$last"
 else
-  text+=$'\n'"$(jq -r '.message // "Claude needs you."' <<<"$input")"
+  text+=$'\n'"Claude needs your permission to use $(jq -r '.tool_name // "a tool"' <<<"$input")."
 fi
 
 curl -fsS --max-time 10 -o /dev/null \
