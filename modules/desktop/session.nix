@@ -40,19 +40,21 @@
 
     # voxtype grabs its push-to-talk key straight from /dev/input, because umbriel binds fire on press only.
     users.users.metsker.extraGroups = [ "input" ];
-
-    nixpkgs.overlays = [
-      # Carries the parakeet engine, which beats vulkan whisper on this card and leaves the GPU alone.
-      (final: prev: {
-        voxtype = (prev.voxtype.override { onnxSupport = true; }).overrideAttrs (old: {
-          # Backports nixpkgs 6abc6ca74; drop once nixos-unstable contains it.
-          buildInputs = old.buildInputs ++ [ final.oniguruma final.sqlite ];
-        });
-      })
-    ];
   };
 
-  flake.modules.homeManager.metsker = { config, pkgs, dotfile, ... }: {
+  # whisper turbo on the RTX 5060 halves parakeet's Russian errors; a session variable so `voxtype transcribe` follows too.
+  flake.modules.nixos.pc.environment.sessionVariables.VOXTYPE_ENGINE = "whisper";
+
+  # The vulkan build carries whisper and none of the onnx engines, so it goes only where whisper is the engine.
+  flake.modules.homeManager.pc = { pkgs, ... }: {
+    voxtype.package = pkgs.voxtype-vulkan;
+  };
+
+  flake.modules.homeManager.metsker = { config, lib, pkgs, dotfile, ... }: {
+    imports = [{
+      options.voxtype.package = lib.mkOption { type = lib.types.package; default = pkgs.voxtype-onnx; };
+    }];
+
     xdg.configFile.voxtype = { source = dotfile "voxtype"; recursive = true; };
 
     # The module's own graphical-session.target is right here: any compositor reaches it.
@@ -72,7 +74,7 @@
         After = [ "graphical-session.target" ];
       };
       Service = {
-        ExecStart = "${pkgs.voxtype}/bin/voxtype daemon";
+        ExecStart = "${config.voxtype.package}/bin/voxtype daemon";
         Restart = "on-failure";
         RestartSec = 3;
       };
@@ -98,7 +100,7 @@
     in
     [
       wminfo
-      voxtype
+      config.voxtype.package
       xwayland
 
       (writeShellApplication {

@@ -1,6 +1,6 @@
 # Push-to-talk dictation: hold Pause, speak, release, the text is typed at the cursor.
 
-# Parakeet runs on the CPU at ~22x real-time and returns nothing on silence, where whisper invents words.
+# Parakeet runs on the CPU at ~20x real-time; pc overrides it with VOXTYPE_ENGINE=whisper (session.nix).
 engine = "parakeet"
 state_file = "auto"
 
@@ -28,6 +28,19 @@ model = "parakeet-tdt-0.6b-v3-int8"
 model_type = "tdt"
 # The model costs 1.85s to load, so keep it resident rather than paying that on every key press.
 on_demand_loading = false
+
+[whisper]
+# q5_0 because f16 turbo does not fit beside the desktop in 8 GB; only stock names resolve, hence the full path.
+model = "/home/metsker/.local/share/voxtype/models/ggml-large-v3-turbo-q5_0.bin"
+# A comma list reaches whisper verbatim and garbles the output, so detect instead.
+language = "auto"
+flash_attention = true
+# Hands the ~1.2 GB of VRAM back after each dictation, at ~0.4s extra per press.
+gpu_isolation = true
+
+[vad]
+# Whisper answers silence with "Thank you."; the onnx build falls back to an energy detector.
+enabled = true
 
 [output]
 mode = "type"
