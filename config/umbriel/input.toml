@@ -4,6 +4,8 @@ layout = "us,ru"
 options = "caps:escape,grp:ctrl_space_toggle"
 repeat_rate = 25
 repeat_delay = 600
+# A new window starts on us, so terminals stay English unless switched inside them.
+track_layout = "window"
 
 [input.touchpad]
 tap = true
