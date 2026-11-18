@@ -114,17 +114,5 @@
       exec = "systemsettings";
       noDisplay = true;
     };
-
-    # Hide the Qt5/Qt6 Settings tools from the noctalia launcher (still runnable via `qt5ct`/`qt6ct`).
-    xdg.desktopEntries.qt5ct = {
-      name = "Qt5 Settings";
-      exec = "qt5ct";
-      noDisplay = true;
-    };
-    xdg.desktopEntries.qt6ct = {
-      name = "Qt6 Settings";
-      exec = "qt6ct";
-      noDisplay = true;
-    };
   };
 }
