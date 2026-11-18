@@ -23,31 +23,34 @@
     nixpkgs.overlays = [
       # Not in nixpkgs; pkgs.helium for both the browser below and webapps.nix.
       inputs.helium.overlays.default
-
-      (final: prev: {
-        # Telegram's miniapp webview dies with "Error 71 (Protocol error)" on NVIDIA - webkitgtk's
-        # dmabuf renderer cannot import NVIDIA's buffers into this wlroots session.
-        # Drop once that renderer survives an NVIDIA wlroots session.
-        telegram-desktop = prev.telegram-desktop.overrideAttrs (old: {
-          qtWrapperArgs = old.qtWrapperArgs ++ [ "--set" "WEBKIT_DISABLE_DMABUF_RENDERER" "1" ];
-        });
-
-        # Discord reads its VA surfaces without syncing, so nvidia-vaapi-driver 0.0.18 hands it stale
-        # frames and streams stutter; software decode here only. Drop once nixpkgs ships nvidia-vaapi-driver > 0.0.18 (#455 fix).
-        discord = final.symlinkJoin {
-          name = "discord-${prev.discord.version}";
-          paths = [ prev.discord ];
-          nativeBuildInputs = [ final.makeWrapper ];
-          postBuild = ''
-            rm $out/bin/Discord $out/bin/discord
-            makeWrapper ${prev.discord}/bin/Discord $out/bin/Discord --set LIBVA_DRIVER_NAME none
-            ln -s $out/bin/Discord $out/bin/discord
-          '';
-          inherit (prev.discord) meta;
-        };
-      })
     ];
   };
+
+  # NVIDIA-only fixes, so t490's Intel GPU keeps the dmabuf renderer and hardware decode.
+  flake.modules.nixos.pc.nixpkgs.overlays = [
+    (final: prev: {
+      # Telegram's miniapp webview dies with "Error 71 (Protocol error)" on NVIDIA - webkitgtk's
+      # dmabuf renderer cannot import NVIDIA's buffers into this wlroots session.
+      # Drop once that renderer survives an NVIDIA wlroots session.
+      telegram-desktop = prev.telegram-desktop.overrideAttrs (old: {
+        qtWrapperArgs = old.qtWrapperArgs ++ [ "--set" "WEBKIT_DISABLE_DMABUF_RENDERER" "1" ];
+      });
+
+      # Discord reads its VA surfaces without syncing, so nvidia-vaapi-driver 0.0.18 hands it stale
+      # frames and streams stutter; software decode here only. Drop once nixpkgs ships nvidia-vaapi-driver > 0.0.18 (#455 fix).
+      discord = final.symlinkJoin {
+        name = "discord-${prev.discord.version}";
+        paths = [ prev.discord ];
+        nativeBuildInputs = [ final.makeWrapper ];
+        postBuild = ''
+          rm $out/bin/Discord $out/bin/discord
+          makeWrapper ${prev.discord}/bin/Discord $out/bin/Discord --set LIBVA_DRIVER_NAME none
+          ln -s $out/bin/Discord $out/bin/discord
+        '';
+        inherit (prev.discord) meta;
+      };
+    })
+  ];
 
   flake.modules.homeManager.metsker = { pkgs, ... }: {
     imports = [ inputs.zen-browser.homeModules.default ];
