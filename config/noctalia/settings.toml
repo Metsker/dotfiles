@@ -388,6 +388,7 @@ corner_radius_scale = 0.0
 font_family = "JetBrainsMono Nerd Font"
 launch_apps_as_systemd_services = true
 polkit_agent = true
+readline_shortcuts = true
 
     [shell.greeter_sync]
     auto_sync = true
