@@ -18,13 +18,13 @@
 
       # Not in nixpkgs, but the npm package declares no dependencies at all - it ships its
       # own bundle - so the tarball plus a node wrapper is the entire build. Drop for
-      # pkgs.chrome-devtools-mcp once one exists.
+      # pkgs.chrome-devtools-mcp once NixOS/nixpkgs#586799 lands.
       chrome-devtools-mcp = pkgs.stdenv.mkDerivation (finalAttrs: {
         pname = "chrome-devtools-mcp";
-        version = "1.8.0";
+        version = "1.13.0";
         src = pkgs.fetchurl {
           url = "https://registry.npmjs.org/chrome-devtools-mcp/-/chrome-devtools-mcp-${finalAttrs.version}.tgz";
-          hash = "sha256-rAM0QQzqddEaXrtVX7sBOaSjlN412YzCo7wKlZ8ATN0=";
+          hash = "sha256-kVjEtKh5LLUirkb3buqpSRzgRhajrpcimhYnfgKkrqQ=";
         };
         nativeBuildInputs = [ pkgs.makeWrapper ];
         dontBuild = true;
@@ -33,7 +33,7 @@
           mkdir -p $out/lib/chrome-devtools-mcp
           cp -r . $out/lib/chrome-devtools-mcp/
           makeWrapper ${pkgs.nodejs}/bin/node $out/bin/chrome-devtools-mcp \
-            --add-flags $out/lib/chrome-devtools-mcp/build/src/bin/chrome-devtools-mcp.js
+            --add-flags $out/lib/chrome-devtools-mcp/out/Default/gen/src/bin/chrome-devtools-mcp.js
           runHook postInstall
         '';
       });
