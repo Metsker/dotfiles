@@ -1,15 +1,52 @@
 onboarding = false
 
 [keys]
+# herdr maps only Ctrl chords to the physical key, so the rest repeat on the ru layout (shift+n is Т).
 prefix = "ctrl+s"
-navigate_workspace_up = "k"
-navigate_workspace_down = "j"
-move_tab_previous = "prefix+alt+p"
-move_tab_next = "prefix+alt+n"
+navigate_workspace_up = ["k", "л"]
+navigate_workspace_down = ["j", "о"]
+move_tab_previous = ["prefix+alt+p", "prefix+alt+з"]
+move_tab_next = ["prefix+alt+n", "prefix+alt+т"]
 focus_agent = "prefix+alt+1..9"
 
+# Defaults, listed only to add their ru twins.
+navigate_pane_left = ["h", "р"]
+navigate_pane_right = ["l", "д"]
+help = ["prefix+?", "prefix+,"]
+settings = ["prefix+s", "prefix+ы"]
+new_workspace = ["prefix+shift+n", "prefix+Т"]
+new_worktree = ["prefix+shift+g", "prefix+П"]
+rename_workspace = ["prefix+shift+w", "prefix+Ц"]
+close_workspace = ["prefix+shift+d", "prefix+В"]
+workspace_picker = ["prefix+w", "prefix+ц"]
+goto = ["prefix+g", "prefix+п"]
+detach = ["prefix+q", "prefix+й"]
+reload_config = ["prefix+shift+r", "prefix+К"]
+open_notification_target = ["prefix+o", "prefix+щ"]
+new_tab = ["prefix+c", "prefix+с"]
+rename_tab = ["prefix+shift+t", "prefix+Е"]
+previous_tab = ["prefix+p", "prefix+з"]
+next_tab = ["prefix+n", "prefix+т"]
+close_tab = ["prefix+shift+x", "prefix+Ч"]
+rename_pane = ["prefix+shift+p", "prefix+З"]
+edit_scrollback = ["prefix+e", "prefix+у"]
+copy_mode = ["prefix+[", "prefix+х"]
+focus_pane_left = ["prefix+h", "prefix+р"]
+focus_pane_down = ["prefix+j", "prefix+о"]
+focus_pane_up = ["prefix+k", "prefix+л"]
+focus_pane_right = ["prefix+l", "prefix+д"]
+swap_pane_left = ["prefix+shift+h", "prefix+Р"]
+swap_pane_down = ["prefix+shift+j", "prefix+О"]
+swap_pane_up = ["prefix+shift+k", "prefix+Л"]
+swap_pane_right = ["prefix+shift+l", "prefix+Д"]
+split_vertical = ["prefix+v", "prefix+м"]
+close_pane = ["prefix+x", "prefix+ч"]
+zoom = ["prefix+z", "prefix+я"]
+resize_mode = ["prefix+r", "prefix+к"]
+toggle_sidebar = ["prefix+b", "prefix+и"]
+
 [[keys.command]]
-key = "prefix+a"
+key = ["prefix+a", "prefix+ф"]
 type = "plugin_action"
 command = "cloudmanic.herdr-plus.quick-actions"
 description = "herdr-plus: quick actions"
