@@ -26,8 +26,8 @@ in
       # Anything that spawns a terminal reads this; noctalia's own discovery list ends
       # at foot and never names monstar.
       TERMINAL = terminal.binary;
-      # snacks.nvim gates kitty graphics on the XTVERSION terminal name, which libghostty
-      # does not answer to; set for the session because `-e nvim` starts no shell.
+      # snacks.nvim gates kitty graphics on an XTVERSION naming kitty, ghostty or wezterm, and
+      # monstar answers as itself; set for the session because `-e nvim` starts no shell.
       SNACKS_GHOSTTY = "1";
     };
 

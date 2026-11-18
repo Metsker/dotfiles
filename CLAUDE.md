@@ -94,7 +94,6 @@ Conventions that follow from this:
   `modules/hosts/_<host>-hardware.nix` files are not modules of their own.
 - t490's disk layout is declared with disko in `modules/hosts/t490.nix`, so its hardware file
   carries no filesystems; nixos-anywhere `--generate-hardware-config` rewrites it on a reinstall.
-- `patches/` - out-of-tree patches, applied by an overlay in the feature's own module.
 
 ### Scripts
 
@@ -182,7 +181,8 @@ pull up. Adding another compositor means adding one file next to `umbriel.nix`.
   falls through to an absent konsole and does nothing. A desktop entry's `Exec` is never
   shell-expanded, so entries needing a terminal set `Terminal=true` and let the launcher supply
   one instead of naming it. `SNACKS_GHOSTTY` is a session variable for the same reason: `-e nvim`
-  starts no shell, and libghostty does not answer to the XTVERSION probe snacks.nvim gates on.
+  starts no shell, and monstar answers the XTVERSION probe snacks.nvim gates on as itself, a name
+  snacks does not know.
 - `config/niri/` and `config/mango/` are inactive leftovers - neither compositor is installed.
   Do not treat them as live config or keep them in sync.
 
