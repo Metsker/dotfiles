@@ -10,6 +10,9 @@
       processesInfo = true;
     };
 
+    # The GUI alone fails with "error 103: Background service is not running"; the module adds its root daemon.
+    programs.amnezia-vpn.enable = true;
+
     # mihomo looks for rule data only in its state directory, so the v2fly files are linked there.
     systemd.services.mihomo.serviceConfig.ExecStartPre = [
       "${pkgs.coreutils}/bin/ln -sfn ${pkgs.v2ray-geoip}/share/v2ray/geoip.dat /var/lib/private/mihomo/geoip.dat"
