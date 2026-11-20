@@ -1,6 +1,6 @@
 {
   "name": "notify",
   "version": "0.1.0",
-  "description": "/notify arms a one-shot Telegram notification (the next idle or permission prompt) for this session",
+  "description": "/notify toggles Telegram notifications (finished turns and permission prompts) for this session",
   "types": "./types/index.d.ts"
 }

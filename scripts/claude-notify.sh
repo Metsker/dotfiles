@@ -4,9 +4,9 @@ input=$(cat)
 # A turn that ends on running background agents is a pause - they wake the session again.
 agents=$(jq '[.background_tasks[]? | select(.type != "shell" and .type != "monitor")] | length' <<<"$input")
 [ "$agents" = 0 ] || exit 0
-# Off unless the notify mod's /notify left a flag for this session; one ping spends it.
+# Off unless the notify mod's /notify left a flag for this session; it stays until /notify again.
 session=$(jq -r '.session_id // ""' <<<"$input")
-rm "${XDG_RUNTIME_DIR:-/tmp}/claude-notify/$session" 2>/dev/null || exit 0
+[ -e "${XDG_RUNTIME_DIR:-/tmp}/claude-notify/$session" ] || exit 0
 
 env_file="$HOME/.claude/telegram-notify.env"
 [ -r "$env_file" ] || exit 0

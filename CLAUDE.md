@@ -212,14 +212,13 @@ terminal cell's height over width, since the mod API exposes no cell size. Claud
 those graphics when the terminal answers XTVERSION as kitty 0.28+ or Ghostty, which herdr does not,
 so the same `env` sets `CLAUDE_CODE_FORCE_TERMINAL_IMAGES=1`.
 
-Telegram pings are off by default and one-shot per session: the `notify` mod's `/notify` (it runs
-mid-turn too) leaves a flag at `$XDG_RUNTIME_DIR/claude-notify/<session id>`, and the hook
-`claude-notify` (`scripts/claude-notify.sh`) sends only for a session with that flag, deleting it
-as it sends. It runs on `Stop` and `PermissionRequest` rather than `Notification`, whose
+Telegram pings are off by default and toggled per session: the `notify` mod's `/notify` (it runs
+mid-turn too) leaves a flag at `$XDG_RUNTIME_DIR/claude-notify/<session id>` and removes it on the
+next `/notify`, and the hook `claude-notify` (`scripts/claude-notify.sh`) sends only for a session
+with that flag. It runs on `Stop` and `PermissionRequest` rather than `Notification`, whose
 `idle_prompt` waits `messageIdleNotifThresholdMs` (60 s) and `permission_prompt` a fixed 6 s; a
-`Stop` with background agents still running is a pause and sends nothing. The hook is `async`, so
-the script spends the flag rather than the mod, which only turns its footer label off on the same
-events. The mod deletes the flag when the session ends, `/clear` included. The bot token and chat id live in `~/.claude/telegram-notify.env`,
+`Stop` with background agents still running is a pause and sends nothing. The mod deletes the flag
+when the session ends, `/clear` included. The bot token and chat id live in `~/.claude/telegram-notify.env`,
 outside the repo.
 
 ## Conventions
