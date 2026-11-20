@@ -438,16 +438,16 @@ wallpaper_scheme = "m3-content"
 directory = "~/Pictures/Wallpapers"
 
     [wallpaper.default]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 
     [wallpaper.last]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 
     [wallpaper.monitors.DP-1]
     path = "/home/metsker/Pictures/Wallpapers/wallhaven-6lekex.jpg"
 
     [wallpaper.monitors.DP-2]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
 
     [wallpaper.monitors.HDMI-A-2]
     path = "/home/metsker/Pictures/Wallpapers/wallhaven-6lekex.jpg"
@@ -460,7 +460,7 @@ directory = "~/Pictures/Wallpapers"
 
     [[wallpaper.favorite]]
     palette_source = "wallpaper"
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
     theme_mode = "dark"
     wallpaper_scheme = "m3-content"
 
