@@ -121,6 +121,7 @@
     }
   },
   "spinnerTipsEnabled": false,
+  "syntaxHighlightingDisabled": false,
   "effortLevel": "xhigh",
   "modelSettings": {
     "claude-opus-5-5": {
@@ -139,7 +140,7 @@
     }
   },
   "skipWorkflowUsageWarning": true,
-  "theme": "auto",
+  "theme": "custom:noctalia",
   "editorMode": "normal",
   "autoCompactEnabled": false
 }

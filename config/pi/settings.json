@@ -1,5 +1,6 @@
 {
-  "lastChangelogVersion": "1.5.0",
+  "theme": "noctalia",
+  "lastChangelogVersion": "1.5.2",
   "defaultThinkingLevel": "high",
   "packages": [
     "npm:pi-subagents",

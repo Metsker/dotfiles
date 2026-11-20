@@ -28,9 +28,25 @@ name = "terminal"
 auto_switch = false
 
 [theme.custom]
-selection_bg = "#999999"
-active_row_bg = "#444444"
-surface_dim = "#444444"
+accent = "#85cfff"
+panel_bg = "reset"
+sidebar_bg = "reset"
+active_row_bg = "#262a2e"
+selection_bg = "#313539"
+surface0 = "#262a2e"
+surface1 = "#313539"
+surface_dim = "#101417"
+overlay0 = "#89929a"
+overlay1 = "#bfc8d0"
+text = "#e0e3e7"
+subtext0 = "#bfc8d0"
+mauve = "#aac8ff"
+green = "#85cfff"
+yellow = "#abcbe2"
+red = "#ffb4ab"
+blue = "#eab2ff"
+teal = "#c4c3e9"
+peach = "#ffdeab"
 
 [update]
 version_check = false
