@@ -23,6 +23,7 @@ in
     environment.sessionVariables = {
       EDITOR = "nvim";
       VISUAL = "nvim";
+      VPN = "mihomo";
       # Anything that spawns a terminal reads this; noctalia's own discovery list ends
       # at foot and never names monstar.
       TERMINAL = terminal.binary;
@@ -47,7 +48,9 @@ in
         enable = true;
         shellAliases = {
           rebuild = "sudo -v; and nh os switch";
-          restart = "systemctl --user restart";
+          start = "sudo systemctl start";
+          stop = "sudo systemctl stop";
+          restart = "sudo systemctl restart";
           lg = "lazygit";
         };
       };
