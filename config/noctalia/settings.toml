@@ -424,7 +424,7 @@ wallpaper_scheme = "m3-content"
         "zen-browser",
         "neovim",
         "prismlauncher",
-        "papirus-icons",
+        "gruvbox-plus-icons",
         "herdr",
         "yazi"
     ]
@@ -464,7 +464,7 @@ directory = "~/Pictures/Wallpapers"
 
     [[wallpaper.favorite]]
     palette_source = "wallpaper"
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
     theme_mode = "dark"
     wallpaper_scheme = "m3-content"
 

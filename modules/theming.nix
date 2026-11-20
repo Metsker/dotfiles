@@ -36,8 +36,8 @@
         name = "adw-gtk3-dark";
         package = pkgs.adw-gtk3;
       };
-      # No package: GTK4 indexes every Papirus copy on each app start, so the writable one below is the only one.
-      iconTheme.name = "Papirus-Dark";
+      # No package: GTK4 indexes every copy of a theme on each app start, so the writable one below is the only one.
+      iconTheme.name = "Gruvbox-Plus-Dark";
       # Repeat the import noctalia's apply.sh looks for: seeing it there, the script leaves this
       # read-only store symlink alone instead of rewriting it.
       gtk3.extraCss = ''
@@ -45,29 +45,23 @@
       '';
     };
 
-    # noctalia's papirus-icons template recolors folders in place, so the theme has to be writable:
-    # the store copy is not, and the /usr/share fallback it looks for does not exist here. Papirus
-    # comes along because Papirus-Dark is a shell - every size >= 32px symlinks into ../Papirus.
-    home.activation.papirusWritable = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    # noctalia's gruvbox-plus-icons template recolors in place, and its own copy of the store keeps it read-only.
+    home.activation.gruvboxPlusWritable = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       icons="$HOME/.local/share/icons"
-      src="${pkgs.papirus-icon-theme}/share/icons"
-      if [ "$(cat "$icons/.papirus-source" 2>/dev/null)" != "$src" ]; then
+      src="${pkgs.gruvbox-plus-icons}/share/icons/Gruvbox-Plus-Dark"
+      if [ "$(cat "$icons/.gruvbox-plus-source" 2>/dev/null)" != "$src" ]; then
         run mkdir -p "$icons"
-        run rm -rf "$icons/Papirus" "$icons/Papirus-Dark"
-        run cp -a "$src/Papirus" "$src/Papirus-Dark" "$icons/"
-        run chmod -R u+w "$icons/Papirus" "$icons/Papirus-Dark"
-        # The only sizes papirus-folders recolors that Papirus-Dark keeps its own copy of; the
-        # content is byte-identical to Papirus's, so linking them lets one recolor cover both.
-        for s in 22x22 24x24; do
-          run rm -rf "$icons/Papirus-Dark/$s/places"
-          run ln -s "../../Papirus/$s/places" "$icons/Papirus-Dark/$s/places"
-        done
-        # Rebuilt last, against the final layout: the copied cache pointed at the store and without
-        # any cache GTK stats its way through every theme dir on each app start.
-        for t in Papirus Papirus-Dark; do
-          run ${pkgs.gtk4}/bin/gtk4-update-icon-cache -q -t -f "$icons/$t"
-        done
-        echo "$src" > "$icons/.papirus-source"
+        run rm -rf "$icons/Gruvbox-Plus-Dark"
+        run cp -a "$src" "$icons/"
+        run chmod -R u+w "$icons/Gruvbox-Plus-Dark"
+        # A fresh copy is blue again; noctalia reruns its hook only when the colors change.
+        tpl="$HOME/.local/state/noctalia/community-templates/gruvbox-plus-icons"
+        if [ -f "$tpl/colors-final" ]; then
+          PATH=${lib.makeBinPath (with pkgs; [ bash coreutils gnused gawk diffutils ])} run bash "$tpl/apply.sh"
+        fi
+        # The copied cache points at the store; without one GTK stats every theme dir on each app start.
+        run ${pkgs.gtk4}/bin/gtk4-update-icon-cache -q -t -f "$icons/Gruvbox-Plus-Dark"
+        echo "$src" > "$icons/.gruvbox-plus-source"
       fi
     '';
 
@@ -100,9 +94,12 @@
         };
         WM.activeFont = "JetBrainsMono Nerd Font,11,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
         # Qt has no icon theme of its own; without this Qt apps fall back to hicolor and show blanks.
-        Icons.Theme = "Papirus-Dark";
+        Icons.Theme = "Gruvbox-Plus-Dark";
       };
     };
+
+    # Gruvbox Plus inherits breeze-dark for every icon it does not draw.
+    home.packages = [ pkgs.kdePackages.breeze-icons ];
 
     # Hide KDE System Settings from the noctalia launcher - platformTheme "kde" pulls it in as a
     # dependency, and it is useless without a Plasma session (still runnable via `systemsettings`).
