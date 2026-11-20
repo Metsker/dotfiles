@@ -24,7 +24,7 @@
 
     # Merges into the module's own default of [ "umbriel" "gtk" ]; umbriel's portal handles the
     # screencast side, so this is the only key worth overriding.
-    xdg.portal.config.umbriel."org.freedesktop.impl.portal.FileChooser" = "kde";
+    xdg.portal.config.umbriel."org.freedesktop.impl.portal.FileChooser" = "luciole";
   };
 
   flake.modules.homeManager.metsker = { dotfile, ... }: {

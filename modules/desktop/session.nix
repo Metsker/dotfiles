@@ -32,9 +32,10 @@
     # A package flag rather than a compositor setting, so it belongs to the session.
     environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
-    # Qt apps open this dialog natively already, so the portal's picker now matches them.
-    # The compositor's own file points its portal config at it.
-    xdg.portal.extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
+    # Luciole's picker; the compositor's own file points its portal config at it.
+    xdg.portal.extraPortals = [ inputs.luciole.packages.${pkgs.stdenv.hostPlatform.system}.default ];
+    # Qt apps under plasma-integration open KDE's dialog themselves unless told to ask the portal.
+    environment.sessionVariables.PLASMA_INTEGRATION_USE_PORTAL = "1";
 
     programs.gpu-screen-recorder.enable = true;
 
