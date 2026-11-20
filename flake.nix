@@ -40,6 +40,11 @@
       url = "github:Sergeydigl3/zapret-discord-youtube-rust";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # No binary cache either, so it follows our nixpkgs too.
+    luciole = {
+      url = "github:noctalia-dev/luciole";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # Dendritic: every .nix file under modules/ is a flake-parts module, imported automatically.

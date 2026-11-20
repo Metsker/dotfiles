@@ -429,6 +429,10 @@ wallpaper_scheme = "m3-content"
         "yazi"
     ]
 
+        [theme.templates.user.luciole]
+        input_path = "/etc/profiles/per-user/metsker/share/luciole/templates/colors.toml"
+        output_path = "~/.config/luciole/colors.toml"
+
         [theme.templates.user.monstar]
         input_path = "/home/metsker/dotfiles/config/noctalia/templates/monstar"
         output_path = "~/.config/monstar/themes/noctalia"

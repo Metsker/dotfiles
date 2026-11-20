@@ -64,7 +64,8 @@ One file per domain, not per app - a new program joins the file its domain alrea
 | `desktop/umbriel.nix` | the compositor: umbriel |
 | `shell.nix` | fish, monstar, foot, yazi, neovim, git |
 | `dev.nix` | toolchain, playwright browsers, herdr, remote host bootstrap |
-| `apps.nix` | browser, file manager, media, chat, art, notes |
+| `apps.nix` | browser, media, chat, art, notes |
+| `files.nix` | the file manager (luciole) and its context-menu scripts |
 | `vpn.nix` | mihomo as the tunnel |
 | `agents.nix` | Claude Code, pi, opencode, and the MCP servers they share |
 | `webapps.nix`, `gaming.nix` | each big enough to stand alone |
@@ -173,12 +174,9 @@ pull up. Adding another compositor means adding one file next to `umbriel.nix`.
   a host without that output.
 - **monstar** is the terminal, built from a flake input. `modules/shell.nix` names it exactly
   once, in a file-level `terminal` binding, and spends that on `$TERMINAL` in
-  `environment.sessionVariables` and on the two KDE keys - swapping terminals is that one edit.
+  `environment.sessionVariables` - swapping terminals is that one edit.
   Both compositors' keybinds spawn `$TERMINAL`, which works because their `spawn`/`exec` go
-  through `sh`; noctalia reads it too, its own discovery list ending at foot. KIO's launcher
-  reads `kdeglobals` rather than the environment, so an activation script writes
-  `TerminalApplication` and `TerminalService` there - unset, dolphin's "Open Terminal Here"
-  falls through to an absent konsole and does nothing. A desktop entry's `Exec` is never
+  through `sh`; noctalia reads it too, its own discovery list ending at foot. A desktop entry's `Exec` is never
   shell-expanded, so entries needing a terminal set `Terminal=true` and let the launcher supply
   one instead of naming it. `SNACKS_GHOSTTY` is a session variable for the same reason: `-e nvim`
   starts no shell, and monstar answers the XTVERSION probe snacks.nvim gates on as itself, a name

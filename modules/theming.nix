@@ -90,7 +90,7 @@
       # rewrites the keys the color scheme names, so these two sections survive a theme switch.
       kde.settings.kdeglobals = {
         # Qt reads a font per role and falls back to its own default for any role left unset, so
-        # every one of them has to name the family or dolphin keeps Noto Sans in its menus.
+        # every one of them has to name the family or Qt apps keep Noto Sans in their menus.
         General = {
           font = "JetBrainsMono Nerd Font,11,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
           fixed = "JetBrainsMono Nerd Font,11,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";

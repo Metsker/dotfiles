@@ -2,12 +2,8 @@
 
 # The text-mode half of the desktop: shell, terminal, editor, file manager, git.
 let
-  # The only place the terminal is named. $TERMINAL covers anything that spawns one through a
-  # shell; KIO's launcher reads kdeglobals instead, so it needs the same answer written there.
-  terminal = {
-    binary = "monstar";
-    desktopId = "dev.rockorager.monstar.desktop";
-  };
+  # The only place the terminal is named; $TERMINAL covers anything that spawns one through a shell.
+  terminal = "monstar";
 in
 {
   flake.modules.nixos.base = { pkgs, ... }: {
@@ -26,7 +22,7 @@ in
       VPN = "mihomo";
       # Anything that spawns a terminal reads this; noctalia's own discovery list ends
       # at foot and never names monstar.
-      TERMINAL = terminal.binary;
+      TERMINAL = terminal;
       # snacks.nvim gates kitty graphics on an XTVERSION naming kitty, ghostty or wezterm, and
       # monstar answers as itself; set for the session because `-e nvim` starts no shell.
       SNACKS_GHOSTTY = "1";
@@ -39,7 +35,7 @@ in
     };
   };
 
-  flake.modules.homeManager.metsker = { lib, pkgs, dotfile, ... }:
+  flake.modules.homeManager.metsker = { pkgs, dotfile, ... }:
     let
       monstar = inputs.monstar.packages.${pkgs.stdenv.hostPlatform.system}.default;
     in
@@ -103,17 +99,6 @@ in
         dua
       ];
 
-      # KIO's terminal launcher reads kdeglobals, not the environment, and falls through to
-      # konsole when these are unset - which is why dolphin's "Open Terminal Here" did nothing.
-      # Written by activation rather than home.file because noctalia merges colors and fonts into
-      # the same file at runtime, and a read-only store symlink would break that.
-      home.activation.kdeTerminal = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        run ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 --file kdeglobals --group General \
-          --key TerminalApplication ${terminal.binary}
-        run ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 --file kdeglobals --group General \
-          --key TerminalService ${terminal.desktopId}
-      '';
-
       xdg.configFile.monstar = { source = dotfile "monstar"; recursive = true; };
       xdg.configFile.foot = { source = dotfile "foot"; recursive = true; };
       xdg.configFile.yazi = { source = dotfile "yazi"; recursive = true; };
@@ -125,8 +110,7 @@ in
         name = "Neovim";
         genericName = "Text Editor";
         exec = "nvim %F";
-        # The launcher supplies the terminal - noctalia through $TERMINAL, KIO through kdeglobals -
-        # so this entry names none. A desktop Exec is not shell-expanded, so $TERMINAL cannot go here.
+        # The launcher supplies the terminal through $TERMINAL; a desktop Exec is not shell-expanded, so it cannot go here.
         terminal = true;
         type = "Application";
         icon = "nvim";
@@ -137,7 +121,7 @@ in
       xdg.desktopEntries.disk-usage = {
         name = "Disk Usage";
         # Names the terminal rather than setting terminal = true: only an app-id lets the compositors float it.
-        exec = "${terminal.binary} --app-id dua -e dua i /";
+        exec = "${terminal} --app-id dua -e dua i /";
         type = "Application";
         icon = "disk-usage-analyzer";
         categories = [ "System" "Utility" ];
