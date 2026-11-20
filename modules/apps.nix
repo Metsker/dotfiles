@@ -79,6 +79,7 @@
       telegram-desktop
       discord
       krita
+      photocraft
       blender
       spotify
     ];
