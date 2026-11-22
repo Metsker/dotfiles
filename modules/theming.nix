@@ -12,7 +12,7 @@
     ];
   };
 
-  flake.modules.homeManager.metsker = { lib, pkgs, ... }: {
+  flake.modules.homeManager.metsker = { pkgs, ... }: {
     home.file.".local/share/fonts/JetBrainsMono".source =
       "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono";
 
@@ -36,34 +36,17 @@
         name = "adw-gtk3-dark";
         package = pkgs.adw-gtk3;
       };
-      # No package: GTK4 indexes every copy of a theme on each app start, so the writable one below is the only one.
-      iconTheme.name = "Gruvbox-Plus-Dark";
+      # Its folders follow the color scheme (FollowsColorScheme), which noctalia, luciole and KDE apps fill from the palette.
+      iconTheme = {
+        name = "Gruvbox-Plus-Dark";
+        package = pkgs.gruvbox-plus-icons;
+      };
       # Repeat the import noctalia's apply.sh looks for: seeing it there, the script leaves this
       # read-only store symlink alone instead of rewriting it.
       gtk3.extraCss = ''
         @import url("noctalia.css");
       '';
     };
-
-    # noctalia's gruvbox-plus-icons template recolors in place, and its own copy of the store keeps it read-only.
-    home.activation.gruvboxPlusWritable = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      icons="$HOME/.local/share/icons"
-      src="${pkgs.gruvbox-plus-icons}/share/icons/Gruvbox-Plus-Dark"
-      if [ "$(cat "$icons/.gruvbox-plus-source" 2>/dev/null)" != "$src" ]; then
-        run mkdir -p "$icons"
-        run rm -rf "$icons/Gruvbox-Plus-Dark"
-        run cp -a "$src" "$icons/"
-        run chmod -R u+w "$icons/Gruvbox-Plus-Dark"
-        # A fresh copy is blue again; noctalia reruns its hook only when the colors change.
-        tpl="$HOME/.local/state/noctalia/community-templates/gruvbox-plus-icons"
-        if [ -f "$tpl/colors-final" ]; then
-          PATH=${lib.makeBinPath (with pkgs; [ bash coreutils gnused gawk diffutils ])} run bash "$tpl/apply.sh"
-        fi
-        # The copied cache points at the store; without one GTK stats every theme dir on each app start.
-        run ${pkgs.gtk4}/bin/gtk4-update-icon-cache -q -t -f "$icons/Gruvbox-Plus-Dark"
-        echo "$src" > "$icons/.gruvbox-plus-source"
-      fi
-    '';
 
     qt = {
       enable = true;
