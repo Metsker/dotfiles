@@ -119,10 +119,22 @@ local function writeRule(request)
 				-- A compositor wminfo writes no rules for answers the query with nothing at all.
 				noctalia.notifyError(noctalia.tr("notify.rule.unsupported"), label)
 			else
-				noctalia.notify(noctalia.tr(after and "notify.rule.added" or "notify.rule.removed"), label)
+				-- Undo is the same toggle again, so the context carries the request unchanged.
+				noctalia.notify(noctalia.tr(after and "notify.rule.added" or "notify.rule.removed"), label, {
+					actions = { { id = "undo", label = noctalia.tr("notify.rule.undo") } },
+					onAction = "onRuleAction",
+					context = noctalia.json.encode({ appid = appid, title = title, label = label }),
+				})
 			end
 		end)
 	end)
+end
+
+function onRuleAction(id, context)
+	local request = noctalia.json.decode(context)
+	if id == "undo" and type(request) == "table" then
+		writeRule(request)
+	end
 end
 
 -- The bars ask for the rule rather than writing it, so one right-click writes the file once

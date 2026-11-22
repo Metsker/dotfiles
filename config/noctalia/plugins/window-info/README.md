@@ -136,4 +136,5 @@ A right-click reports what actually changed rather than what was asked for: the 
 `wminfo float-rules` afterwards, and says the rule was added, dropped, or - on a compositor wminfo
 writes no rules for - that nothing changed at all. The clicked bar asks for the rule rather than
 writing it, so one press is one write however many bars carry the widget; it sends the value it is
-showing along, because that is the name the notification uses.
+showing along, because that is the name the notification uses. The notification carries an Undo
+button, which sends the same request again and so toggles the rule back.
