@@ -21,25 +21,24 @@ one stream and one lookup per app id.
 
 ## Requirements
 
-`wminfo` on `PATH` - this repo's compositor-query script (`scripts/wminfo.sh`, wrapped in
-`modules/desktop/session.nix`). It is the only place a compositor is named, so the service asks it
-four questions and branches on nothing:
+Noctalia 5.6 or newer (plugin API 56), running on umbriel.
+
+The focused window comes from `noctalia.compositor.subscribe`, a connection the shell opens to
+umbriel's `windows` event stream and reconnects on its own. Every event carries the whole window
+list, starting with a snapshot, and the one marked `active` is the window holding the keyboard -
+`focused` is per workspace, which is not this. The event format is umbriel's own, so on any other
+compositor the service subscribes to nothing and the widget stays hidden.
+
+The float rules still go through `wminfo` on `PATH` - this repo's compositor-query script
+(`scripts/wminfo.sh`, wrapped in `modules/desktop/session.nix`), which owns the rule file:
 
 | Query | Answer |
 | --- | --- |
-| `wminfo watch-focused-window` | `{"title":…,"appid":…}` at every focus change, until killed |
-| `wminfo focused-window` | that same object once, for the resync tick |
 | `wminfo float-rules` | the compositor's float rules, one `appid<tab>title<tab>title…` line per rule |
 | `wminfo float-rule <appid> <title>` | adds that title to the app's rule, drops it where it is already there |
 
-Null fields are an empty desktop and hide the widget. A nonzero exit means the IPC itself failed,
-and the last value stays on the bar rather than blinking out. A compositor whose IPC carries no
-focus event to watch answers neither, and leaves the widget hidden.
-
-The stream is restarted by a shell loop around it, because the host never restarts a dead one and
-gives the script no way to notice: a compositor restart costs a couple of seconds rather than the
-rest of the session. The loop only starts once `focused-window` has answered at all, so the
-compositor that answers nothing gets no command respawned at it forever.
+Nothing announces a rule change made outside the widget, so the service re-reads the rules every
+15 seconds.
 
 Umbriel is the only compositor wminfo writes rules for today; on any other, a right-click reports
 that it changed nothing.

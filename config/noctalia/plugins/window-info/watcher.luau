@@ -2,10 +2,9 @@
 -- Headless service: one focus stream for the whole shell, republished through plugin state,
 -- so every bar's widget draws the same window without a stream or a lookup of its own.
 
--- The stream carries every focus change, so the tick exists to notice that the stream itself
--- died, which a compositor restart is enough to do, and to re-read the float rules, which
--- nothing announces.
-local RESYNC_INTERVAL = 15000
+-- The shell reconnects the window stream itself, so the tick only re-reads the float rules,
+-- which nothing announces.
+local RULES_INTERVAL = 15000
 
 local client = nil
 -- The compositor's own float rules as wminfo reports them: one rule per app id, carrying every
@@ -16,7 +15,6 @@ local rules = {}
 -- misses included: false is the answer "no desktop entry and no themed icon".
 local icons = {}
 local last = nil
-local watching = false
 local writing = false
 
 -- A rule names both the app id and the title, so it floats the window it was read off and no
@@ -135,43 +133,33 @@ noctalia.state.watch("command", function(value)
 	end
 end)
 
--- json.decode reports a bad payload as (nil, err) rather than raising, so an undecodable line
--- arrives here as nil and reads as "nothing focused", which is also what wminfo's null title means.
-local function accept(data)
-	client = (type(data) == "table" and data.title) and data or nil
-	publish()
+-- Umbriel sends the whole window list on every change, starting with a snapshot, and exactly one
+-- window is active across all outputs; per-workspace focus is `focused`, which is not this.
+local function onWindows(event, data)
+	if event == "windows" and type(data) == "table" then
+		client = nil
+		for _, window in ipairs(data) do
+			if window.active then
+				client = { title = window.title or "", appid = window.app_id or "" }
+				break
+			end
+		end
+		publish()
+	elseif event == "reset" then
+		-- A fresh snapshot follows the reconnect; dropping the window without publishing spares
+		-- the bar a blink.
+		client = nil
+	elseif event == "error" then
+		noctalia.log("window stream rejected: " .. tostring(data))
+	end
 end
 
--- runStream never restarts a dead stream and gives the script no way to notice one, so the loop
--- restarts wminfo itself; the guard ends the loop once the shell holding the other end of the
--- pipe is gone.
-local function watch()
-	noctalia.runStream(
-		'while kill -0 "$PPID" 2>/dev/null; do wminfo watch-focused-window; sleep 2; done',
-		function(line)
-			accept(noctalia.json.decode(line))
-		end
-	)
+-- The event format is umbriel's own; on any other compositor the widget stays hidden.
+if noctalia.compositor.name() == "umbriel" then
+	noctalia.compositor.subscribe({ events = { "windows" } }, onWindows)
 end
 
 function update()
-	noctalia.setUpdateInterval(RESYNC_INTERVAL)
+	noctalia.setUpdateInterval(RULES_INTERVAL)
 	refreshRules()
-	noctalia.runAsync("wminfo focused-window", function(result)
-		-- Only a successful query is worth believing; a failed one would otherwise read as an
-		-- empty desktop and hide the widget.
-		if result.exitCode ~= 0 then
-			return
-		end
-		-- An answer at all is what says the compositor has an IPC to watch: where one answers
-		-- nothing, the restart loop would respawn a command that exits at once, forever.
-		if noctalia.string.trim(result.stdout) == "" then
-			return
-		end
-		accept(noctalia.json.decode(result.stdout))
-		if not watching then
-			watching = true
-			watch()
-		end
-	end)
 end

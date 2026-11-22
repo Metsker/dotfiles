@@ -1,7 +1,7 @@
 id = "metsker/window-info"
 name = "Window Info"
-version = "2.0.0"
-plugin_api = 24
+version = "3.0.0"
+plugin_api = 56
 author = "metsker"
 license = "MIT"
 dependencies = ["wminfo"]
@@ -10,8 +10,8 @@ description = "Shows the focused window's title or app id, and writes the compos
 tags = ["bar", "umbriel"]
 
 # One stream for the whole shell: the widget is placed once per bar, and three bars would
-# otherwise mean three `wminfo watch-focused-window` processes and three icon lookups per focus
-# change - enough work in the stream callback that the shell disabled the widget outright.
+# otherwise mean three compositor subscriptions and three icon lookups per focus change -
+# enough work in the stream callback that the shell disabled the widget outright.
 [[service]]
 id = "watcher"
 entry = "watcher.luau"
