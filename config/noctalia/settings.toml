@@ -1,7 +1,7 @@
 config_version = 20
 
 [accessibility]
-ui_scale = 1.1000000089406967
+font_scale = 1.1000000089406967
 
 [audio]
 enable_volume_sounds = false
@@ -118,7 +118,9 @@ widget_order = [
     "lockscreen-login-box@eDP-1",
     "lockscreen-login-box@HDMI-A-3",
     "lockscreen-login-box@HDMI-A-2",
-    "lockscreen-login-box@DP-1"
+    "lockscreen-login-box@DP-1",
+    "lockscreen-login-box@MBTEST",
+    "lockscreen-login-box@MBBENCH"
 ]
 
     [lockscreen_widgets.grid]
@@ -149,6 +151,7 @@ widget_order = [
         show_keyboard_layout = true
         show_login_button = true
         show_media = true
+        show_media_controls = true
         show_password_reveal = true
         show_session_buttons = true
         show_unlock_hint = true
@@ -177,6 +180,7 @@ widget_order = [
         show_keyboard_layout = true
         show_login_button = true
         show_media = true
+        show_media_controls = true
         show_password_reveal = true
         show_session_buttons = true
         show_unlock_hint = true
@@ -205,6 +209,7 @@ widget_order = [
         show_keyboard_layout = true
         show_login_button = true
         show_media = true
+        show_media_controls = true
         show_password_reveal = true
         show_session_buttons = true
         show_unlock_hint = true
@@ -233,6 +238,7 @@ widget_order = [
         show_keyboard_layout = true
         show_login_button = true
         show_media = true
+        show_media_controls = true
         show_password_reveal = true
         show_session_buttons = true
         show_unlock_hint = true
@@ -261,6 +267,7 @@ widget_order = [
         show_keyboard_layout = true
         show_login_button = true
         show_media = true
+        show_media_controls = true
         show_password_reveal = true
         show_session_buttons = true
         show_unlock_hint = true
@@ -289,6 +296,65 @@ widget_order = [
         show_keyboard_layout = true
         show_login_button = true
         show_media = true
+        show_media_controls = true
+        show_password_reveal = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@MBBENCH"]
+    box_height = 196.0
+    box_width = 810.0
+    cx = 800.0
+    cy = 818.0
+    output = "MBBENCH"
+    placement_height = 1000.0
+    placement_width = 1600.0
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@MBBENCH".settings]
+        background_color = "surface_container"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        layout = "regular"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_media = true
+        show_media_controls = true
+        show_password_reveal = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@MBTEST"]
+    box_height = 196.0
+    box_width = 810.0
+    cx = 800.0
+    cy = 818.0
+    output = "MBTEST"
+    placement_height = 1000.0
+    placement_width = 1600.0
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@MBTEST".settings]
+        background_color = "surface_container"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        layout = "regular"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_media = true
+        show_media_controls = true
         show_password_reveal = true
         show_session_buttons = true
         show_unlock_hint = true
@@ -317,6 +383,7 @@ widget_order = [
         show_keyboard_layout = true
         show_login_button = true
         show_media = true
+        show_media_controls = true
         show_password_reveal = true
         show_session_buttons = true
         show_unlock_hint = true
@@ -385,6 +452,7 @@ corner_radius_scale = 0.0
 launch_apps_as_systemd_services = true
 polkit_agent = true
 readline_shortcuts = true
+umbriel_audio_provider_enabled = true
 
     [shell.greeter_sync]
     auto_sync = true
@@ -413,15 +481,7 @@ wallpaper_scheme = "m3-content"
 
     [theme.templates]
     builtin_ids = [ "btop", "foot", "gtk3", "gtk4", "kcolorscheme", "luciole", "umbriel" ]
-    community_ids = [
-        "claude-code",
-        "opencode",
-        "pi-agent",
-        "neovim",
-        "prismlauncher",
-        "herdr",
-        "yazi"
-    ]
+    community_ids = [ "claude-code", "opencode", "pi-agent", "neovim", "prismlauncher", "herdr", "yazi" ]
 
         [theme.templates.user.monstar]
         input_path = "/home/metsker/dotfiles/config/noctalia/templates/monstar"
@@ -432,16 +492,16 @@ wallpaper_scheme = "m3-content"
 directory = "~/Pictures/Wallpapers"
 
     [wallpaper.default]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
     [wallpaper.last]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
     [wallpaper.monitors.DP-1]
     path = "/home/metsker/Pictures/Wallpapers/wallhaven-6lekex.jpg"
 
     [wallpaper.monitors.DP-2]
-    path = "/home/metsker/Pictures/Wallpapers/wallhaven-x6128o.jpg"
+    path = "/home/metsker/Pictures/Wallpapers/wallhaven-qrjww5.jpg"
 
     [wallpaper.monitors.HDMI-A-2]
     path = "/home/metsker/Pictures/Wallpapers/wallhaven-6lekex.jpg"
@@ -465,7 +525,6 @@ directory = "~/Pictures/Wallpapers"
     wallpaper_scheme = "m3-content"
 
 [widget.active_window]
-display = "icon_only"
 min_length = 0
 
 [widget.audio_visualizer]
