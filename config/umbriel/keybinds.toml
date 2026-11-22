@@ -33,10 +33,12 @@
 "Mod+Return" = "spawn $TERMINAL"
 "Mod+Alt+Return" = "spawn $TERMINAL -e herdr"
 "Mod+Shift+Return" = "spawn zen-beta"
-"Mod+Shift+F" = "spawn $TERMINAL -e yazi"
 "Mod+Shift+S" = "spawn $TERMINAL --working-directory ~/dotfiles/ -e nvim modules/"
 "Mod+Shift+W" = "spawn $TERMINAL --working-directory ~/dotfiles/config/umbriel/ -e nvim ."
-"Mod+Alt+Shift+F" = { action = "spawn luciole", repeat = false }
+"Mod+Shift+F" = { action = "spawn luciole", repeat = false }
+"Mod+Shift+E" = "spawn ~/dev/minibrowser/result-wpe/bin/minibrowser-open"
+"Mod+Shift+ALT+E" = "spawn ~/dev/minibrowser/result-wpe/bin/minibrowser-wpe"
+"Mod+Alt+Shift+F" = "spawn $TERMINAL -e yazi"
 "Mod+Space" = "spawn noctalia msg panel-toggle launcher"
 "Mod+Escape" = "spawn noctalia msg panel-toggle session"
 "Mod+Ctrl+Escape" = "spawn $TERMINAL --app-id btop -e btop"
