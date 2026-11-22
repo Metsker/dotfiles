@@ -416,7 +416,7 @@ source = "wallpaper"
 wallpaper_scheme = "m3-content"
 
     [theme.templates]
-    builtin_ids = [ "btop", "foot", "gtk3", "gtk4", "kcolorscheme", "umbriel" ]
+    builtin_ids = [ "btop", "foot", "gtk3", "gtk4", "kcolorscheme", "luciole", "umbriel" ]
     community_ids = [
         "claude-code",
         "opencode",
@@ -428,10 +428,6 @@ wallpaper_scheme = "m3-content"
         "herdr",
         "yazi"
     ]
-
-        [theme.templates.user.luciole]
-        input_path = "/etc/profiles/per-user/metsker/share/luciole/templates/colors.toml"
-        output_path = "~/.config/luciole/colors.toml"
 
         [theme.templates.user.monstar]
         input_path = "/home/metsker/dotfiles/config/noctalia/templates/monstar"

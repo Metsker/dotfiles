@@ -8,9 +8,6 @@
 
     # Luciole's Trash and remote folders go through GIO, which finds them only with GVfs running.
     services.gvfs.enable = true;
-
-    # For the luciole user template in noctalia's settings.toml; drop both for the builtin "luciole" id once noctalia > 5.5.0.
-    environment.pathsToLink = [ "/share/luciole" ];
   };
 
   flake.modules.homeManager.metsker = { pkgs, ... }:
